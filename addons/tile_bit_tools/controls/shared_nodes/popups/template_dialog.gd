@@ -129,7 +129,7 @@ func _save() -> void:
 		return
 	
 	_print.info("Saved user template to: %s " % path)
-	inspector_manager.templates_updated.emit()
+	inspector_manager.templates_update_requested.emit()
 	close_dialog()
 
 
