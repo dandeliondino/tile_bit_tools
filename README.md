@@ -1,4 +1,4 @@
-![TileBitTools: A Godot 4 TileSet editor plugin]()
+![TileBitTools: A Godot 4 TileSet editor plugin](https://github.com/dandeliondino/tile_bit_tools/blob/0.1.1/assets/header.png)
 
 This plugin saves and applies built-in and user-generated terrain bit templates.
 
