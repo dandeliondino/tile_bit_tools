@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://cmndse1dhoyfn"]
+
+[ext_resource type="Script" path="res://addons/tile_bit_tools/controls/selected_tiles_inspector/tool_buttons/tool_buttons.gd" id="1_8r32g"]
+[ext_resource type="Texture2D" uid="uid://wdutyc58alrh" path="res://addons/tile_bit_tools/controls/icons/fill.svg" id="2_0rn2x"]
+[ext_resource type="Texture2D" uid="uid://bnsbqhuuwxjrm" path="res://addons/tile_bit_tools/controls/icons/eraser.svg" id="3_joodd"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_565yv"]
+bg_color = Color(0.180392, 0.180392, 0.180392, 1)
+
+[node name="ToolButtons" type="HBoxContainer"]
+theme_override_constants/separation = 16
+alignment = 1
+script = ExtResource("1_8r32g")
+
+[node name="FillButton" type="MenuButton" parent="." groups=["TBTTextButton"]]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(123, 0)
+layout_mode = 2
+tooltip_text = "Fill all terrain bits with a single terrain"
+theme_override_constants/h_separation = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_565yv")
+text = "Fill Terrain"
+icon = ExtResource("2_0rn2x")
+flat = false
+alignment = 0
+
+[node name="EraseButton" type="Button" parent="." groups=["TBTTextButton"]]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+tooltip_text = "Erases all terrain data from selected tiles"
+theme_override_constants/h_separation = 8
+text = "Erase Terrain"
+icon = ExtResource("3_joodd")
+alignment = 2
+
+[connection signal="pressed" from="EraseButton" to="." method="_on_erase_button_pressed"]

@@ -1,0 +1,25 @@
+[gd_scene load_steps=7 format=3 uid="uid://b5omrwirlkjqy"]
+
+[ext_resource type="Script" path="res://addons/tile_bit_tools/controls/shared_nodes/inspector_manager.gd" id="1_bt3oe"]
+[ext_resource type="Script" path="res://addons/tile_bit_tools/controls/shared_nodes/shared_nodes_container.gd" id="1_vdaow"]
+[ext_resource type="Script" path="res://addons/tile_bit_tools/controls/shared_nodes/tiles_manager.gd" id="2_0qyc5"]
+[ext_resource type="Script" path="res://addons/tile_bit_tools/controls/shared_nodes/theme_updater.gd" id="3_wyg6j"]
+[ext_resource type="PackedScene" uid="uid://qf8vb0aeggid" path="res://addons/tile_bit_tools/controls/shared_nodes/popups/save_template_dialog.tscn" id="4_7his3"]
+[ext_resource type="PackedScene" uid="uid://d2dr6thf73hc2" path="res://addons/tile_bit_tools/controls/shared_nodes/popups/edit_template_dialog.tscn" id="4_gqvga"]
+
+[node name="TBTSharedNodes" type="Node"]
+script = ExtResource("1_vdaow")
+
+[node name="InspectorManager" type="Node" parent="." groups=["TBT_INSPECTOR_MANAGER"]]
+script = ExtResource("1_bt3oe")
+
+[node name="SaveTemplateDialog" parent="InspectorManager" groups=["TBT_INSPECTOR_MANAGER_NEEDED"] instance=ExtResource("4_7his3")]
+visible = false
+
+[node name="EditTemplateDialog" parent="InspectorManager" instance=ExtResource("4_gqvga")]
+
+[node name="TilesManager" type="Node" parent="." groups=["TBT_INSPECTOR_MANAGER_NEEDED", "TBT_TILES_MANAGER"]]
+script = ExtResource("2_0qyc5")
+
+[node name="ThemeUpdater" type="Node" parent="." groups=["TBT_INSPECTOR_MANAGER_NEEDED"]]
+script = ExtResource("3_wyg6j")

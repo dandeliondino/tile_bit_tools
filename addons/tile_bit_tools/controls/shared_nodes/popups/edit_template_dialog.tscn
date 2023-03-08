@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://d2dr6thf73hc2"]
+
+[ext_resource type="PackedScene" uid="uid://qf8vb0aeggid" path="res://addons/tile_bit_tools/controls/shared_nodes/popups/save_template_dialog.tscn" id="1_5jw1t"]
+[ext_resource type="Script" path="res://addons/tile_bit_tools/controls/shared_nodes/popups/edit_template_dialog.gd" id="2_bgxlq"]
+
+[node name="EditTemplateDialog" instance=ExtResource("1_5jw1t")]
+title = "Edit Terrain Template"
+script = ExtResource("2_bgxlq")
+metadata/_edit_pinned_properties_ = [&"title"]
