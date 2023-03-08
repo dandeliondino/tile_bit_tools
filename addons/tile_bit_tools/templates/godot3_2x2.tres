@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_03oml")
 version = "0.1.0"
-template_name = "2x2"
-template_description = ""
+template_name = "2x2 (Godot 3)"
+template_description = "Like all corner-matching templates, it can be used for simple blocks of terrain or diagonal paths or walls. It cannot be drawn in a single-tile wide line. This configuration is based on the Godot 3 documentation (https://docs.godotengine.org/en/3.5/tutorials/2d/using_tilemaps.html)."
 _custom_tags = ["Godot 3"]
 template_terrain_count = 2
 example_folder_path = "res://addons/tile_bit_tools/examples/godot3_2x2/"

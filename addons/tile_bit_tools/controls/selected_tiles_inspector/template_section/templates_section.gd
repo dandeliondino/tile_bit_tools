@@ -278,11 +278,9 @@ func _get_terrain_mapping() -> Dictionary:
 
 
 func _on_templates_updated() -> void:
-	_print.debug("_on_templates_updated()")
 	_update_tags_popup()
 
 
 func _on_reset_requested() -> void:
-	_print.debug("_on_reset_requested from templates section")
-	_update_templates_option_button()
+	_update_tags_popup()
 
