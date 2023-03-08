@@ -16,13 +16,20 @@ func _ready() -> void:
 	remove_button.pressed.connect(_on_remove_button_pressed)
 
 
-func setup(p_tag : TemplateTag) -> void:
+func setup(p_tag : TemplateTag, base_control : Control) -> void:
 	tag = p_tag
 	
 	label.text = tag.text
 	
 	if tag.icon:
 		icon_rect.texture = tag.icon
+	
+	var stylebox : StyleBoxFlat = base_control.get_theme_stylebox("selected", "ItemList").duplicate(true)
+	stylebox.content_margin_left = 2
+	stylebox.content_margin_right = 2
+	stylebox.content_margin_top = 0
+	stylebox.content_margin_bottom = 0
+	set("theme_override_styles/panel", stylebox)
 	
 	# TODO: implement in future?
 #	if tag.color:

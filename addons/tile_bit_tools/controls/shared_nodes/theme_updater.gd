@@ -12,6 +12,8 @@ var context : Context
 var category_control_height := UNASSIGNED
 
 
+# TODO: add request_apply_style for styling runtime generated controls
+
 func _tiles_inspector_added(p_context : Context) -> void:
 	context = p_context
 	await get_tree().process_frame
@@ -247,7 +249,15 @@ func _update_themes() -> void:
 				},
 			],
 		},
-		
+		{
+			"group_name": "TBTTag",
+			"updates": [
+				{
+					"property": "theme_override_styles/panel",
+					"value": base_control.get_theme_stylebox("selected", "ItemList"),
+				},
+			],
+		},
 		
 		
 
