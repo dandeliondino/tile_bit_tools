@@ -198,7 +198,10 @@ func _load_templates_in_directory(path : String, mark_as_built_in := false) -> v
 
 
 func _get_or_add_custom_tag(tag_text : String) -> int:
-	var custom_tag_id = _custom_tags.find_key(tag_text)
+#	_print.debug("_get_or_add_custom_tag(): %s" % tag_text)
+	
+	var custom_tag_id = _custom_tags.get(tag_text, null)
+#	_print.debug("custom_tag_id=%s" % custom_tag_id)
 	if custom_tag_id != TAG_NOT_FOUND:
 		return custom_tag_id
 	
@@ -237,7 +240,9 @@ func _assign_template_auto_tags(template_id : int, template : TemplateBitData) -
 
 func _assign_template_custom_tags(template_id : int, template : TemplateBitData) -> void:
 	for tag_text in template.get_custom_tags():
+#		_print.debug("Evaluating custom tag [%s] for template %s" % [tag_text, template.template_name])
 		var tag_id := _get_or_add_custom_tag(tag_text)
+#		_print.debug("tag_id=%s" % tag_id)
 		_assign_template_to_tag(template_id, tag_id)
 
 
