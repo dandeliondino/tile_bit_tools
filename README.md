@@ -2,12 +2,10 @@
 
 This plugin saves and applies built-in and user-generated terrain bit templates.
 
-Godot 4.0's new TileSet/TileMap system is powerful and extensible, and has a lot of untapped potential. But setting up terrain tiles (autotiles) can be confusing for new users and laborious for experienced ones.
-
-The goal of this plugin is to assist in fast iterations for experienced users, help users migrating from Godot 3.5 to quickly set up familiar tilesets, and to speed up the learning process and minimize errors for new users.
+Godot 4.0's new TileSet/TileMap system is powerful and extensible, and has a lot of untapped potential. The goal of this plugin is to enable fast iterations for experienced users, to assist users migrating from Godot 3.5 in setting up familiar tilesets, and to speed up the learning process for new users.
 
 ## To install:
-*TileBitTools is currently only available here on Github as a download. It will be submitted to Godot Asset Library in the future.*
+*TileBitTools is currently only available here on Github as a download. It will be submitted to Godot Asset Library in the near future.*
 1. Go to Code -> download ZIP
 2. Copy the `addons/tile_bit_tools` folder to your project
 3. Go to Project Settings -> Addons and enable TileBitTools
@@ -18,6 +16,16 @@ The goal of this plugin is to assist in fast iterations for experienced users, h
 2. Choose a template
 3. Assign terrains
 4. Click to apply template
+
+![1. Select tiles](https://github.com/dandeliondino/tile_bit_tools/blob/0.1.1/assets/tutorial_screenshot_01.png)
+
+![2. Choose template](https://github.com/dandeliondino/tile_bit_tools/blob/0.1.1/assets/tutorial_screenshot_02.png)
+
+![3. Assign terrains](https://github.com/dandeliondino/tile_bit_tools/blob/0.1.1/assets/tutorial_screenshot_03.png)
+
+![4. Apply template](https://github.com/dandeliondino/tile_bit_tools/blob/0.1.1/assets/tutorial_screenshot_04.png)
+
+![Results](https://github.com/dandeliondino/tile_bit_tools/blob/0.1.1/assets/tutorial_screenshot_05.png)
 
 ## To give feedback:
 Find a bug? -> [Known Bugs and Reports](https://github.com/dandeliondino/tile_bit_tools/issues/2)
