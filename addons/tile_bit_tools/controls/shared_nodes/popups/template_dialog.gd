@@ -144,9 +144,13 @@ func _update_template_bit_data() -> void:
 
 
 func _get_custom_tags() -> Array:
-	var tags := tags_edit.text.split(",")
-	for i in range(tags.size()):
-		tags[i] = tags[i].strip_edges()
+	var tags := []
+	var tag_texts := tags_edit.text.split(",")
+	for text in tag_texts:
+		text = text.strip_edges()
+		if text == "":
+			continue
+		tags.append(text)
 	return tags
 
 
