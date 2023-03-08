@@ -9,7 +9,7 @@ template_name = "2x2"
 template_description = ""
 _custom_tags = ["Godot 3"]
 template_terrain_count = 2
-example_folder_path = ""
+example_folder_path = "res://addons/tile_bit_tools/examples/godot3_2x2/"
 _tiles = {
 Vector2i(0, 0): {
 0: 0,

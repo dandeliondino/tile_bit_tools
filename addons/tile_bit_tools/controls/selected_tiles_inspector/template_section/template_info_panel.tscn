@@ -1,11 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://xow70asdgecu"]
+[gd_scene load_steps=9 format=3 uid="uid://xow70asdgecu"]
 
 [ext_resource type="Script" path="res://addons/tile_bit_tools/controls/selected_tiles_inspector/template_section/template_info_panel.gd" id="1_arkoa"]
-[ext_resource type="Texture2D" uid="uid://r65cttvsqgcs" path="res://addons/tile_bit_tools/controls/icons/edit.svg" id="2_8vv3m"]
-[ext_resource type="Texture2D" uid="uid://dv5ynlf14jles" path="res://addons/tile_bit_tools/controls/icons/remove.svg" id="3_7nspd"]
-[ext_resource type="Texture2D" uid="uid://coit67gut7ew1" path="res://addons/tile_bit_tools/controls/icons/arrow_right.svg" id="4_mkrw7"]
-[ext_resource type="Texture2D" uid="uid://bfrp5dgtwk71b" path="res://addons/tile_bit_tools/controls/icons/image.svg" id="4_ua62h"]
-[ext_resource type="Texture2D" uid="uid://bosh6133ffyf1" path="res://addons/tile_bit_tools/controls/icons/eraser.png" id="5_g6xw6"]
+[ext_resource type="Texture2D" uid="uid://kxpcshl5ohq8" path="res://addons/tile_bit_tools/controls/icons/edit.svg" id="2_8vv3m"]
+[ext_resource type="Texture2D" uid="uid://dhnskavebe1vh" path="res://addons/tile_bit_tools/controls/icons/remove.svg" id="3_7nspd"]
+[ext_resource type="Texture2D" uid="uid://b1s0oi2mj4cjw" path="res://addons/tile_bit_tools/controls/icons/arrow_right.svg" id="4_mkrw7"]
+[ext_resource type="Texture2D" uid="uid://8o7q0m4r65h8" path="res://addons/tile_bit_tools/controls/icons/image.svg" id="4_ua62h"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_n7nl4"]
 
@@ -47,7 +46,6 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_n7nl4")
 auto_height = true
 item_count = 2
 item_0/text = "Tiles: 15"
-item_0/icon = ExtResource("5_g6xw6")
 item_0/selectable = false
 item_1/text = "Terrains: 2"
 item_1/selectable = false

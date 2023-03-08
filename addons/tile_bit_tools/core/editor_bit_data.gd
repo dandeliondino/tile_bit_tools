@@ -69,7 +69,7 @@ func load_from_tile_data(p_tiles : Dictionary, p_tile_set : TileSet) -> Globals.
 	
 	
 func _load_tiles(p_tiles : Dictionary) -> Globals.Errors:
-	_print.user("Fetching current terrain bits now. Unassigned terrain bits will result in [i]Condition '!is_valid_terrain_peering_bit(p_peering_bit)' is true.[/i] Please ignore.")
+#	_print.user("Fetching current terrain bits now. Unassigned terrain bits will result in [i]Condition '!is_valid_terrain_peering_bit(p_peering_bit)' is true.[/i] Please ignore.")
 	
 	for coords in p_tiles.keys():
 		_add_tile(coords)

@@ -133,7 +133,7 @@ func _parse_end(object: Object) -> void:
 	var result := await _add_inspector()
 	if result != OK:
 #		_print.error("Inspector failed to add correctly, clearing remnants")
-		_print.user("TileSet inspector failed to open (ERR %s)" % result)
+		_print.debug("TileSet inspector failed to open (ERR %s)" % result)
 		_clear_tiles_inspector()
 		return
 	_print.debug("Inspector added without errors")

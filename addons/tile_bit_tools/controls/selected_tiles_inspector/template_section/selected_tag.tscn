@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bssj74a1tvnxs"]
 
 [ext_resource type="Script" path="res://addons/tile_bit_tools/controls/selected_tiles_inspector/template_section/selected_tag.gd" id="1_n8esd"]
-[ext_resource type="Texture2D" uid="uid://cr2udsf6hyq3u" path="res://addons/tile_bit_tools/controls/icons/close.svg" id="1_qu71p"]
+[ext_resource type="Texture2D" uid="uid://dsbcuf1ikkxdh" path="res://addons/tile_bit_tools/controls/icons/close.svg" id="1_qu71p"]
 [ext_resource type="StyleBox" uid="uid://c1i723a04fsg7" path="res://addons/tile_bit_tools/controls/selected_tiles_inspector/template_section/selected_tag_stylebox.tres" id="1_qy62g"]
 
 [node name="SelectedTag" type="PanelContainer"]
