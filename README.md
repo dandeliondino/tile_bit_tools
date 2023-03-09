@@ -1,8 +1,12 @@
 ![TileBitTools: A Godot 4 TileSet editor plugin](https://github.com/dandeliondino/tile_bit_tools/blob/0.1.1/assets/header.png)
 
-This plugin saves and applies built-in and user-generated terrain bit templates.
+This plugin applies built-in and user-generated terrain bit (autotile) templates to a TileSet.
 
-Godot 4.0's new TileSet/TileMap system is powerful and extensible, and has a lot of untapped potential. The goal of this plugin is to enable fast iterations for experienced users, to assist users migrating from Godot 3.5 in setting up familiar tilesets, and to speed up the learning process for new users.
+Godot 4.0's new TileSet/TileMap system is powerful and extensible, but has a lot of untapped potential. The goal of this plugin is to enable fast iterations, to assist in migrating from Godot 3.5, and to speed up the learning process for new users.
+
+Introduction video:
+[![TileBitTools Video](http://img.youtube.com/vi/t3BHoKArXlA/0.jpg)](http://www.youtube.com/watch?v=t3BHoKArXlA)
+
 
 ## To install:
 *TileBitTools is currently only available here on Github as a download. It will be submitted to Godot Asset Library in the near future.*
