@@ -125,7 +125,7 @@ func _on_delete_confirmed() -> void:
 	var path := template_bit_data.resource_path
 	var dir := inspector_manager.get_user_templates_dir()
 	dir.remove_absolute(path)
-	inspector_manager.update_templates()
+	inspector_manager.templates_update_requested.emit()
 
 
 func _on_remove_button_pressed() -> void:

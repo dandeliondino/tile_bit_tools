@@ -5,11 +5,11 @@
 [resource]
 script = ExtResource("1_4fue2")
 version = "0.1.0"
-template_name = "Generic 16 Tiles"
-template_description = ""
+template_name = "3x3 16 Tiles (Godot 3)"
+template_description = "Like all side-matching templates, it can be used for paths or fences in straight lines. It cannot make diagonal lines or shapes wider than one tile. This configuration is based on the Godot 3 documentation (https://docs.godotengine.org/en/3.5/tutorials/2d/using_tilemaps.html)."
 _custom_tags = ["Godot 3"]
 template_terrain_count = 2
-example_folder_path = ""
+example_folder_path = "res://addons/tile_bit_tools/examples/godot3_3x3_16_tiles/"
 _tiles = {
 Vector2i(0, 0): {
 0: 0,

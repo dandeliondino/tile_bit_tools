@@ -3,6 +3,7 @@ extends Node
 
 
 signal templates_updated
+signal templates_update_requested
 
 signal save_template_requested(context)
 signal edit_template_requested(template_bit_data)
@@ -26,6 +27,8 @@ var bit_data_draw_node
 
 
 func _ready() -> void:
+	templates_update_requested.connect(update_templates)
+	
 	_setup_bit_data_draw()
 	_load_templates.call_deferred()
 

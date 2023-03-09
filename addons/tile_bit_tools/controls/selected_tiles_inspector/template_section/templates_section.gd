@@ -104,7 +104,7 @@ func _add_tag(tag_id : int) -> void:
 	var tag_control := SelectedTag.instantiate()
 	var tag := inspector_manager.template_loader.get_tag(tag_id)
 	tags_container.add_child(tag_control)
-	tag_control.setup(tag)
+	tag_control.setup(tag, context.base_control)
 	tag_control.tag_removed.connect(_on_tag_removed.bind(tag_id))
 	_update_tags_popup()
 
@@ -282,6 +282,5 @@ func _on_templates_updated() -> void:
 
 
 func _on_reset_requested() -> void:
-	_print.debug("_on_reset_requested from templates section")
-	_update_templates_option_button()
+	_update_tags_popup()
 

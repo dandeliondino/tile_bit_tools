@@ -124,7 +124,6 @@ func _update_image_crop_rect() -> void:
 
 
 func _on_preview_updated(bit_data : EditorBitData) -> void:
-	print("_on_preview_updated")
 	preview_bit_data = bit_data
 	_update_preview_terrain()
 
