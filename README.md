@@ -1,10 +1,11 @@
-![TileBitTools: A Godot 4 TileSet editor plugin](https://github.com/dandeliondino/tile_bit_tools/blob/0.1.1/assets/header.png)
+![TileBitTools: A Godot 4 TileSet editor plugin](https://github.com/dandeliondino/tile_bit_tools/blob/main/assets/header.png)
 
 This plugin applies built-in and user-generated terrain bit (autotile) templates to a TileSet.
 
 Godot 4.0's new TileSet/TileMap system is powerful and extensible, but has a lot of untapped potential. The goal of this plugin is to enable fast iterations, to assist in migrating from Godot 3.5, and to speed up the learning process for new users.
 
 Introduction video:
+
 [![TileBitTools Video](http://img.youtube.com/vi/t3BHoKArXlA/0.jpg)](http://www.youtube.com/watch?v=t3BHoKArXlA)
 
 
@@ -21,15 +22,15 @@ Introduction video:
 3. Assign terrains
 4. Click to apply template
 
-![1. Select tiles](https://github.com/dandeliondino/tile_bit_tools/blob/0.1.1/assets/tutorial_screenshot_01.png)
+![1. Select tiles](https://github.com/dandeliondino/tile_bit_tools/blob/main/assets/tutorial_screenshot_01.png)
 
-![2. Choose template](https://github.com/dandeliondino/tile_bit_tools/blob/0.1.1/assets/tutorial_screenshot_02.png)
+![2. Choose template](https://github.com/dandeliondino/tile_bit_tools/blob/main/assets/tutorial_screenshot_02.png)
 
-![3. Assign terrains](https://github.com/dandeliondino/tile_bit_tools/blob/0.1.1/assets/tutorial_screenshot_03.png)
+![3. Assign terrains](https://github.com/dandeliondino/tile_bit_tools/blob/main/assets/tutorial_screenshot_03.png)
 
-![4. Apply template](https://github.com/dandeliondino/tile_bit_tools/blob/0.1.1/assets/tutorial_screenshot_04.png)
+![4. Apply template](https://github.com/dandeliondino/tile_bit_tools/blob/main/assets/tutorial_screenshot_04.png)
 
-![Results](https://github.com/dandeliondino/tile_bit_tools/blob/0.1.1/assets/tutorial_screenshot_05.png)
+![Results](https://github.com/dandeliondino/tile_bit_tools/blob/main/assets/tutorial_screenshot_05.png)
 
 ## To give feedback:
 Find a bug? -> [Known Bugs and Reports](https://github.com/dandeliondino/tile_bit_tools/issues/2)
