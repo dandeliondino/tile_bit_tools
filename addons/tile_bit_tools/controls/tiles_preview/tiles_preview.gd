@@ -21,6 +21,8 @@ var image_crop_rect : Rect2i
 
 var initial_height : float
 
+var expanded := true
+
 
 @onready var back_panel: Panel = %BackPanel
 @onready var v_split_container: VSplitContainer = %VSplitContainer
@@ -149,7 +151,7 @@ func _on_front_container_resized() -> void:
 #		preview_container.show()
 #		collapsed_label.hide()
 
-var expanded := true
+
 
 func _toggle_expanded_state(p_expanded : bool) -> void:
 	expanded = p_expanded
