@@ -1,0 +1,173 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/popups/save_template_dialog.gd" id="1_7pdu0"]
+
+[node name="SaveTemplateDialog" type="Window" groups=["TBTDialogWindow"]]
+initial_position = 2
+title = "Save Terrain Template"
+size = Vector2i(600, 513)
+wrap_controls = true
+transient = true
+exclusive = true
+transparent = true
+max_size = Vector2i(1920, 1009)
+content_scale_mode = 2
+content_scale_aspect = 4
+script = ExtResource("1_7pdu0")
+
+[node name="PanelContainer" type="PanelContainer" parent="." groups=["TBTDialogPanel"]]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" groups=["TBTPropertyLabel"]]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Name"
+
+[node name="NameEdit" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" groups=["TBTEditFont", "TBTLineEdit"]]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+text = "User Template"
+caret_blink = true
+caret_blink_interval = 0.5
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer" groups=["TBTSeparator"]]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2" groups=["TBTPropertyLabel"]]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+text = "Description"
+
+[node name="DescriptionEdit" type="TextEdit" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2" groups=["TBTEditFont", "TBTTextEdit"]]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+wrap_mode = 1
+
+[node name="HSeparator2" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer" groups=["TBTSeparator"]]
+layout_mode = 2
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="InfoLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4" groups=["TBTPropertyLabel"]]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Data"
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="PreviewRect" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4/PanelContainer"]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 2
+stretch_mode = 5
+
+[node name="HSeparator4" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer" groups=["TBTSeparator"]]
+layout_mode = 2
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer7" groups=["TBTPropertyLabel"]]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Auto tags"
+
+[node name="AutoTagsLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer7" groups=["TBTPropertyLabel"]]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="HSeparator3" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer" groups=["TBTSeparator"]]
+layout_mode = 2
+
+[node name="HBoxContainer8" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer8" groups=["TBTPropertyLabel"]]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Custom tags is a comma-separated list"
+text = "Custom Tags"
+
+[node name="TagsEdit" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer8" groups=["TBTEditFont", "TBTTextEdit"]]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="HSeparator6" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer" groups=["TBTSeparator"]]
+layout_mode = 2
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SavePathLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer6" groups=["TBTPropertyLabel"]]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_stretch_ratio = 2.0
+text = "user://addons/tile_bit_tools/templates/user_template01.tres"
+
+[node name="HSeparator7" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer" groups=["TBTSeparator"]]
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 48
+
+[node name="SaveButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3/MarginContainer" groups=["TBTTextButton"]]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Save"
+
+[node name="MarginContainer2" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_right = 48
+
+[node name="CancelButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3/MarginContainer2" groups=["TBTTextButton"]]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Cancel"
+
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3/MarginContainer/SaveButton" to="." method="_on_save_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer3/MarginContainer2/CancelButton" to="." method="_on_cancel_button_pressed"]
