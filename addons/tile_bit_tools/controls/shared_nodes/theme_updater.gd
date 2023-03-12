@@ -24,6 +24,9 @@ func _tiles_inspector_removed() -> void:
 	context = null
 
 
+
+
+
 func _update_themes() -> void:
 	_print.debug("_update_themes()")
 	var base_control : Control = context.base_control

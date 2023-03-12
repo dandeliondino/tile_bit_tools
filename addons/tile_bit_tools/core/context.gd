@@ -17,6 +17,7 @@ var tiles : Dictionary
 
 var bit_data : EditorBitData
 
+var interface : EditorInterface
 var base_control : Control
 
 var ready_complete := false

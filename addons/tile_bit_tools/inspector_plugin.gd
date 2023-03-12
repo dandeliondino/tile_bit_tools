@@ -21,6 +21,7 @@ var current_controls := []
 
 
 # Editor nodes
+var interface : EditorInterface
 var base_control : Control
 var tile_set_editor : Node
 var atlas_source_editor : Node
@@ -43,7 +44,8 @@ var tiles_preview : Control
 # 			SETUP
 # --------------------------------------
 
-func setup(interface : EditorInterface) -> Globals.Errors:
+func setup(p_interface : EditorInterface) -> Globals.Errors:
+	interface = p_interface
 	base_control = interface.get_base_control()
 	
 	tile_set_editor = _get_first_node_by_class(interface.get_base_control(), "TileSetEditor")
@@ -169,6 +171,7 @@ func _add_context() -> Globals.Errors:
 	context = Context.new()
 	
 	context.base_control = base_control
+	context.interface = interface
 	
 	# Refresh to ensure not using stale references
 	context.tile_set = _get_current_tile_set()
