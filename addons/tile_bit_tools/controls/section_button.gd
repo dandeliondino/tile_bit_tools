@@ -1,8 +1,8 @@
 @tool
 extends Button
 
-const Globals := preload("res://addons/tile_bit_tools/core/globals.gd")
-const InspectorManager := preload("res://addons/tile_bit_tools/controls/shared_nodes/inspector_manager.gd")
+# TODO: delete this script
+const TBTPlugin := preload("res://addons/tile_bit_tools/controls/shared_nodes/tbt_plugin_control.gd")
 
 @export_node_path("Control") var expand_control_path: NodePath
 
@@ -11,11 +11,11 @@ var arrow_expanded : Texture2D
 
 var expand_control : Control
 
-@onready var inspector_manager : InspectorManager = get_tree().get_first_node_in_group(Globals.GROUP_INSPECTOR_MANAGER)
+var tbt : TBTPlugin
 
 
-func _ready() -> void:
-	var base_control := inspector_manager.get_current_context().base_control
+func _tbt_ready() -> void:
+	var base_control := tbt.base_control
 	arrow_collapsed = base_control.get_theme_icon("GuiTreeArrowRight", "EditorIcons")
 	arrow_expanded = base_control.get_theme_icon("GuiTreeArrowDown", "EditorIcons")
 	

@@ -23,7 +23,7 @@ var ready_complete := false
 
 
 func _ready() -> void:
-	add_to_group(Globals.GROUP_CONTEXT)
+	# TODO: remove this?
 	ready_complete = true
 
 

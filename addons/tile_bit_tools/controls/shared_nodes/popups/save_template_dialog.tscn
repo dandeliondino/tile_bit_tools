@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://qf8vb0aeggid"]
+[gd_scene load_steps=2 format=3]
 
 [ext_resource type="Script" path="res://addons/tile_bit_tools/controls/shared_nodes/popups/save_template_dialog.gd" id="1_7pdu0"]
 

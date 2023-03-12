@@ -3,30 +3,30 @@ extends Node
 
 const UNASSIGNED := -1
 
-const Globals := preload("res://addons/tile_bit_tools/core/globals.gd")
-const Context := preload("res://addons/tile_bit_tools/core/context.gd")
+const TBTPlugin := preload("res://addons/tile_bit_tools/controls/shared_nodes/tbt_plugin_control.gd")
 
-var _print := preload("res://addons/tile_bit_tools/core/print.gd").new()
 
-var context : Context
+var context : TBTPlugin.Context
 var category_control_height := UNASSIGNED
 
 
 # TODO: add request_apply_style for styling runtime generated controls
 
-func _tiles_inspector_added(p_context : Context) -> void:
-	context = p_context
+var tbt : TBTPlugin
+
+
+func _tbt_ready() -> void:
+	pass
+
+
+func _tiles_inspector_added() -> void:
 	await get_tree().process_frame
 	_update_themes()
 
 
-func _tiles_inspector_removed() -> void:
-	context = null
-
-
 func _update_themes() -> void:
-	_print.debug("_update_themes()")
-	var base_control : Control = context.base_control
+	tbt.output.debug("_update_themes()")
+	var base_control : Control = tbt.context.base_control
 	
 	if category_control_height == UNASSIGNED:
 		var editor_inspector_category_control := base_control.find_children("*", "EditorInspectorCategory", true, false)[0]
