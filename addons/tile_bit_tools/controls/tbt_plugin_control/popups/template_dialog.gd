@@ -12,24 +12,17 @@ const DEFAULT_TEMPLATE_TAGS := ""
 var INFO_LABEL_TEXT := "Tiles: {tile_count}\nTerrains: {terrain_count}"
 
 
-const Globals := preload("res://addons/tile_bit_tools/core/globals.gd")
+const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd")
 
-const TemplateManager := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/template_manager.gd")
-
-const TemplateBitData := preload("res://addons/tile_bit_tools/core/template_bit_data.gd")
 const BitDataDrawNode := preload("res://addons/tile_bit_tools/controls/bit_data_draw/bit_data_draw_node.gd")
 
 var texts := preload("res://addons/tile_bit_tools/core/texts.gd").new()
 
 var _print := preload("res://addons/tile_bit_tools/core/print.gd").new()
 
-var template_bit_data : TemplateBitData
+var template_bit_data : TBTPlugin.TemplateBitData
 
-var template_manager : TemplateManager :
-	set(value):
-		template_manager = value
-		_setup_connections.call_deferred()
-
+var tbt : TBTPlugin
 
 @onready var name_edit: LineEdit = %NameEdit
 @onready var description_edit: TextEdit = %DescriptionEdit
@@ -42,10 +35,14 @@ var template_manager : TemplateManager :
 @onready var save_path_label: Label = %SavePathLabel
 
 
-func _ready():
+func _ready() -> void:
 	hide()
 	close_requested.connect(close_dialog)
-	
+
+
+func _tbt_ready() -> void:
+	_setup_connections()
+
 
 func _setup_connections() -> void:
 	# override this
@@ -82,7 +79,7 @@ func _set_max_size() -> void:
 
 
 func _setup_texture() -> void:
-	var bit_data_draw_node : BitDataDrawNode = template_manager.get_bit_data_draw()
+	var bit_data_draw_node : BitDataDrawNode = tbt.template_manager.get_bit_data_draw()
 	preview_rect.texture = await bit_data_draw_node.get_bit_texture(template_bit_data)
 
 
@@ -129,7 +126,7 @@ func _save() -> void:
 		return
 	
 	_print.info("Saved user template to: %s " % path)
-	template_manager.templates_update_requested.emit()
+	tbt.templates_update_requested.emit()
 	close_dialog()
 
 
@@ -140,7 +137,7 @@ func _update_template_bit_data() -> void:
 		template_bit_data.template_name = name_edit.text
 	template_bit_data.template_description = description_edit.text
 	template_bit_data._custom_tags = _get_custom_tags()
-	template_bit_data.version = Globals.VERSION
+	template_bit_data.version = tbt.Globals.VERSION
 
 
 func _get_custom_tags() -> Array:

@@ -120,7 +120,7 @@ func _on_delete_confirmed() -> void:
 	var path := template_bit_data.resource_path
 	var dir := tbt.template_manager.get_user_templates_dir()
 	dir.remove_absolute(path)
-	tbt.template_manager.templates_update_requested.emit()
+	tbt.templates_update_requested.emit()
 
 
 func _on_remove_button_pressed() -> void:
@@ -128,7 +128,7 @@ func _on_remove_button_pressed() -> void:
 	
 
 func _on_edit_button_pressed() -> void:
-	tbt.template_manager.edit_template_requested.emit(template_bit_data)
+	tbt.edit_template_requested.emit(template_bit_data)
 
 
 func _on_example_button_pressed() -> void:

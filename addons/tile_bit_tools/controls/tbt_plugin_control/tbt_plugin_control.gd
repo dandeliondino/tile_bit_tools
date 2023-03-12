@@ -1,5 +1,18 @@
 @tool
-extends Control
+extends Node
+
+
+signal templates_updated
+signal templates_update_requested
+
+signal save_template_requested
+signal edit_template_requested(template_bit_data)
+signal message_box_requested(msg)
+
+signal preview_updated(preview_bit_data)
+signal reset_requested
+signal apply_changes_requested
+
 
 const TBT_PROPERTY_NAME := "tbt"
 const TBT_READY_METHOD := "_tbt_ready"
@@ -53,8 +66,25 @@ var output := Print.new()
 
 func _ready() -> void:
 	child_entered_tree.connect(_assign_child_by_class)
+	_setup_debug_signals()
 	_setup_tbt_plugin_control()
 	_inject_tbt_reference(self)
+
+
+func _setup_debug_signals() -> void:
+	for signal_data in get_signal_list():
+		if signal_data.args.size() == 0:
+			connect(signal_data.name, _on_signal_emitted.bind(signal_data.name))
+		else:
+			connect(signal_data.name, _on_signal_emitted_with_arg.bind(signal_data.name))
+
+
+func _on_signal_emitted(signal_name := "") -> void:
+	output.debug("[TBTPlugin] Signal emitted: %s" % signal_name)
+
+
+func _on_signal_emitted_with_arg(_arg = null, signal_name := "") -> void:
+	output.debug("[TBTPlugin] Signal emitted: %s" % signal_name)
 
 
 func setup(p_interface : EditorInterface, p_base_control : Control) -> void:

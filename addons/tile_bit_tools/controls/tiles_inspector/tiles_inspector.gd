@@ -12,4 +12,4 @@ func _ready() -> void:
 
 
 func _on_save_button_pressed() -> void:
-	tbt.template_manager.save_template_requested.emit(tbt.context)
+	tbt.save_template_requested.emit()

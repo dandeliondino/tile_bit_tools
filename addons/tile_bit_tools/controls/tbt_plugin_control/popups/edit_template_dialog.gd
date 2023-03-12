@@ -6,13 +6,13 @@ var dir : DirAccess
 var save_path : String
 
 func _setup_connections() -> void:
-	template_manager.edit_template_requested.connect(_on_edit_template_requested)
+	tbt.edit_template_requested.connect(_on_edit_template_requested)
 
 
 
-func _setup_edit_dialog(p_template_bit_data : TemplateBitData) -> void:
+func _setup_edit_dialog(p_template_bit_data : TBTPlugin.TemplateBitData) -> void:
 	template_bit_data = p_template_bit_data
-	dir = template_manager.get_user_templates_dir()
+	dir = tbt.template_manager.get_user_templates_dir()
 	save_path = template_bit_data.resource_path
 	
 	show_dialog()
@@ -38,7 +38,7 @@ func _get_save_path(_valid_only := true) -> String:
 
 
 
-func _on_edit_template_requested(p_template_bit_data : TemplateBitData) -> void:
+func _on_edit_template_requested(p_template_bit_data : TBTPlugin.TemplateBitData) -> void:
 	if p_template_bit_data != null:
 		_setup_edit_dialog(p_template_bit_data)
 	else:

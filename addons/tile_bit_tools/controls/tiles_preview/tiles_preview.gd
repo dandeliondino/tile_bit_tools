@@ -48,8 +48,7 @@ func _tbt_ready() -> void:
 	# TODO: still needed?
 #	context.tree_exiting.connect(queue_free)
 	
-	tbt.tiles_manager.preview_updated.connect(_on_preview_updated)
-	apply_button.pressed.connect(tbt.tiles_manager.apply_bit_data)
+	tbt.preview_updated.connect(_on_preview_updated)
 	
 	dragged.connect(_on_split_dragged)
 	
@@ -142,4 +141,8 @@ func _on_split_dragged(_offset : int) -> void:
 
 
 func _on_reset_button_pressed() -> void:
-	tbt.tiles_manager.reset_requested.emit()
+	tbt.reset_requested.emit()
+
+
+func _on_apply_button_pressed() -> void:
+	tbt.apply_changes_requested.emit()

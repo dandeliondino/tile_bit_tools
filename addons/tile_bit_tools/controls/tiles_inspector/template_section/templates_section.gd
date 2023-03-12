@@ -41,8 +41,8 @@ var tbt : TBTPlugin
 
 func _tbt_ready() -> void:
 	
-	tbt.template_manager.templates_updated.connect(_on_templates_updated)
-	tbt.tiles_manager.reset_requested.connect(_on_reset_requested)
+	tbt.templates_updated.connect(_on_templates_updated)
+	tbt.reset_requested.connect(_on_reset_requested)
 	
 	templates_option_button.item_selected.connect(_on_template_selected)
 	terrain_set_option_button.item_selected.connect(_on_terrain_set_selected)

@@ -2,35 +2,26 @@
 extends Node
 
 
-signal templates_updated
-signal templates_update_requested
 
-signal save_template_requested(context)
-signal edit_template_requested(template_bit_data)
-signal message_box_requested(msg)
-
+const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd")
 
 const TemplateLoader := preload("res://addons/tile_bit_tools/core/template_loader.gd")
-const TemplateBitData := preload("res://addons/tile_bit_tools/core/template_bit_data.gd")
-
 const BitDataDrawNode := preload("res://addons/tile_bit_tools/controls/bit_data_draw/bit_data_draw_node.tscn")
 
 var template_loader : TemplateLoader
 var bit_data_draw_node
 
-const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd")
 var tbt : TBTPlugin
 
 
 
 func _tbt_ready() -> void:
-	templates_update_requested.connect(update_templates)
+	tbt.templates_update_requested.connect(update_templates)
 	
 	_setup_bit_data_draw()
-	_load_templates.call_deferred()
-
-	for child in get_children():
-		child.set("template_manager", self)
+	
+	# call deferred so editor will not pause on activating plugin
+	_load_templates.call_deferred() 
 
 
 func _setup_bit_data_draw() -> void:
@@ -58,9 +49,10 @@ func get_current_context() -> TBTPlugin.Context:
 		return tbt.context
 	return null
 
+
 func update_templates() -> void:
 	_load_templates()
-	templates_updated.emit()
+	tbt.templates_updated.emit()
 
 
 func get_user_templates_dir() -> DirAccess:

@@ -1,8 +1,7 @@
 @tool
 extends Node
 
-signal preview_updated(preview_bit_data)
-signal reset_requested
+
 
 enum TerrainChanges {NONE, ERASE, FILL, TEMPLATE}
 
@@ -23,12 +22,10 @@ var current_terrain_change := TerrainChanges.NONE
 var tbt : TBTPlugin
 
 
-func _ready() -> void:
-	reset_requested.connect(_on_reset_requested)
-
 
 func _tbt_ready() -> void:
-	pass
+	tbt.reset_requested.connect(_on_reset_requested)
+	tbt.apply_changes_requested.connect(_on_apply_changes_requested)
 
 
 func clear_preview() -> void:
@@ -93,7 +90,7 @@ func apply_bit_data() -> void:
 
 
 func _emit_preview_updated() -> void:
-	preview_updated.emit(preview_bit_data)
+	tbt.preview_updated.emit(preview_bit_data)
 
 
 func _get_new_preview_data() -> TBTPlugin.EditorBitData:
@@ -104,3 +101,7 @@ func _get_new_preview_data() -> TBTPlugin.EditorBitData:
 func _on_reset_requested() -> void:
 	tbt.output.debug("reset requested from tiles manager")
 	clear_preview()
+
+
+func _on_apply_changes_requested() -> void:
+	apply_bit_data()

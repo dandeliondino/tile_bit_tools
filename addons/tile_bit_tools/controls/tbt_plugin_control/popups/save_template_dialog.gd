@@ -8,17 +8,18 @@ var dir : DirAccess
 
 func _setup_connections() -> void:
 	name_edit.text_changed.connect(_update_save_path_label)
-	template_manager.save_template_requested.connect(_on_save_template_requested)
+	tbt.save_template_requested.connect(_on_save_template_requested)
 
 
-func _setup_save_dialog(context : Context) -> void:
-	dir = template_manager.get_user_templates_dir()
-	template_bit_data = TemplateBitData.new()
+func _setup_save_dialog() -> void:
+	dir = tbt.template_manager.get_user_templates_dir()
+	template_bit_data = TBTPlugin.TemplateBitData.new()
 	
-	var result := template_bit_data.load_editor_bit_data(context.bit_data)
+	var result := template_bit_data.load_editor_bit_data(tbt.context.bit_data)
 	if result != OK:
 		_print.error("Cannot create template from editor data", result) # TODO: error codes and popup message
-		template_manager.message_box_requested.emit("Cannot create template from editor data (ERR %s)" % result)
+			# TODO: message_box_requested not implemented
+		tbt.message_box_requested.emit("Cannot create template from editor data (ERR %s)" % result)
 		hide()
 	
 	show_dialog()
@@ -45,7 +46,7 @@ func _update_save_path_label(_text := "") -> void:
 # overriden
 func _get_save_path(valid_only := true) -> String:
 	var file_name := _get_file_name()
-	var path : String = template_manager.get_user_templates_path() + file_name
+	var path : String = tbt.template_manager.get_user_templates_path() + file_name
 	
 	if file_name == "":
 		if valid_only:
@@ -79,8 +80,5 @@ func _get_file_name() -> String:
 
 
 
-func _on_save_template_requested(context) -> void:
-	if context != null:
-		_setup_save_dialog(context)
-	else:
-		_print.warning("Save requested without context")
+func _on_save_template_requested() -> void:
+	_setup_save_dialog()
