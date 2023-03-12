@@ -50,28 +50,27 @@ var ready_complete := false
 
 func _ready() -> void:
 	ready_complete = true
-#	v_split_container.dragged.connect(_on_split_dragged)
 	front_container.resized.connect(_on_front_container_resized)
+	_connect_opacity_slider()
+
 
 func _tbt_ready() -> void:
-	# TODO: still needed?
-#	context.tree_exiting.connect(queue_free)
-	
+	tbt.tiles_inspector_added.connect(_on_tiles_inspector_added)
+	tbt.tiles_inspector_removed.connect(_on_tiles_inspector_removed)
 	tbt.preview_updated.connect(_on_preview_updated)
 	
-#	dragged.connect(_on_split_dragged)
-	
-	_setup_textures()
-	
-#	await get_tree().process_frame
-#	initial_height = back_panel.size.y
-	
-
 
 func _setup_textures() -> void:
 	_update_base_texture()
-	_connect_opacity_slider()
 	_update_current_terrain()
+	_update_preview_terrain()
+
+
+func _clear_data() -> void:
+	base_image = null
+	preview_bit_data = null
+	tile_rects.clear()
+	image_crop_rect = EMPTY_RECT
 	_update_preview_terrain()
 
 
@@ -174,3 +173,13 @@ func _on_expand_button_pressed() -> void:
 
 func _on_collapse_button_pressed() -> void:
 	_toggle_expanded_state(false)
+
+
+func _on_tiles_inspector_added() -> void:
+	show()
+	_setup_textures()
+	
+
+func _on_tiles_inspector_removed() -> void:
+	hide()
+	_clear_data()

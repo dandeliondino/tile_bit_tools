@@ -29,6 +29,11 @@ func _enter_tree() -> void:
 	output.user(texts.WELCOME_MESSAGE2)
 
 
+func _handles(object: Object) -> bool:
+	print(object)
+	return false
+
+
 func _clear() -> void:
 	output.debug("plugin.gd : _clear()")
 	if plugin:

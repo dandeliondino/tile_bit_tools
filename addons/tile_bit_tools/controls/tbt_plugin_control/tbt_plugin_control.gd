@@ -2,6 +2,9 @@
 extends Node
 
 
+signal tiles_inspector_added
+signal tiles_inspector_removed
+
 signal templates_updated
 signal templates_update_requested
 
@@ -75,29 +78,25 @@ func _ready() -> void:
 	_inject_tbt_reference(self)
 
 
-
-
-
-func setup(p_interface : EditorInterface, p_base_control : Control) -> void:
+func setup(p_interface : EditorInterface, p_tiles_preview : Control) -> void:
 	interface = p_interface
-	base_control = p_base_control
+	base_control = interface.get_base_control()
 	icons = Icons.new(base_control)
-
-
-# TODO: call this after preview panel added
-func notify_tiles_inspector_added(p_tiles_inspector : Node, p_tiles_preview : Node) -> void:
-	tiles_inspector = p_tiles_inspector
-	
-	_inject_tbt_reference(tiles_inspector, true)
 	
 	tiles_preview = p_tiles_preview
 	_inject_tbt_reference(tiles_preview, true)
 	
+	
+func notify_tiles_inspector_added(p_tiles_inspector : Node) -> void:
+	tiles_inspector = p_tiles_inspector
+	_inject_tbt_reference(tiles_inspector, true)
 	_call_subtree(self, TILES_INSPECTOR_ADDED_METHOD)
+	tiles_inspector_added.emit()
 	
 
 func notify_tiles_inspector_removed() -> void:
 	_call_subtree(self, TILES_INSPECTOR_REMOVED_METHOD)
+	tiles_inspector_removed.emit()
 
 
 func _setup_tbt_plugin_control() -> void:
