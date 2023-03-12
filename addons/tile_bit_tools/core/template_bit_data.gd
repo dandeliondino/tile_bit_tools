@@ -22,9 +22,9 @@ var preview_texture : Texture2D
 var terrain_colors := {
 	-1: Color.TRANSPARENT,
 	0: ProjectSettings.get_setting(Globals.Settings.colors_terrain_01.path) if ProjectSettings.get_setting(Globals.Settings.colors_terrain_01.path) != null else additional_colors[0],
-	1: ProjectSettings.get_setting(Globals.Settings.colors_terrain_01.path) if ProjectSettings.get_setting(Globals.Settings.colors_terrain_02.path) != null else additional_colors[1],
-	2: ProjectSettings.get_setting(Globals.Settings.colors_terrain_01.path) if ProjectSettings.get_setting(Globals.Settings.colors_terrain_03.path) != null else additional_colors[2],
-	3: ProjectSettings.get_setting(Globals.Settings.colors_terrain_01.path) if ProjectSettings.get_setting(Globals.Settings.colors_terrain_04.path) != null else additional_colors[3],
+	1: ProjectSettings.get_setting(Globals.Settings.colors_terrain_02.path) if ProjectSettings.get_setting(Globals.Settings.colors_terrain_02.path) != null else additional_colors[1],
+	2: ProjectSettings.get_setting(Globals.Settings.colors_terrain_03.path) if ProjectSettings.get_setting(Globals.Settings.colors_terrain_03.path) != null else additional_colors[2],
+	3: ProjectSettings.get_setting(Globals.Settings.colors_terrain_04.path) if ProjectSettings.get_setting(Globals.Settings.colors_terrain_04.path) != null else additional_colors[3],
 }
 
 
