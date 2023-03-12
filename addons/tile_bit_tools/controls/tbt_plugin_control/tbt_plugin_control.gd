@@ -92,11 +92,38 @@ func notify_tiles_inspector_added(p_tiles_inspector : Node) -> void:
 	_inject_tbt_reference(tiles_inspector, true)
 	_call_subtree(self, TILES_INSPECTOR_ADDED_METHOD)
 	tiles_inspector_added.emit()
+	set_process_input(true)
 	
 
 func notify_tiles_inspector_removed() -> void:
 	_call_subtree(self, TILES_INSPECTOR_REMOVED_METHOD)
 	tiles_inspector_removed.emit()
+	set_process_input(false)
+
+
+func _input(event: InputEvent) -> void:
+	if not event is InputEventMouseButton:
+		return
+	if not event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_MIDDLE]:
+		return
+	
+	_manage_mouse_click()
+
+
+func _manage_mouse_click() -> void:
+	if is_click_in_control(tiles_inspector):
+		print("click in tiles inspector")
+	elif is_click_in_control(tiles_preview.get_mouse_input_control()):
+		print("click in tiles preview")
+	
+	
+
+func is_click_in_control(control : Control) -> bool:
+	if !control.visible:
+		return false
+	var rect := Rect2(Vector2.ZERO, control.size)
+	return rect.has_point(control.get_local_mouse_position())
+
 
 
 func _setup_tbt_plugin_control() -> void:

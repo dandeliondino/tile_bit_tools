@@ -80,6 +80,12 @@ func setup(p_interface : EditorInterface) -> Globals.Errors:
 	if shared_node_result != OK:
 		return shared_node_result
 	
+	for signal_data in atlas_tile_proxy.get_signal_list():
+		print(signal_data.name)
+		for connection in atlas_tile_proxy.get_signal_connection_list(signal_data.name):
+			print("\t", connection)
+	
+	
 	return Globals.Errors.OK
 
 
@@ -132,6 +138,12 @@ func _can_handle(object: Object) -> bool:
 		return true
 	
 	return false
+
+
+func _parse_property(object: Object, type: Variant.Type, name: String, hint_type: PropertyHint, hint_string: String, usage_flags: PropertyUsageFlags, wide: bool) -> bool:
+	prints(object, type, name)
+	return false
+
 
 
 func _parse_end(object: Object) -> void:

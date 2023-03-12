@@ -58,6 +58,12 @@ func _tbt_ready() -> void:
 	tbt.tiles_inspector_added.connect(_on_tiles_inspector_added)
 	tbt.tiles_inspector_removed.connect(_on_tiles_inspector_removed)
 	tbt.preview_updated.connect(_on_preview_updated)
+
+
+# returns control to determine if mouse click is
+# in panel
+func get_mouse_input_control() -> Control:
+	return back_panel
 	
 
 func _setup_textures() -> void:
