@@ -5,7 +5,7 @@ const Globals := preload("res://addons/tile_bit_tools/core/globals.gd")
 const TemplateBitData := preload("res://addons/tile_bit_tools/core/template_bit_data.gd")
 const EditorBitData := preload("res://addons/tile_bit_tools/core/editor_bit_data.gd")
 
-var _print := preload("res://addons/tile_bit_tools/core/print.gd").new()
+var output := preload("res://addons/tile_bit_tools/core/print.gd").new()
 
 var tile_set : TileSet
 
@@ -69,7 +69,7 @@ func load_from_tile_data(p_tiles : Dictionary, p_tile_set : TileSet) -> Globals.
 	
 	
 func _load_tiles(p_tiles : Dictionary) -> Globals.Errors:
-#	_print.user("Fetching current terrain bits now. Unassigned terrain bits will result in [i]Condition '!is_valid_terrain_peering_bit(p_peering_bit)' is true.[/i] Please ignore.")
+#	output.user("Fetching current terrain bits now. Unassigned terrain bits will result in [i]Condition '!is_valid_terrain_peering_bit(p_peering_bit)' is true.[/i] Please ignore.")
 	
 	for coords in p_tiles.keys():
 		_add_tile(coords)
@@ -90,16 +90,16 @@ func _load_tiles(p_tiles : Dictionary) -> Globals.Errors:
 	
 
 func _load_terrain_set(tile_data : TileData) -> Globals.Errors:
-#	_print.debug("terrain_set=%s, TileData terrain_set=%s" % [terrain_set, tile_data.terrain_set])
+#	output.debug("terrain_set=%s, TileData terrain_set=%s" % [terrain_set, tile_data.terrain_set])
 	
 	if terrain_set == NULL_TERRAIN_SET:
 		terrain_set = tile_data.terrain_set
-#		_print.debug("Assigning terrain_set => %s" % tile_data.terrain_set)
+#		output.debug("Assigning terrain_set => %s" % tile_data.terrain_set)
 		terrain_mode = tile_set.get_terrain_set_mode(terrain_set)
 		return Globals.Errors.OK
 		
 	if terrain_set != tile_data.terrain_set:
-#		_print.debug("Multiple terrain sets")
+#		output.debug("Multiple terrain sets")
 		return Globals.Errors.MULTIPLE_TERRAIN_SETS
 
 	return Globals.Errors.OK

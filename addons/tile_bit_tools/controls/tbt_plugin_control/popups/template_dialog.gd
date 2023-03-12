@@ -16,10 +16,6 @@ const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_cont
 
 const BitDataDrawNode := preload("res://addons/tile_bit_tools/controls/bit_data_draw/bit_data_draw_node.gd")
 
-var texts := preload("res://addons/tile_bit_tools/core/texts.gd").new()
-
-var _print := preload("res://addons/tile_bit_tools/core/print.gd").new()
-
 var template_bit_data : TBTPlugin.TemplateBitData
 
 var tbt : TBTPlugin
@@ -96,7 +92,7 @@ func _setup_info_label() -> void:
 	info_label.text = INFO_LABEL_TEXT.format({
 		"tile_count": template_bit_data.get_tile_count(),
 		"terrain_count": template_bit_data.get_terrain_count(),
-		"terrain_mode": texts.TERRAIN_MODE_TEXTS[template_bit_data.terrain_mode],
+		"terrain_mode": tbt.texts.TERRAIN_MODE_TEXTS[template_bit_data.terrain_mode],
 		"type": "Built-in" if template_bit_data.built_in else "User",
 	})
 
@@ -121,11 +117,11 @@ func _save() -> void:
 	var result := ResourceSaver.save(template_bit_data, path)
 	
 	if result != OK:
-		_print.error("Error saving template", result)
+		tbt.output.error("Error saving template", result)
 		close_dialog()
 		return
 	
-	_print.info("Saved user template to: %s " % path)
+	tbt.output.info("Saved user template to: %s " % path)
 	tbt.templates_update_requested.emit()
 	close_dialog()
 

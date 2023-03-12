@@ -23,7 +23,6 @@ func _tbt_ready() -> void:
 	toggle_mode = true
 	toggled.connect(_on_toggled)
 	_update_toggle()
-#	print("button ready")
 
 
 func _update_toggle() -> void:

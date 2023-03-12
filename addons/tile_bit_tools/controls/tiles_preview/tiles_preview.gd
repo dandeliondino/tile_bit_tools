@@ -130,7 +130,6 @@ func _on_preview_updated(bit_data : TBTPlugin.EditorBitData) -> void:
 
 func _on_split_dragged(_offset : int) -> void:
 	# TODO: test with different resolutions
-#	prints(back_panel_container.size.y, initial_height)
 	if back_panel_container.size.y <= initial_height * 0.75:
 		preview_container.hide()
 		collapsed_label.show()

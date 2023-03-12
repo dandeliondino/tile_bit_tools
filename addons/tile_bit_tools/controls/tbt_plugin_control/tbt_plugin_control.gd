@@ -95,12 +95,10 @@ func setup(p_interface : EditorInterface, p_base_control : Control) -> void:
 # TODO: call this after preview panel added
 func notify_tiles_inspector_added(p_tiles_inspector : Node, p_tiles_preview : Node) -> void:
 	tiles_inspector = p_tiles_inspector
-	prints("tiles_inspector", tiles_inspector)
 	
 	_inject_tbt_reference(tiles_inspector, true)
 	
 	tiles_preview = p_tiles_preview
-	prints("tiles_preview", tiles_preview)
 	_inject_tbt_reference(tiles_preview, true)
 	
 	_call_subtree(self, TILES_INSPECTOR_ADDED_METHOD)
@@ -116,7 +114,6 @@ func _setup_tbt_plugin_control() -> void:
 
 
 func _assign_child_by_class(child : Node) -> void:
-	print(child.get_script())
 	match child.get_script():
 		TemplateManager:
 			template_manager = child

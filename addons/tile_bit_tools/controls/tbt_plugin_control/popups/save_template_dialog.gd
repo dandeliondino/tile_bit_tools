@@ -17,7 +17,7 @@ func _setup_save_dialog() -> void:
 	
 	var result := template_bit_data.load_editor_bit_data(tbt.context.bit_data)
 	if result != OK:
-		_print.error("Cannot create template from editor data", result) # TODO: error codes and popup message
+		tbt.output.error("Cannot create template from editor data", result) # TODO: error codes and popup message
 			# TODO: message_box_requested not implemented
 		tbt.message_box_requested.emit("Cannot create template from editor data (ERR %s)" % result)
 		hide()
@@ -55,7 +55,7 @@ func _get_save_path(valid_only := true) -> String:
 			return path
 	
 	if valid_only && !path.is_absolute_path():
-		_print.error("Unable to get valid save path: %s" % path)
+		tbt.output.error("Unable to get valid save path: %s" % path)
 		return ""
 	
 	return path

@@ -46,7 +46,6 @@ func load_editor_bit_data(bit_data : EditorBitData) -> Globals.Errors:
 	# terrain_set will remain NULL_TERRAIN_SET (-1)
 	terrain_mode = bit_data.terrain_mode
 	var terrain_mapping := _get_terrain_mapping(bit_data)
-	print(terrain_mapping)
 	_load_tiles(bit_data, terrain_mapping)
 	
 	return Globals.Errors.OK

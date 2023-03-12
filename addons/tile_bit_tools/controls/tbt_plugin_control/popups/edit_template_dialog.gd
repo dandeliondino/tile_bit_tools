@@ -42,4 +42,4 @@ func _on_edit_template_requested(p_template_bit_data : TBTPlugin.TemplateBitData
 	if p_template_bit_data != null:
 		_setup_edit_dialog(p_template_bit_data)
 	else:
-		_print.warning("Edit requested without bit data")
+		tbt.output.warning("Edit requested without bit data")
