@@ -7,6 +7,11 @@ const TERRAIN_MODE_ICONS := {
 	TileSet.TerrainMode.TERRAIN_MODE_MATCH_SIDES : ["TerrainMatchSides", "EditorIcons"],
 }
 
+const EXPAND_PANEL := ["ExpandTree", "EditorIcons"]
+const COLLAPSE_PANEL := ["CollapseTree", "EditorIcons"]
+
+
+
 var control : Control
 
 func _init(p_control : Control) -> void:

@@ -42,6 +42,7 @@ var initial_height : float
 var ready_complete := false
 
 
+
 func _ready() -> void:
 	ready_complete = true
 #	v_split_container.dragged.connect(_on_split_dragged)
