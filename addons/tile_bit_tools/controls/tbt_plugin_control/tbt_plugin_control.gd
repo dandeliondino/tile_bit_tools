@@ -22,7 +22,7 @@ const TILES_INSPECTOR_REMOVED_METHOD := "_tiles_inspector_removed"
 const Globals := preload("res://addons/tile_bit_tools/core/globals.gd")
 const Texts := preload("res://addons/tile_bit_tools/core/texts.gd")
 const Icons := preload("res://addons/tile_bit_tools/core/icons.gd")
-const Print := preload("res://addons/tile_bit_tools/core/print.gd")
+const Print := preload("res://addons/tile_bit_tools/core/output.gd")
 
 const BitData := preload("res://addons/tile_bit_tools/core/bit_data.gd")
 const EditorBitData := preload("res://addons/tile_bit_tools/core/editor_bit_data.gd")

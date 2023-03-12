@@ -5,7 +5,7 @@ const Globals := preload("res://addons/tile_bit_tools/core/globals.gd")
 const TemplateBitData := preload("res://addons/tile_bit_tools/core/template_bit_data.gd")
 const EditorBitData := preload("res://addons/tile_bit_tools/core/editor_bit_data.gd")
 
-var output := preload("res://addons/tile_bit_tools/core/print.gd").new()
+var output := preload("res://addons/tile_bit_tools/core/output.gd").new()
 
 var tile_set : TileSet
 

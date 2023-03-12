@@ -6,7 +6,7 @@ const Globals := preload("res://addons/tile_bit_tools/core/globals.gd")
 const PLUGIN_NAME := "tile_bit_tools"
 
 var texts := preload("res://addons/tile_bit_tools/core/texts.gd").new()
-var output := preload("res://addons/tile_bit_tools/core/print.gd").new()
+var output := preload("res://addons/tile_bit_tools/core/output.gd").new()
 
 var plugin : EditorInspectorPlugin
 

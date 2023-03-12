@@ -13,7 +13,7 @@ var Context := preload("res://addons/tile_bit_tools/core/context.gd")
 var TilesInspector := preload("res://addons/tile_bit_tools/controls/tiles_inspector/tiles_inspector.tscn")
 var TilesPreview := preload("res://addons/tile_bit_tools/controls/tiles_preview/tiles_preview.tscn")
 
-var output := preload("res://addons/tile_bit_tools/core/print.gd").new()
+var output := preload("res://addons/tile_bit_tools/core/output.gd").new()
 
 var controls := {}
 var current_controls := []

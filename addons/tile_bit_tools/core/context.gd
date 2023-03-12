@@ -7,7 +7,7 @@ const EditorBitData := preload("res://addons/tile_bit_tools/core/editor_bit_data
 
 const Icons := preload("res://addons/tile_bit_tools/core/icons.gd")
 
-#var _print := preload("res://addons/tile_bit_tools/core/print.gd").new()
+#var _print := preload("res://addons/tile_bit_tools/core/output.gd").new()
 var texts := preload("res://addons/tile_bit_tools/core/texts.gd").new()
 
 

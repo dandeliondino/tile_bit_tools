@@ -8,7 +8,7 @@ const TemplateTag := TemplateTagData.TemplateTag
 
 var _template_tag_data := TemplateTagData.new()
 
-var output := preload("res://addons/tile_bit_tools/core/print.gd").new()
+var output := preload("res://addons/tile_bit_tools/core/output.gd").new()
 
 var _templates := []
 var _tags := []
