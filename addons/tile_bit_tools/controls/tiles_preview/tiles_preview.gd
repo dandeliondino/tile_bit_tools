@@ -1,5 +1,5 @@
 @tool
-extends SplitContainer
+extends Control
 
 const EMPTY_RECT := Rect2i(0,0,0,0)
 const FRAME_0 := 0
@@ -22,11 +22,13 @@ var image_crop_rect : Rect2i
 var initial_height : float
 
 
+@onready var back_panel: Panel = %BackPanel
+@onready var v_split_container: VSplitContainer = %VSplitContainer
+@onready var front_container: MarginContainer = %FrontContainer
 
 
-@onready var collapsed_label: Label = %CollapsedLabel
+
 @onready var preview_container: Container = %PreviewContainer
-@onready var back_panel_container: PanelContainer = %BackPanelContainer
 
 @onready var current_tiles_view: Container = %CurrentTilesView
 @onready var preview_tiles_view: Container = %PreviewTilesView
@@ -42,7 +44,8 @@ var ready_complete := false
 
 func _ready() -> void:
 	ready_complete = true
-
+#	v_split_container.dragged.connect(_on_split_dragged)
+	front_container.resized.connect(_on_front_container_resized)
 
 func _tbt_ready() -> void:
 	# TODO: still needed?
@@ -50,12 +53,12 @@ func _tbt_ready() -> void:
 	
 	tbt.preview_updated.connect(_on_preview_updated)
 	
-	dragged.connect(_on_split_dragged)
+#	dragged.connect(_on_split_dragged)
 	
 	_setup_textures()
 	
-	await get_tree().process_frame
-	initial_height = back_panel_container.size.y
+#	await get_tree().process_frame
+#	initial_height = back_panel.size.y
 	
 
 
@@ -128,14 +131,19 @@ func _on_preview_updated(bit_data : TBTPlugin.EditorBitData) -> void:
 
 
 
-func _on_split_dragged(_offset : int) -> void:
-	# TODO: test with different resolutions
-	if back_panel_container.size.y <= initial_height * 0.75:
-		preview_container.hide()
-		collapsed_label.show()
-	else:
-		preview_container.show()
-		collapsed_label.hide()
+func _on_front_container_resized() -> void:
+	var front_height := front_container.size.y
+	back_panel.custom_minimum_size.y = front_height + 16
+
+
+#func _on_split_dragged(_offset : int) -> void:
+#	# TODO: test with different resolutions
+#	if back_panel_container.size.y <= initial_height * 0.75:
+#		preview_container.hide()
+#		collapsed_label.show()
+#	else:
+#		preview_container.show()
+#		collapsed_label.hide()
 
 
 
