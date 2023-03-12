@@ -6,7 +6,7 @@ const FRAME_0 := 0
 
 const DEFAULT_TERRAIN_OPACITY := 0.75
 
-const TBTPlugin := preload("res://addons/tile_bit_tools/controls/shared_nodes/tbt_plugin_control.gd")
+const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd")
 
 
 var tbt : TBTPlugin

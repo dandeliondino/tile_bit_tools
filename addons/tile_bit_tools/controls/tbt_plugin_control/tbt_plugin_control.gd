@@ -15,15 +15,15 @@ const BitData := preload("res://addons/tile_bit_tools/core/bit_data.gd")
 const EditorBitData := preload("res://addons/tile_bit_tools/core/editor_bit_data.gd")
 const TemplateBitData := preload("res://addons/tile_bit_tools/core/template_bit_data.gd")
 
-const InspectorManager := preload("res://addons/tile_bit_tools/controls/shared_nodes/inspector_manager.gd")
-const TilesManager := preload("res://addons/tile_bit_tools/controls/shared_nodes/tiles_manager.gd")
-const ThemeUpdater := preload("res://addons/tile_bit_tools/controls/shared_nodes/theme_updater.gd")
+const TemplateManager := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/template_manager.gd")
+const TilesManager := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tiles_manager.gd")
+const ThemeUpdater := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/theme_updater.gd")
 const Context := preload("res://addons/tile_bit_tools/core/context.gd")
 
 var interface : EditorInterface
 var base_control : Control
 
-var inspector_manager : InspectorManager
+var template_manager : TemplateManager
 var tiles_manager : TilesManager
 var theme_updater : ThemeUpdater
 
@@ -53,7 +53,7 @@ var output := Print.new()
 
 func _ready() -> void:
 	child_entered_tree.connect(_assign_child_by_class)
-	_setup_shared_nodes()
+	_setup_tbt_plugin_control()
 	_inject_tbt_reference(self)
 
 
@@ -80,7 +80,7 @@ func notify_tiles_inspector_removed() -> void:
 	_call_subtree(self, TILES_INSPECTOR_REMOVED_METHOD)
 
 
-func _setup_shared_nodes() -> void:
+func _setup_tbt_plugin_control() -> void:
 	for child in get_children():
 		_assign_child_by_class(child)
 
@@ -88,8 +88,8 @@ func _setup_shared_nodes() -> void:
 func _assign_child_by_class(child : Node) -> void:
 	print(child.get_script())
 	match child.get_script():
-		InspectorManager:
-			inspector_manager = child
+		TemplateManager:
+			template_manager = child
 		TilesManager:
 			tiles_manager = child
 		ThemeUpdater:

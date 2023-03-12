@@ -5,7 +5,7 @@ const NULL_TERRAIN_SET_INDEX := 0
 
 const NULL_OPTION_ID := 999
 
-const TBTPlugin := preload("res://addons/tile_bit_tools/controls/shared_nodes/tbt_plugin_control.gd")
+const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd")
 
 
 var TerrainPicker := preload("res://addons/tile_bit_tools/controls/tiles_inspector/template_section/terrain_picker.tscn")
@@ -41,7 +41,7 @@ var tbt : TBTPlugin
 
 func _tbt_ready() -> void:
 	
-	tbt.inspector_manager.templates_updated.connect(_on_templates_updated)
+	tbt.template_manager.templates_updated.connect(_on_templates_updated)
 	tbt.tiles_manager.reset_requested.connect(_on_reset_requested)
 	
 	templates_option_button.item_selected.connect(_on_template_selected)
@@ -65,7 +65,7 @@ func _reset_tags() -> void:
 
 func _update_tags_popup() -> void:
 	tags_popup.clear()
-	var item_list := tbt.inspector_manager.template_loader.get_tags_item_list(true, true, selected_tags)
+	var item_list := tbt.template_manager.template_loader.get_tags_item_list(true, true, selected_tags)
 	
 	if item_list.size() == 0:
 		tags_menu_button.disabled = true
@@ -88,7 +88,7 @@ func _update_tags_popup() -> void:
 func _add_tag(tag_id : int) -> void:
 	selected_tags.append(tag_id)
 	var tag_control := SelectedTag.instantiate()
-	var tag := tbt.inspector_manager.template_loader.get_tag(tag_id)
+	var tag := tbt.template_manager.template_loader.get_tag(tag_id)
 	tags_container.add_child(tag_control)
 	tag_control.setup(tag, tbt.base_control)
 	tag_control.tag_removed.connect(_on_tag_removed.bind(tag_id))
@@ -114,7 +114,7 @@ func _update_templates_option_button() -> void:
 	templates_option_button.clear()
 	templates_option_button.add_item("", NULL_OPTION_ID)
 	
-	var templates_list := tbt.inspector_manager.template_loader.get_templates_item_list(selected_tags)
+	var templates_list := tbt.template_manager.template_loader.get_templates_item_list(selected_tags)
 	for item in templates_list:
 		templates_option_button.add_item(item.text, item.id)
 
@@ -129,7 +129,7 @@ func _force_select_template(id : int) -> void:
 
 func _on_template_selected(index : int) -> void:
 	selected_template_id = templates_option_button.get_item_id(index)
-	selected_template = tbt.inspector_manager.template_loader.get_template(selected_template_id)
+	selected_template = tbt.template_manager.template_loader.get_template(selected_template_id)
 	_update_template_panel()
 	_update_terrain_sets()
 	_update_terrain_pickers_from_template()

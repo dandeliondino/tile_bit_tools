@@ -18,7 +18,7 @@ const BitDataDrawNode := preload("res://addons/tile_bit_tools/controls/bit_data_
 var template_loader : TemplateLoader
 var bit_data_draw_node
 
-const TBTPlugin := preload("res://addons/tile_bit_tools/controls/shared_nodes/tbt_plugin_control.gd")
+const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd")
 var tbt : TBTPlugin
 
 
@@ -30,7 +30,7 @@ func _tbt_ready() -> void:
 	_load_templates.call_deferred()
 
 	for child in get_children():
-		child.set("inspector_manager", self)
+		child.set("template_manager", self)
 
 
 func _setup_bit_data_draw() -> void:

@@ -6,7 +6,7 @@ signal reset_requested
 
 enum TerrainChanges {NONE, ERASE, FILL, TEMPLATE}
 
-const TBTPlugin := preload("res://addons/tile_bit_tools/controls/shared_nodes/tbt_plugin_control.gd")
+const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd")
 
 # TODO: move to texts
 var terrain_changes_texts := {

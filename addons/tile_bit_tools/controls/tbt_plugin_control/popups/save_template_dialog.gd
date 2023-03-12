@@ -1,5 +1,5 @@
 @tool
-extends "res://addons/tile_bit_tools/controls/shared_nodes/popups/template_dialog.gd"
+extends "res://addons/tile_bit_tools/controls/tbt_plugin_control/popups/template_dialog.gd"
 
 const Context := preload("res://addons/tile_bit_tools/core/context.gd")
 
@@ -8,17 +8,17 @@ var dir : DirAccess
 
 func _setup_connections() -> void:
 	name_edit.text_changed.connect(_update_save_path_label)
-	inspector_manager.save_template_requested.connect(_on_save_template_requested)
+	template_manager.save_template_requested.connect(_on_save_template_requested)
 
 
 func _setup_save_dialog(context : Context) -> void:
-	dir = inspector_manager.get_user_templates_dir()
+	dir = template_manager.get_user_templates_dir()
 	template_bit_data = TemplateBitData.new()
 	
 	var result := template_bit_data.load_editor_bit_data(context.bit_data)
 	if result != OK:
 		_print.error("Cannot create template from editor data", result) # TODO: error codes and popup message
-		inspector_manager.message_box_requested.emit("Cannot create template from editor data (ERR %s)" % result)
+		template_manager.message_box_requested.emit("Cannot create template from editor data (ERR %s)" % result)
 		hide()
 	
 	show_dialog()
@@ -45,7 +45,7 @@ func _update_save_path_label(_text := "") -> void:
 # overriden
 func _get_save_path(valid_only := true) -> String:
 	var file_name := _get_file_name()
-	var path : String = inspector_manager.get_user_templates_path() + file_name
+	var path : String = template_manager.get_user_templates_path() + file_name
 	
 	if file_name == "":
 		if valid_only:

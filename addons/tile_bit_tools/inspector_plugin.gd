@@ -5,9 +5,9 @@ extends EditorInspectorPlugin
 const INVALID_COORDINATES := Vector2i(-1, -1)
 
 const Globals := preload("res://addons/tile_bit_tools/core/globals.gd")
-const TBTPlugin := preload("res://addons/tile_bit_tools/controls/shared_nodes/tbt_plugin_control.gd")
+const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd")
 
-var TBTPluginControl := preload("res://addons/tile_bit_tools/controls/shared_nodes/tbt_plugin_control.tscn")
+var TBTPluginControl := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.tscn")
 
 var Context := preload("res://addons/tile_bit_tools/core/context.gd")
 var TilesInspector := preload("res://addons/tile_bit_tools/controls/tiles_inspector/tiles_inspector.tscn")

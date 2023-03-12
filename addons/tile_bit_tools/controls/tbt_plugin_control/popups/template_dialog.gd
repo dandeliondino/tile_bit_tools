@@ -14,7 +14,7 @@ var INFO_LABEL_TEXT := "Tiles: {tile_count}\nTerrains: {terrain_count}"
 
 const Globals := preload("res://addons/tile_bit_tools/core/globals.gd")
 
-const InspectorManager := preload("res://addons/tile_bit_tools/controls/shared_nodes/inspector_manager.gd")
+const TemplateManager := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/template_manager.gd")
 
 const TemplateBitData := preload("res://addons/tile_bit_tools/core/template_bit_data.gd")
 const BitDataDrawNode := preload("res://addons/tile_bit_tools/controls/bit_data_draw/bit_data_draw_node.gd")
@@ -25,9 +25,9 @@ var _print := preload("res://addons/tile_bit_tools/core/print.gd").new()
 
 var template_bit_data : TemplateBitData
 
-var inspector_manager : InspectorManager :
+var template_manager : TemplateManager :
 	set(value):
-		inspector_manager = value
+		template_manager = value
 		_setup_connections.call_deferred()
 
 
@@ -82,7 +82,7 @@ func _set_max_size() -> void:
 
 
 func _setup_texture() -> void:
-	var bit_data_draw_node : BitDataDrawNode = inspector_manager.get_bit_data_draw()
+	var bit_data_draw_node : BitDataDrawNode = template_manager.get_bit_data_draw()
 	preview_rect.texture = await bit_data_draw_node.get_bit_texture(template_bit_data)
 
 
@@ -129,7 +129,7 @@ func _save() -> void:
 		return
 	
 	_print.info("Saved user template to: %s " % path)
-	inspector_manager.templates_update_requested.emit()
+	template_manager.templates_update_requested.emit()
 	close_dialog()
 
 

@@ -1,7 +1,7 @@
 @tool
 extends PanelContainer
 
-const TBTPlugin := preload("res://addons/tile_bit_tools/controls/shared_nodes/tbt_plugin_control.gd")
+const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd")
 
 
 var info_label_text := "Type: {type}\nMode: {terrain_mode}\nTiles: {tile_count}\nTerrains: {terrain_count}"
@@ -105,7 +105,7 @@ func _open_example_folder() -> void:
 	OS.shell_open(path)
 
 
-# TODO: move to inspector_manager? make more generalized?
+# TODO: move to template_manager? make more generalized?
 func _remove_template() -> void:
 	var confirm_dialog := ConfirmationDialog.new()
 	confirm_dialog.title = "Confirm Delete Template"
@@ -118,9 +118,9 @@ func _remove_template() -> void:
 
 func _on_delete_confirmed() -> void:
 	var path := template_bit_data.resource_path
-	var dir := tbt.inspector_manager.get_user_templates_dir()
+	var dir := tbt.template_manager.get_user_templates_dir()
 	dir.remove_absolute(path)
-	tbt.inspector_manager.templates_update_requested.emit()
+	tbt.template_manager.templates_update_requested.emit()
 
 
 func _on_remove_button_pressed() -> void:
@@ -128,7 +128,7 @@ func _on_remove_button_pressed() -> void:
 	
 
 func _on_edit_button_pressed() -> void:
-	tbt.inspector_manager.edit_template_requested.emit(template_bit_data)
+	tbt.template_manager.edit_template_requested.emit(template_bit_data)
 
 
 func _on_example_button_pressed() -> void:

@@ -2,7 +2,7 @@
 extends Button
 
 # TODO: delete this script
-const TBTPlugin := preload("res://addons/tile_bit_tools/controls/shared_nodes/tbt_plugin_control.gd")
+const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd")
 
 @export_node_path("Control") var expand_control_path: NodePath
 

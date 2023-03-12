@@ -1,7 +1,7 @@
 @tool
 extends Control
 
-const TBTPlugin := preload("res://addons/tile_bit_tools/controls/shared_nodes/tbt_plugin_control.gd")
+const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd")
 
 var tbt : TBTPlugin
 
@@ -12,4 +12,4 @@ func _ready() -> void:
 
 
 func _on_save_button_pressed() -> void:
-	tbt.inspector_manager.save_template_requested.emit(tbt.context)
+	tbt.template_manager.save_template_requested.emit(tbt.context)
