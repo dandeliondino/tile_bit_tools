@@ -27,6 +27,9 @@ var initial_height : float
 @onready var front_container: MarginContainer = %FrontContainer
 
 
+@onready var collapsed_controls: Control = %CollapsedControls
+@onready var expanded_controls: Control = %ExpandedControls
+
 
 @onready var preview_container: Container = %PreviewContainer
 
@@ -146,6 +149,13 @@ func _on_front_container_resized() -> void:
 #		preview_container.show()
 #		collapsed_label.hide()
 
+var expanded := true
+
+func _toggle_expanded_state(p_expanded : bool) -> void:
+	expanded = p_expanded
+	expanded_controls.visible = expanded
+	collapsed_controls.visible = !expanded
+
 
 
 func _on_reset_button_pressed() -> void:
@@ -154,3 +164,11 @@ func _on_reset_button_pressed() -> void:
 
 func _on_apply_button_pressed() -> void:
 	tbt.apply_changes_requested.emit()
+
+
+func _on_expand_button_pressed() -> void:
+	_toggle_expanded_state(true)
+	
+
+func _on_collapse_button_pressed() -> void:
+	_toggle_expanded_state(false)
