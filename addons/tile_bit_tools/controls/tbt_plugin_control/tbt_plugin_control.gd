@@ -16,11 +16,16 @@ signal preview_updated(preview_bit_data)
 signal reset_requested
 signal apply_changes_requested
 
+signal tiles_preview_collapse_requested
+signal tiles_preview_expand_requested
+
 
 const TBT_PROPERTY_NAME := "tbt"
 const TBT_READY_METHOD := "_tbt_ready"
 const TILES_INSPECTOR_ADDED_METHOD := "_tiles_inspector_added"
 const TILES_INSPECTOR_REMOVED_METHOD := "_tiles_inspector_removed"
+
+const CLICK_MARGIN := Vector2(20,20)
 
 const Globals := preload("res://addons/tile_bit_tools/core/globals.gd")
 const Texts := preload("res://addons/tile_bit_tools/core/texts.gd")
@@ -46,6 +51,7 @@ var base_control : Control
 var template_manager : TemplateManager
 var tiles_manager : TilesManager
 var theme_updater : ThemeUpdater
+var dialog_windows := []
 
 var context : Context :
 	get:
@@ -72,6 +78,7 @@ var tiles_preview : Control :
 
 
 func _ready() -> void:
+	set_process_input(false)
 	child_entered_tree.connect(_assign_child_by_class)
 	_setup_debug_signals()
 	_setup_tbt_plugin_control()
@@ -93,7 +100,7 @@ func notify_tiles_inspector_added(p_tiles_inspector : Node) -> void:
 	_call_subtree(self, TILES_INSPECTOR_ADDED_METHOD)
 	tiles_inspector_added.emit()
 	set_process_input(true)
-	
+	tiles_preview_expand_requested.emit()
 
 func notify_tiles_inspector_removed() -> void:
 	_call_subtree(self, TILES_INSPECTOR_REMOVED_METHOD)
@@ -101,33 +108,44 @@ func notify_tiles_inspector_removed() -> void:
 	set_process_input(false)
 
 
+func is_dialog_popped_up() -> bool:
+	for dialog in dialog_windows:
+		if dialog.visible:
+			return true
+	return false
+
+# while tiles inspector is open, watches for mouse clicks and 
+# collapses preview panel for clicks outside of this plugin
 func _input(event: InputEvent) -> void:
 	if not event is InputEventMouseButton:
 		return
 	if not event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_MIDDLE]:
 		return
 	
+	if is_dialog_popped_up():
+		return
+	
 	_manage_mouse_click()
 
 
 func _manage_mouse_click() -> void:
-	if is_click_in_control(tiles_inspector):
-		print("click in tiles inspector")
-	elif is_click_in_control(tiles_preview.get_mouse_input_control()):
-		print("click in tiles preview")
-	
+	if _is_click_in_control(tiles_inspector):
+		tiles_preview_expand_requested.emit()
+	elif !_is_click_in_control(tiles_preview.get_mouse_input_control()):
+		tiles_preview_collapse_requested.emit()
 	
 
-func is_click_in_control(control : Control) -> bool:
+func _is_click_in_control(control : Control) -> bool:
 	if !control.visible:
 		return false
-	var rect := Rect2(Vector2.ZERO, control.size)
+	# extra margin allows clicks to scroll, resize
+	var rect := Rect2(Vector2.ZERO - CLICK_MARGIN, control.size + (2*CLICK_MARGIN))
 	return rect.has_point(control.get_local_mouse_position())
 
 
 
 func _setup_tbt_plugin_control() -> void:
-	for child in get_children():
+	for child in _get_children_recursive(self):
 		_assign_child_by_class(child)
 
 
@@ -141,6 +159,10 @@ func _assign_child_by_class(child : Node) -> void:
 			theme_updater = child
 		Context:
 			context = child
+		_:
+			if child is Window:
+				print("appending window")
+				dialog_windows.append(child)
 
 
 

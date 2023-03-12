@@ -58,6 +58,9 @@ func _tbt_ready() -> void:
 	tbt.tiles_inspector_added.connect(_on_tiles_inspector_added)
 	tbt.tiles_inspector_removed.connect(_on_tiles_inspector_removed)
 	tbt.preview_updated.connect(_on_preview_updated)
+	tbt.tiles_preview_expand_requested.connect(_on_tiles_preview_expand_requested)
+	tbt.tiles_preview_collapse_requested.connect(_on_tiles_preview_collapse_requested)
+
 
 
 # returns control to determine if mouse click is
@@ -159,6 +162,8 @@ func _on_front_container_resized() -> void:
 
 
 func _toggle_expanded_state(p_expanded : bool) -> void:
+	if expanded == p_expanded:
+		return
 	expanded = p_expanded
 	expanded_controls.visible = expanded
 	collapsed_controls.visible = !expanded
@@ -189,3 +194,11 @@ func _on_tiles_inspector_added() -> void:
 func _on_tiles_inspector_removed() -> void:
 	hide()
 	_clear_data()
+
+
+func _on_tiles_preview_expand_requested() -> void:
+	_toggle_expanded_state(true)
+
+
+func _on_tiles_preview_collapse_requested() -> void:
+	_toggle_expanded_state(false)
