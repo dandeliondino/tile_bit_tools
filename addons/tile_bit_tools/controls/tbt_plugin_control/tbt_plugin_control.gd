@@ -83,8 +83,8 @@ func _on_signal_emitted(signal_name := "") -> void:
 	output.debug("[TBTPlugin] Signal emitted: %s" % signal_name)
 
 
-func _on_signal_emitted_with_arg(_arg = null, signal_name := "") -> void:
-	output.debug("[TBTPlugin] Signal emitted: %s" % signal_name)
+func _on_signal_emitted_with_arg(arg = null, signal_name := "") -> void:
+	output.debug("[TBTPlugin] Signal emitted: %s (%s)" % [signal_name, arg])
 
 
 func setup(p_interface : EditorInterface, p_base_control : Control) -> void:
@@ -123,8 +123,6 @@ func _assign_child_by_class(child : Node) -> void:
 			theme_updater = child
 		Context:
 			context = child
-		_:
-			output.warning("Child of unknown class added to TBTPlugin: %s" % child)
 
 
 
@@ -156,5 +154,14 @@ func _get_children_recursive(node : Node) -> Array:
 	return node.find_children("*", "", true, false)
 
 
-func _is_reference_valid(node : Node) -> bool:
-	return is_instance_valid(node) && node.is_inside_tree() && !node.is_queued_for_deletion()
+func _is_reference_valid(node) -> bool:
+	if !is_instance_valid(node):
+		return false
+	if !node.is_inside_tree():
+		output.warning("%s is not inside tree" % node)
+		return false
+	if node.is_queued_for_deletion():
+		output.warning("%s is queued for deletion" % node)
+		return false
+	return true
+#	return is_instance_valid(node) && node.is_inside_tree() && !node.is_queued_for_deletion()

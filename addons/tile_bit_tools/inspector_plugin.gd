@@ -311,8 +311,10 @@ func _get_connected_objects_by_class(object : Object, p_class_name : String) -> 
 
 func _notify_tiles_inspector_added() -> void:
 	if !tiles_inspector.ready_complete:
+		output.debug("awaiting tiles_inspector.ready")
 		await tiles_inspector.ready
 	if !tiles_preview.ready_complete:
+		output.debug("awaiting tiles_preview.ready")
 		await tiles_preview.ready
 	
 	# TODO: why is tiles_preview sometimes null???
