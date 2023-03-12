@@ -22,7 +22,7 @@ const TILES_INSPECTOR_REMOVED_METHOD := "_tiles_inspector_removed"
 const Globals := preload("res://addons/tile_bit_tools/core/globals.gd")
 const Texts := preload("res://addons/tile_bit_tools/core/texts.gd")
 const Icons := preload("res://addons/tile_bit_tools/core/icons.gd")
-const Print := preload("res://addons/tile_bit_tools/core/output.gd")
+const Output := preload("res://addons/tile_bit_tools/core/output.gd")
 
 const BitData := preload("res://addons/tile_bit_tools/core/bit_data.gd")
 const EditorBitData := preload("res://addons/tile_bit_tools/core/editor_bit_data.gd")
@@ -32,6 +32,10 @@ const TemplateManager := preload("res://addons/tile_bit_tools/controls/tbt_plugi
 const TilesManager := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tiles_manager.gd")
 const ThemeUpdater := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/theme_updater.gd")
 const Context := preload("res://addons/tile_bit_tools/core/context.gd")
+
+var output : Output = Output.new()
+var texts : Texts = Texts.new()
+var icons : Icons
 
 var interface : EditorInterface
 var base_control : Control
@@ -61,7 +65,7 @@ var tiles_preview : Control :
 		return tiles_preview
 
 
-var output := Print.new()
+
 
 
 func _ready() -> void:
@@ -71,25 +75,13 @@ func _ready() -> void:
 	_inject_tbt_reference(self)
 
 
-func _setup_debug_signals() -> void:
-	for signal_data in get_signal_list():
-		if signal_data.args.size() == 0:
-			connect(signal_data.name, _on_signal_emitted.bind(signal_data.name))
-		else:
-			connect(signal_data.name, _on_signal_emitted_with_arg.bind(signal_data.name))
 
-
-func _on_signal_emitted(signal_name := "") -> void:
-	output.debug("[TBTPlugin] Signal emitted: %s" % signal_name)
-
-
-func _on_signal_emitted_with_arg(arg = null, signal_name := "") -> void:
-	output.debug("[TBTPlugin] Signal emitted: %s (%s)" % [signal_name, arg])
 
 
 func setup(p_interface : EditorInterface, p_base_control : Control) -> void:
 	interface = p_interface
 	base_control = p_base_control
+	icons = Icons.new(base_control)
 
 
 # TODO: call this after preview panel added
@@ -165,3 +157,19 @@ func _is_reference_valid(node) -> bool:
 		return false
 	return true
 #	return is_instance_valid(node) && node.is_inside_tree() && !node.is_queued_for_deletion()
+
+
+func _setup_debug_signals() -> void:
+	for signal_data in get_signal_list():
+		if signal_data.args.size() == 0:
+			connect(signal_data.name, _on_signal_emitted.bind(signal_data.name))
+		else:
+			connect(signal_data.name, _on_signal_emitted_with_arg.bind(signal_data.name))
+
+
+func _on_signal_emitted(signal_name := "") -> void:
+	output.debug("[TBTPlugin] Signal emitted: %s" % signal_name)
+
+
+func _on_signal_emitted_with_arg(arg = null, signal_name := "") -> void:
+	output.debug("[TBTPlugin] Signal emitted: %s (%s)" % [signal_name, arg])

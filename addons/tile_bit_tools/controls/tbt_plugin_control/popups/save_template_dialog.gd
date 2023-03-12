@@ -1,8 +1,6 @@
 @tool
 extends "res://addons/tile_bit_tools/controls/tbt_plugin_control/popups/template_dialog.gd"
 
-const Context := preload("res://addons/tile_bit_tools/core/context.gd")
-
 var dir : DirAccess
 
 

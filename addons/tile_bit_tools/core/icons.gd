@@ -7,6 +7,11 @@ const TERRAIN_MODE_ICONS := {
 	TileSet.TerrainMode.TERRAIN_MODE_MATCH_SIDES : ["TerrainMatchSides", "EditorIcons"],
 }
 
+const EXPAND_PANEL := ["ExpandTree", "EditorIcons"]
+const COLLAPSE_PANEL := ["CollapseTree", "EditorIcons"]
+
+
+
 var control : Control
 
 func _init(p_control : Control) -> void:
@@ -15,3 +20,10 @@ func _init(p_control : Control) -> void:
 
 func get_icon(icon_data : Array) -> Texture2D:
 	return control.get_theme_icon(icon_data[0], icon_data[1])
+
+func get_icon_by_name(icon_name : String) -> Texture2D:
+	var icon_data = get(icon_name)
+	if icon_data == null:
+		return null
+	return get_icon(icon_data)
+
