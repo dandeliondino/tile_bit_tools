@@ -50,28 +50,37 @@ var ready_complete := false
 
 func _ready() -> void:
 	ready_complete = true
-#	v_split_container.dragged.connect(_on_split_dragged)
 	front_container.resized.connect(_on_front_container_resized)
+	_connect_opacity_slider()
+	_toggle_expanded_state(true)
+
 
 func _tbt_ready() -> void:
-	# TODO: still needed?
-#	context.tree_exiting.connect(queue_free)
-	
+	tbt.tiles_inspector_added.connect(_on_tiles_inspector_added)
+	tbt.tiles_inspector_removed.connect(_on_tiles_inspector_removed)
 	tbt.preview_updated.connect(_on_preview_updated)
-	
-#	dragged.connect(_on_split_dragged)
-	
-	_setup_textures()
-	
-#	await get_tree().process_frame
-#	initial_height = back_panel.size.y
-	
+	tbt.tiles_preview_expand_requested.connect(_on_tiles_preview_expand_requested)
+	tbt.tiles_preview_collapse_requested.connect(_on_tiles_preview_collapse_requested)
 
+
+
+# returns control to determine if mouse click is
+# in panel
+func get_mouse_input_control() -> Control:
+	return back_panel
+	
 
 func _setup_textures() -> void:
 	_update_base_texture()
-	_connect_opacity_slider()
 	_update_current_terrain()
+	_update_preview_terrain()
+
+
+func _clear_data() -> void:
+	base_image = null
+	preview_bit_data = null
+	tile_rects.clear()
+	image_crop_rect = EMPTY_RECT
 	_update_preview_terrain()
 
 
@@ -154,6 +163,8 @@ func _on_front_container_resized() -> void:
 
 
 func _toggle_expanded_state(p_expanded : bool) -> void:
+	if expanded == p_expanded:
+		return
 	expanded = p_expanded
 	expanded_controls.visible = expanded
 	collapsed_controls.visible = !expanded
@@ -174,3 +185,30 @@ func _on_expand_button_pressed() -> void:
 
 func _on_collapse_button_pressed() -> void:
 	_toggle_expanded_state(false)
+
+
+func _on_tiles_inspector_added() -> void:
+	show()
+	_setup_textures()
+	
+
+func _on_tiles_inspector_removed() -> void:
+	hide()
+	_clear_data()
+
+
+func _on_tiles_preview_expand_requested() -> void:
+	_toggle_expanded_state(true)
+
+
+func _on_tiles_preview_collapse_requested() -> void:
+	_toggle_expanded_state(false)
+
+
+func _on_front_panel_collapsed_gui_input(event: InputEvent) -> void:
+	if not event is InputEventMouseButton or !event.is_pressed():
+		return
+	if event.button_index != MOUSE_BUTTON_LEFT:
+		return
+	_toggle_expanded_state(true)
+	

@@ -2,6 +2,9 @@
 extends Node
 
 
+signal tiles_inspector_added
+signal tiles_inspector_removed
+
 signal templates_updated
 signal templates_update_requested
 
@@ -12,6 +15,9 @@ signal message_box_requested(msg)
 signal preview_updated(preview_bit_data)
 signal reset_requested
 signal apply_changes_requested
+
+signal tiles_preview_collapse_requested
+signal tiles_preview_expand_requested
 
 
 const TBT_PROPERTY_NAME := "tbt"
@@ -43,6 +49,7 @@ var base_control : Control
 var template_manager : TemplateManager
 var tiles_manager : TilesManager
 var theme_updater : ThemeUpdater
+var dialog_windows := []
 
 var context : Context :
 	get:
@@ -69,39 +76,86 @@ var tiles_preview : Control :
 
 
 func _ready() -> void:
+	set_process_input(false)
 	child_entered_tree.connect(_assign_child_by_class)
 	_setup_debug_signals()
 	_setup_tbt_plugin_control()
 	_inject_tbt_reference(self)
 
 
-
-
-
-func setup(p_interface : EditorInterface, p_base_control : Control) -> void:
+func setup(p_interface : EditorInterface, p_tiles_preview : Control) -> void:
 	interface = p_interface
-	base_control = p_base_control
+	base_control = interface.get_base_control()
 	icons = Icons.new(base_control)
-
-
-# TODO: call this after preview panel added
-func notify_tiles_inspector_added(p_tiles_inspector : Node, p_tiles_preview : Node) -> void:
-	tiles_inspector = p_tiles_inspector
-	
-	_inject_tbt_reference(tiles_inspector, true)
 	
 	tiles_preview = p_tiles_preview
 	_inject_tbt_reference(tiles_preview, true)
 	
-	_call_subtree(self, TILES_INSPECTOR_ADDED_METHOD)
 	
+func notify_tiles_inspector_added(p_tiles_inspector : Control) -> void:
+	tiles_inspector = p_tiles_inspector
+	_inject_tbt_reference(tiles_inspector, true)
+	_call_subtree(self, TILES_INSPECTOR_ADDED_METHOD)
+	tiles_inspector_added.emit()
+	tiles_inspector.visibility_changed.connect(_on_tiles_inspector_visibility_changed)
+	set_process_input(true)
+	tiles_preview_expand_requested.emit()
+
 
 func notify_tiles_inspector_removed() -> void:
 	_call_subtree(self, TILES_INSPECTOR_REMOVED_METHOD)
+	tiles_inspector_removed.emit()
+	set_process_input(false)
+
+
+func _on_tiles_inspector_visibility_changed() -> void:
+	if tiles_inspector.is_visible_in_tree():
+		tiles_preview.show()
+		set_process_input(true)
+	else:
+		tiles_preview.hide()
+		set_process_input(false)
+
+
+func is_dialog_popped_up() -> bool:
+	for dialog in dialog_windows:
+		if dialog.visible:
+			return true
+	return false
+
+
+# while tiles inspector is visible, watch for mouse clicks and 
+# collapse preview panel for clicks outside of this plugin
+func _input(event: InputEvent) -> void:
+	if not event is InputEventMouseButton:
+		return
+	if not event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_MIDDLE]:
+		return
+	
+	if is_dialog_popped_up():
+		return
+	
+	var mouse_position = base_control.get_global_mouse_position()
+	
+	if tiles_inspector.get_parent_control().get_global_rect().has_point(mouse_position):
+		if tiles_inspector.get_global_rect().has_point(mouse_position):
+			tiles_preview_expand_requested.emit()
+		else:
+			tiles_preview_collapse_requested.emit()
+		return
+	
+	if !tiles_preview.expanded:
+		return
+	
+	if tiles_preview.get_parent_control().get_global_rect().has_point(mouse_position):
+		if !tiles_preview.get_mouse_input_control().get_global_rect().has_point(mouse_position):
+			tiles_preview_collapse_requested.emit()
+
+	
 
 
 func _setup_tbt_plugin_control() -> void:
-	for child in get_children():
+	for child in _get_children_recursive(self):
 		_assign_child_by_class(child)
 
 
@@ -115,6 +169,9 @@ func _assign_child_by_class(child : Node) -> void:
 			theme_updater = child
 		Context:
 			context = child
+		_:
+			if child is Window:
+				dialog_windows.append(child)
 
 
 

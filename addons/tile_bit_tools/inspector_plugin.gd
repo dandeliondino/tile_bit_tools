@@ -51,12 +51,15 @@ func setup(p_interface : EditorInterface) -> Globals.Errors:
 	#output.debug("tile_set_editor=%s" % tile_set_editor)
 	if !tile_set_editor:
 		return Globals.Errors.FAILED
+
 	
 	atlas_source_editor = _get_first_node_by_class(tile_set_editor, "TileSetAtlasSourceEditor")
 	#output.debug("atlas_source_editor=%s" % atlas_source_editor)
 	if !atlas_source_editor:
 		return Globals.Errors.FAILED
-	_setup_source_editor_button_connections()
+		
+	# TODO: re-enable this (probably)
+#	_setup_source_editor_button_connections()
 
 	
 	tile_atlas_view = _get_first_node_by_class(tile_set_editor, "TileAtlasView")
@@ -74,11 +77,16 @@ func setup(p_interface : EditorInterface) -> Globals.Errors:
 	if !atlas_tile_proxy:
 		return Globals.Errors.FAILED
 	
+#	_print_signals_and_connections(tile_atlas_view)
+	
+	_setup_tiles_preview()
+	
 	var shared_node_result := _setup_tbt_plugin_control()
 	if shared_node_result != OK:
 		return shared_node_result
 	
 	return Globals.Errors.OK
+
 
 
 # Finds "Setup", "Select", "Paint" buttons and
@@ -101,12 +109,21 @@ func _setup_source_editor_button_connections() -> Globals.Errors:
 	return Globals.Errors.OK
 
 
+func _setup_tiles_preview() -> void:
+	tiles_preview = TilesPreview.instantiate()
+	tile_atlas_view.add_child(tiles_preview)
+	tiles_preview.hide()
+
+
 func _setup_tbt_plugin_control() -> Globals.Errors:
 	tbt_plugin_control = TBTPluginControl.instantiate()
 	base_control.add_child(tbt_plugin_control)
-	tbt_plugin_control.setup(interface, base_control)
+	tbt_plugin_control.setup(interface, tiles_preview)
 	output.debug("TBTPluginControl added")
 	return Globals.Errors.OK
+
+
+
 
 
 # --------------------------------------
@@ -152,8 +169,6 @@ func _add_inspector() -> Globals.Errors:
 		return result
 	
 	_add_tiles_inspector()
-	_add_tiles_preview()
-	
 	_notify_tiles_inspector_added()
 	
 	return Globals.Errors.OK
@@ -193,18 +208,6 @@ func _add_tiles_inspector() -> void:
 	
 
 
-func _add_tiles_preview() -> void:
-	# must await here
-	# when tiles are re-selected, tiles_preview will not add
-	# without first waiting for its prior instance to exit tree
-	# BUT if await delays _add_tiles_inspector(),
-	# add_custom_control() for tiles_inspector will fail silently
-	await _wait_for_tree_exit(tiles_preview)
-	tiles_preview = TilesPreview.instantiate()
-	tile_atlas_view.add_child(tiles_preview)
-
-
-
 func _wait_for_tree_exit(node) -> void:
 	if is_instance_valid(node):
 		if node.is_queued_for_deletion():
@@ -236,8 +239,6 @@ func _clear_tiles_inspector() -> Globals.Errors:
 		_notify_tiles_inspector_removed()
 	if is_instance_valid(tiles_inspector):
 		tiles_inspector.queue_free()
-	if is_instance_valid(tiles_preview):
-		tiles_preview.queue_free()
 
 	return Globals.Errors.OK
 
@@ -245,6 +246,8 @@ func _clear_tiles_inspector() -> Globals.Errors:
 func _remove_shared_editor_nodes() -> void:
 	if is_instance_valid(tbt_plugin_control):
 		tbt_plugin_control.queue_free()
+	if is_instance_valid(tiles_preview):
+		tiles_preview.queue_free()
 	output.debug("shared editor nodes removed")
 
 
@@ -319,10 +322,20 @@ func _notify_tiles_inspector_added() -> void:
 	
 	# TODO: why is tiles_preview sometimes null???
 	if is_instance_valid(tbt_plugin_control):
-		tbt_plugin_control.notify_tiles_inspector_added(tiles_inspector, tiles_preview)
+		tbt_plugin_control.notify_tiles_inspector_added(tiles_inspector)
 
 
 func _notify_tiles_inspector_removed() -> void:
 	if is_instance_valid(tbt_plugin_control):
 		tbt_plugin_control.notify_tiles_inspector_removed()
 
+
+func _print_signals_and_connections(object : Object) -> void:
+	output.debug("object: %s" % object)
+	output.debug("incoming connections:")
+	for connection in object.get_incoming_connections():
+		output.debug("\n%s" % connection)
+	for signal_data in object.get_signal_list():
+		output.debug(signal_data.name)
+		for connection in object.get_signal_connection_list(signal_data.name):
+			output.debug("\n%s" % connection)
