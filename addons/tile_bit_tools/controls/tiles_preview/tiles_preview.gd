@@ -52,6 +52,7 @@ func _ready() -> void:
 	ready_complete = true
 	front_container.resized.connect(_on_front_container_resized)
 	_connect_opacity_slider()
+	_toggle_expanded_state(true)
 
 
 func _tbt_ready() -> void:
@@ -202,3 +203,12 @@ func _on_tiles_preview_expand_requested() -> void:
 
 func _on_tiles_preview_collapse_requested() -> void:
 	_toggle_expanded_state(false)
+
+
+func _on_front_panel_collapsed_gui_input(event: InputEvent) -> void:
+	if not event is InputEventMouseButton or !event.is_pressed():
+		return
+	if event.button_index != MOUSE_BUTTON_LEFT:
+		return
+	_toggle_expanded_state(true)
+	

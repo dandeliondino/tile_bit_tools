@@ -51,8 +51,7 @@ func setup(p_interface : EditorInterface) -> Globals.Errors:
 	#output.debug("tile_set_editor=%s" % tile_set_editor)
 	if !tile_set_editor:
 		return Globals.Errors.FAILED
-	tile_set_editor.visibility_changed.connect(_on_tile_set_visibility_changed)
-	
+
 	
 	atlas_source_editor = _get_first_node_by_class(tile_set_editor, "TileSetAtlasSourceEditor")
 	#output.debug("atlas_source_editor=%s" % atlas_source_editor)
@@ -88,13 +87,6 @@ func setup(p_interface : EditorInterface) -> Globals.Errors:
 	
 	return Globals.Errors.OK
 
-
-
-
-
-
-func _on_tile_set_visibility_changed() -> void:
-	prints("_on_tile_set_visibility_changed", tile_set_editor.visible)
 
 
 # Finds "Setup", "Select", "Paint" buttons and
@@ -146,12 +138,6 @@ func _can_handle(object: Object) -> bool:
 		return true
 	
 	return false
-
-
-func _parse_property(object: Object, type: Variant.Type, name: String, hint_type: PropertyHint, hint_string: String, usage_flags: PropertyUsageFlags, wide: bool) -> bool:
-	prints(object, type, name)
-	return false
-
 
 
 func _parse_end(object: Object) -> void:
@@ -345,11 +331,11 @@ func _notify_tiles_inspector_removed() -> void:
 
 
 func _print_signals_and_connections(object : Object) -> void:
-	print("object: %s" % object)
-	print("incoming connections:")
+	output.debug("object: %s" % object)
+	output.debug("incoming connections:")
 	for connection in object.get_incoming_connections():
-		print("\n", connection)
+		output.debug("\n%s" % connection)
 	for signal_data in object.get_signal_list():
-		print(signal_data.name)
+		output.debug(signal_data.name)
 		for connection in object.get_signal_connection_list(signal_data.name):
-			print("\n", connection)
+			output.debug("\n%s" % connection)

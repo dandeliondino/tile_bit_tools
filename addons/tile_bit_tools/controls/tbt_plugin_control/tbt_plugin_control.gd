@@ -110,8 +110,10 @@ func notify_tiles_inspector_removed() -> void:
 
 func _on_tiles_inspector_visibility_changed() -> void:
 	if tiles_inspector.is_visible_in_tree():
+		tiles_preview.show()
 		set_process_input(true)
 	else:
+		tiles_preview.hide()
 		set_process_input(false)
 
 
@@ -169,7 +171,6 @@ func _assign_child_by_class(child : Node) -> void:
 			context = child
 		_:
 			if child is Window:
-				print("appending window")
 				dialog_windows.append(child)
 
 
