@@ -51,12 +51,16 @@ func setup(p_interface : EditorInterface) -> Globals.Errors:
 	#output.debug("tile_set_editor=%s" % tile_set_editor)
 	if !tile_set_editor:
 		return Globals.Errors.FAILED
+	tile_set_editor.visibility_changed.connect(_on_tile_set_visibility_changed)
+	
 	
 	atlas_source_editor = _get_first_node_by_class(tile_set_editor, "TileSetAtlasSourceEditor")
 	#output.debug("atlas_source_editor=%s" % atlas_source_editor)
 	if !atlas_source_editor:
 		return Globals.Errors.FAILED
-	_setup_source_editor_button_connections()
+		
+	# TODO: re-enable this (probably)
+#	_setup_source_editor_button_connections()
 
 	
 	tile_atlas_view = _get_first_node_by_class(tile_set_editor, "TileAtlasView")
@@ -74,19 +78,23 @@ func setup(p_interface : EditorInterface) -> Globals.Errors:
 	if !atlas_tile_proxy:
 		return Globals.Errors.FAILED
 	
+#	_print_signals_and_connections(tile_atlas_view)
+	
 	_setup_tiles_preview()
 	
 	var shared_node_result := _setup_tbt_plugin_control()
 	if shared_node_result != OK:
 		return shared_node_result
 	
-	for signal_data in atlas_tile_proxy.get_signal_list():
-		print(signal_data.name)
-		for connection in atlas_tile_proxy.get_signal_connection_list(signal_data.name):
-			print("\t", connection)
-	
-	
 	return Globals.Errors.OK
+
+
+
+
+
+
+func _on_tile_set_visibility_changed() -> void:
+	prints("_on_tile_set_visibility_changed", tile_set_editor.visible)
 
 
 # Finds "Setup", "Select", "Paint" buttons and
@@ -335,3 +343,13 @@ func _notify_tiles_inspector_removed() -> void:
 	if is_instance_valid(tbt_plugin_control):
 		tbt_plugin_control.notify_tiles_inspector_removed()
 
+
+func _print_signals_and_connections(object : Object) -> void:
+	print("object: %s" % object)
+	print("incoming connections:")
+	for connection in object.get_incoming_connections():
+		print("\n", connection)
+	for signal_data in object.get_signal_list():
+		print(signal_data.name)
+		for connection in object.get_signal_connection_list(signal_data.name):
+			print("\n", connection)
