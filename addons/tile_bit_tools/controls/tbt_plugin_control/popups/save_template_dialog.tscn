@@ -7,7 +7,6 @@
 initial_position = 2
 title = "Save Terrain Template"
 size = Vector2i(600, 513)
-visible = false
 wrap_controls = true
 transient = true
 exclusive = true
@@ -34,6 +33,43 @@ theme_override_constants/margin_bottom = 16
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
 layout_mode = 2
 
+[node name="HBoxContainer4" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4" groups=["TBTPropertyLabel"]]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Preview"
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="PreviewRect" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4/PanelContainer"]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+stretch_mode = 5
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer7" groups=["TBTPropertyLabel"]]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Data"
+
+[node name="TemplateInfoList" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer7" instance=ExtResource("2_uh1kq")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_stretch_ratio = 2.0
+
+[node name="HSeparator2" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer" groups=["TBTSeparator"]]
+layout_mode = 2
+
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
@@ -52,6 +88,7 @@ caret_blink = true
 caret_blink_interval = 0.5
 
 [node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer" groups=["TBTSeparator"]]
+visible = false
 layout_mode = 2
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
@@ -66,51 +103,18 @@ text = "Description"
 
 [node name="DescriptionEdit" type="TextEdit" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2" groups=["TBTEditFont", "TBTTextEdit"]]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 200)
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 wrap_mode = 1
 
-[node name="HSeparator2" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer" groups=["TBTSeparator"]]
-layout_mode = 2
-
-[node name="HBoxContainer4" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4" groups=["TBTPropertyLabel"]]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Preview"
-
-[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 2.0
-
-[node name="PreviewRect" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4/PanelContainer"]
-unique_name_in_owner = true
-texture_filter = 1
-layout_mode = 2
-stretch_mode = 5
-
 [node name="HSeparator4" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer" groups=["TBTSeparator"]]
+visible = false
 layout_mode = 2
-
-[node name="HBoxContainer7" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer7" groups=["TBTPropertyLabel"]]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Data"
-
-[node name="TemplateInfoList" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer7" instance=ExtResource("2_uh1kq")]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_stretch_ratio = 2.0
 
 [node name="HSeparator3" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer" groups=["TBTSeparator"]]
+visible = false
 layout_mode = 2
 
 [node name="HBoxContainer8" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
@@ -130,6 +134,7 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 
 [node name="HSeparator6" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer" groups=["TBTSeparator"]]
+visible = false
 layout_mode = 2
 
 [node name="HBoxContainer6" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
@@ -148,6 +153,7 @@ size_flags_stretch_ratio = 2.0
 shortcut_in_tooltip = false
 
 [node name="HSeparator7" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer" groups=["TBTSeparator"]]
+visible = false
 layout_mode = 2
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]

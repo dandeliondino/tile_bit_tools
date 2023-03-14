@@ -18,6 +18,7 @@ const BitDataDrawNode := preload("res://addons/tile_bit_tools/controls/bit_data_
 
 var template_bit_data : TBTPlugin.TemplateBitData
 
+
 var tbt : TBTPlugin
 
 @onready var name_edit: LineEdit = %NameEdit
@@ -64,15 +65,16 @@ func close_dialog() -> void:
 # ----------------------------------
 
 func _setup_dialog() -> void:
-	_set_max_size()
+	_set_size()
 	_setup_texture()
 	template_info_list.update(template_bit_data)
 	_setup_folders_button()
 	_setup_initial_values()
 
 
-func _set_max_size() -> void:
-	set("max_size", get_tree().root.size * 0.5)
+func _set_size() -> void:
+	set("min_size", get_tree().root.size * 0.4)
+#	set("max_size", get_tree().root.size * 0.75)
 
 
 func _setup_texture() -> void:
@@ -125,7 +127,7 @@ func _save() -> void:
 		close_dialog()
 		return
 	
-	tbt.output.info("Saved user template to: %s " % path)
+	tbt.output.user("Saved user template '%s' to %s " % [template_bit_data.template_name, path])
 	tbt.templates_update_requested.emit()
 	close_dialog()
 

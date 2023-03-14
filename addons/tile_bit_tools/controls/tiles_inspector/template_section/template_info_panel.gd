@@ -102,6 +102,7 @@ func _remove_template() -> void:
 func _on_delete_confirmed() -> void:
 	var path := template_bit_data.resource_path
 	DirAccess.remove_absolute(path)
+	tbt.output.user("Deleted user template '%s'" % template_bit_data.template_name)
 	tbt.templates_update_requested.emit()
 
 
