@@ -24,16 +24,17 @@ var tbt : TBTPlugin
 @onready var description_edit: TextEdit = %DescriptionEdit
 @onready var tags_edit: LineEdit = %TagsEdit
 
-@onready var info_label: Label = %InfoLabel
-@onready var auto_tags_label: Label = %AutoTagsLabel
+
 @onready var preview_rect: TextureRect = %PreviewRect
 
 @onready var folder_option_button: OptionButton = %FolderOptionButton
+@onready var template_info_list: ItemList = %TemplateInfoList
 
 
 func _ready() -> void:
 	hide()
 	close_requested.connect(close_dialog)
+	template_info_list.show_custom_tags = false
 
 
 func _tbt_ready() -> void:
@@ -65,8 +66,7 @@ func close_dialog() -> void:
 func _setup_dialog() -> void:
 	_set_max_size()
 	_setup_texture()
-	_setup_autotags()
-	_setup_info_label()
+	template_info_list.update(template_bit_data)
 	_setup_folders_button()
 	_setup_initial_values()
 
@@ -79,23 +79,6 @@ func _setup_texture() -> void:
 	var bit_data_draw_node : BitDataDrawNode = tbt.template_manager.get_bit_data_draw()
 	preview_rect.texture = await bit_data_draw_node.get_bit_texture(template_bit_data)
 
-
-func _setup_autotags() -> void:
-	var auto_tags := []
-	var template_tag_data := preload("res://addons/tile_bit_tools/core/template_tag_data.gd").new()
-	for tag in template_tag_data.tags.values():
-		if tag.get_test_result(template_bit_data):
-			auto_tags.append(tag.text)
-	auto_tags_label.text = ", ".join(auto_tags)
-
-
-func _setup_info_label() -> void:
-	info_label.text = INFO_LABEL_TEXT.format({
-		"tile_count": template_bit_data.get_tile_count(),
-		"terrain_count": template_bit_data.get_terrain_count(),
-		"terrain_mode": tbt.texts.TERRAIN_MODE_TEXTS[template_bit_data.terrain_mode],
-		"type": "Built-in" if template_bit_data.built_in else "User",
-	})
 
 
 func _setup_folders_button() -> void:

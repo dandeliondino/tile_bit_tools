@@ -1,18 +1,18 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=9 format=3 uid="uid://bxhlehm73ligy"]
 
 [ext_resource type="Script" path="res://addons/tile_bit_tools/controls/tiles_inspector/template_section/template_info_panel.gd" id="1_arkoa"]
 [ext_resource type="Texture2D" uid="uid://kxpcshl5ohq8" path="res://addons/tile_bit_tools/controls/icons/edit.svg" id="2_8vv3m"]
+[ext_resource type="PackedScene" uid="uid://bscknm10ko78t" path="res://addons/tile_bit_tools/controls/shared/template_info_list.tscn" id="2_jg88n"]
 [ext_resource type="Texture2D" uid="uid://dhnskavebe1vh" path="res://addons/tile_bit_tools/controls/icons/remove.svg" id="3_7nspd"]
 [ext_resource type="Texture2D" uid="uid://b1s0oi2mj4cjw" path="res://addons/tile_bit_tools/controls/icons/arrow_right.svg" id="4_mkrw7"]
 [ext_resource type="Texture2D" uid="uid://8o7q0m4r65h8" path="res://addons/tile_bit_tools/controls/icons/image.svg" id="4_ua62h"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_n7nl4"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kuq0c"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v7bmg"]
 
 [node name="TemplateInfoPanel" type="PanelContainer" groups=["TBTTemplateInspectorForeground"]]
+visible = false
 custom_minimum_size = Vector2(0, 48)
 anchors_preset = 10
 anchor_right = 1.0
@@ -36,19 +36,8 @@ mouse_filter = 2
 layout_mode = 2
 mouse_filter = 2
 
-[node name="InfoList" type="ItemList" parent="MarginContainer/VBoxContainer/HBoxContainer" groups=["TBTPropertyLabel"]]
-unique_name_in_owner = true
+[node name="TemplateInfoList" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_jg88n")]
 layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 0
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_n7nl4")
-auto_height = true
-item_count = 2
-item_0/text = "Tiles: 15"
-item_0/selectable = false
-item_1/text = "Terrains: 2"
-item_1/selectable = false
 
 [node name="TemplateRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true

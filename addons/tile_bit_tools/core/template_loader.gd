@@ -226,6 +226,7 @@ func _get_or_add_custom_tag(tag_text : String) -> int:
 		return custom_tag_id
 	
 	var tag := TemplateTag.new(tag_text)
+	tag.custom_tag = true
 	var tag_id := _add_tag(tag)
 	_custom_tags[tag_text] = tag_id
 	return tag_id

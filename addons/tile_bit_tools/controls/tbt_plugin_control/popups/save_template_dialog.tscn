@@ -1,11 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://job5gqt1xbrh"]
+[gd_scene load_steps=3 format=3 uid="uid://job5gqt1xbrh"]
 
 [ext_resource type="Script" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/popups/save_template_dialog.gd" id="1_7pdu0"]
+[ext_resource type="PackedScene" uid="uid://bscknm10ko78t" path="res://addons/tile_bit_tools/controls/shared/template_info_list.tscn" id="2_uh1kq"]
 
 [node name="SaveTemplateDialog" type="Window" groups=["TBTDialogWindow"]]
 initial_position = 2
 title = "Save Terrain Template"
 size = Vector2i(600, 513)
+visible = false
 wrap_controls = true
 transient = true
 exclusive = true
@@ -76,11 +78,10 @@ layout_mode = 2
 [node name="HBoxContainer4" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="InfoLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4" groups=["TBTPropertyLabel"]]
-unique_name_in_owner = true
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4" groups=["TBTPropertyLabel"]]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Data"
+text = "Preview"
 
 [node name="PanelContainer" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer4"]
 layout_mode = 2
@@ -102,12 +103,11 @@ layout_mode = 2
 [node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer7" groups=["TBTPropertyLabel"]]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Auto tags"
+text = "Data"
 
-[node name="AutoTagsLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer7" groups=["TBTPropertyLabel"]]
+[node name="TemplateInfoList" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer7" instance=ExtResource("2_uh1kq")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 
 [node name="HSeparator3" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer" groups=["TBTSeparator"]]

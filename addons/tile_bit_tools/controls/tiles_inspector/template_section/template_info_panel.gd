@@ -14,7 +14,8 @@ var template_bit_data : TBTPlugin.TemplateBitData
 var tbt : TBTPlugin
 
 
-@onready var info_list: ItemList = %InfoList
+@onready var template_info_list: ItemList = $MarginContainer/VBoxContainer/HBoxContainer/TemplateInfoList
+
 
 @onready var template_rect: TextureRect = %TemplateRect
 
@@ -47,7 +48,7 @@ func update(p_template_bit_data : TBTPlugin.TemplateBitData) -> void:
 	
 	description_label.text = template_bit_data.template_description
 	
-	_update_info_list()
+	template_info_list.update(template_bit_data)
 	
 	
 	if template_bit_data.built_in:
@@ -68,25 +69,7 @@ func update(p_template_bit_data : TBTPlugin.TemplateBitData) -> void:
 
 
 
-func _update_info_list() -> void:
-	var item_list := []
-	item_list.append({"text": "Tiles: %s" % template_bit_data.get_tile_count()})
-	item_list.append({"text": "Terrains: %s" % template_bit_data.get_terrain_count()})
 
-	var template_tag_data := preload("res://addons/tile_bit_tools/core/template_tag_data.gd").new()
-	for tag in template_tag_data.tags.values():
-		if tag.get_test_result(template_bit_data):
-			item_list.append({"text": tag.text, "icon": tag.icon})
-	
-	for tag in template_bit_data.get_custom_tags():
-		item_list.append({"text": tag})
-
-	info_list.clear()
-	for item in item_list:
-		if item.has("icon"):
-			info_list.add_item(item.text, item.icon, false)
-		else:
-			info_list.add_item(item.text, null, false)
 
 
 func _toggle_description_expand_button(value : bool) -> void:
