@@ -1,16 +1,15 @@
 @tool
 extends "res://addons/tile_bit_tools/controls/tbt_plugin_control/popups/template_dialog.gd"
 
-var dir : DirAccess
+
+
 
 
 func _setup_connections() -> void:
-	name_edit.text_changed.connect(_update_save_path_label)
 	tbt.save_template_requested.connect(_on_save_template_requested)
 
 
 func _setup_save_dialog() -> void:
-	dir = tbt.template_manager.get_user_templates_dir()
 	template_bit_data = TBTPlugin.TemplateBitData.new()
 	
 	var result := template_bit_data.load_editor_bit_data(tbt.context.bit_data)
@@ -24,42 +23,36 @@ func _setup_save_dialog() -> void:
 
 
 
+
+
 # overriden
 func _setup_initial_values() -> void:
 	name_edit.text = DEFAULT_TEMPLATE_NAME
 	description_edit.text = DEFAULT_TEMPLATE_DESCRIPTION
 	tags_edit.text = DEFAULT_TEMPLATE_TAGS
-	_update_save_path_label()
 
-
-func _update_save_path_label(_text := "") -> void:
-	var path := _get_save_path(false)
-	if path == "":
-		save_path_label.text = "Unable to create valid save path"
-		return
-		
-	save_path_label.text = "Saving to: %s" % path
 
 
 # overriden
 func _get_save_path(valid_only := true) -> String:
-	var file_name := _get_file_name()
-	var path : String = tbt.template_manager.get_user_templates_path() + file_name
-	
-	if file_name == "":
-		if valid_only:
-			return ""
-		else:
-			return path
-	
-	if valid_only && !path.is_absolute_path():
+	var dir := _get_save_dir()
+	var file_name := _get_file_name(dir)
+	var path : String = dir.get_current_dir() + "/" + file_name
+		
+	if !path.is_absolute_path():
 		tbt.output.error("Unable to get valid save path: %s" % path)
 		return ""
 	
 	return path
 
 
-func _get_file_name() -> String:
+func _get_save_dir() -> DirAccess:
+	var folder_id := folder_option_button.get_selected_id()
+	var path : String = tbt.template_manager.template_folder_paths[folder_id].path
+	return DirAccess.open(path)
+
+
+func _get_file_name(dir : DirAccess) -> String:
 	var template_name := name_edit.text
 	if template_name == "":
 		template_name = DEFAULT_TEMPLATE_NAME

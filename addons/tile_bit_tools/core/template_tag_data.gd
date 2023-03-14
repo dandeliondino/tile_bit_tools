@@ -20,6 +20,7 @@ class TemplateTag:
 	var text : String
 	var color : Color
 	var icon : Texture2D
+	var custom_tag := false
 	
 	var id : int
 

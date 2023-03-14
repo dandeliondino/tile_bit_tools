@@ -1,12 +1,18 @@
 extends Object
 
+
+
 const TAG_NOT_FOUND := null
+
+const Globals := preload("res://addons/tile_bit_tools/core/globals.gd")
 
 const TemplateBitData := preload("res://addons/tile_bit_tools/core/template_bit_data.gd")
 const TemplateTagData := preload("res://addons/tile_bit_tools/core/template_tag_data.gd")
 const TemplateTag := TemplateTagData.TemplateTag
 
 var _template_tag_data := TemplateTagData.new()
+
+
 
 var output := preload("res://addons/tile_bit_tools/core/output.gd").new()
 
@@ -27,11 +33,25 @@ var _display_tag_ids := []
 #var tag_display_list := []
 
 
-func _init(builtin_templates_path : String, user_templates_path : String) -> void:
+func _init(template_folder_paths : Array) -> void:
 	_load_auto_tags()
-	_load_templates_in_directory(builtin_templates_path, true)
-	_load_templates_in_directory(user_templates_path)
+	_load_templates(template_folder_paths)
 	_setup_sorted_tag_ids()
+
+
+func _load_templates(template_folder_paths : Array) -> void:
+	var paths_parsed := []
+	
+	for folder_path in template_folder_paths:
+		# don't load from duplicate folders
+		if folder_path in paths_parsed:
+			continue
+		paths_parsed.append(folder_path)
+		
+		_load_templates_in_directory(
+			folder_path.path, 
+			folder_path.type == Globals.TemplateTypes.BUILT_IN
+		)
 
 
 #func print_templates_by_tag() -> void:
@@ -206,6 +226,7 @@ func _get_or_add_custom_tag(tag_text : String) -> int:
 		return custom_tag_id
 	
 	var tag := TemplateTag.new(tag_text)
+	tag.custom_tag = true
 	var tag_id := _add_tag(tag)
 	_custom_tags[tag_text] = tag_id
 	return tag_id
