@@ -6,7 +6,7 @@
 script = ExtResource("1_dbw6t")
 version = "0.2.0"
 template_name = "Wang (Tilesetter)"
-template_description = "Corners-mode autotile in Tilesetter's layout. In Tilesetter, select the center tile, build borders for 'Wang', then select the tiles and export as 'Image'."
+template_description = "Corners autotile in Tilesetter's layout. In Tilesetter, select the center tile, build borders for 'Wang', then select the tiles and export as 'Image'."
 _custom_tags = ["Tilesetter"]
 template_terrain_count = 2
 example_folder_path = ""
