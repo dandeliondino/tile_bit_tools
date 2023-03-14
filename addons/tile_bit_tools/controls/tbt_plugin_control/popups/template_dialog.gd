@@ -73,7 +73,7 @@ func _setup_dialog() -> void:
 
 
 func _set_size() -> void:
-	set("min_size", get_tree().root.size * 0.4)
+	set("min_size", Vector2i(Vector2(get_tree().root.size) * Vector2(0.3, 0.6)))
 #	set("max_size", get_tree().root.size * 0.75)
 
 
