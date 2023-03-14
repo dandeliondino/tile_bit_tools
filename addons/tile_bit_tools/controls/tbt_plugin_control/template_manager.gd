@@ -87,13 +87,13 @@ func _update_template_folder_paths() -> void:
 		{
 			"type": TBTPlugin.Globals.TemplateTypes.USER,
 			"name": "Project Templates Folder",
-			"tooltip": "Templates saved here will only be available for this project",
+			"tooltip": "Templates saved here will only be available to this project",
 			"path": TBTPlugin.Globals.PROJECT_TEMPLATES_PATH,
 		},
 		{
 			"type": TBTPlugin.Globals.TemplateTypes.USER,
 			"name": "Shared Templates Folder",
-			"tooltip": "Templates saved here will be available to all projects on this computer with TileBitTools installed",
+			"tooltip": "Templates saved here will be available to all projects on this computer",
 			"path": editor_paths.get_data_dir() + TBTPlugin.Globals.GODOT_TEMPLATES_FOLDER,
 		},
 		# default is the same as project templates folder
@@ -106,7 +106,6 @@ func _update_template_folder_paths() -> void:
 	]
 	
 	for i in range(template_folder_paths.size()-1, -1, -1):
-		print(i)
 		if template_folder_paths[i].path == "":
 			template_folder_paths.remove_at(i)
 		

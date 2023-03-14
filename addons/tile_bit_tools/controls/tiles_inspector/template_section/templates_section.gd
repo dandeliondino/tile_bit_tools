@@ -264,9 +264,9 @@ func _get_terrain_mapping() -> Dictionary:
 
 
 func _on_templates_updated() -> void:
-	_update_tags_popup()
+	_reset_tags()
 
 
 func _on_reset_requested() -> void:
-	_update_tags_popup()
+	_reset_tags()
 

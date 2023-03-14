@@ -34,7 +34,6 @@ func _update_folder_label() -> void:
 	var path = save_path.rsplit("/", true, 1)[0] + "/"
 	for i in range(tbt.template_manager.template_folder_paths.size()):
 		var folder_path : Dictionary = tbt.template_manager.template_folder_paths[i]
-		print("checking %s against %s" % [path, folder_path.path])
 		if path == folder_path.path:
 			folder_label.text = folder_path.name
 			folder_label.tooltip_text = folder_path.tooltip + "\n" + folder_path.path
