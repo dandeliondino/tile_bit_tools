@@ -1,9 +1,36 @@
 @tool
 extends Node
 
+
+const THEME_TYPE := 0
+const THEME_CATEGORY := 1
+const THEME_DATA_TYPE := 2
+
 const UNASSIGNED := -1
 
 const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd")
+
+
+
+const ThemeMethods := {
+	Theme.DATA_TYPE_COLOR: "get_theme_color",
+}
+
+const PanelOverrides := {
+	"TBTPreviewPanelBackground": ["BottomPanel", "EditorStyles"],
+	"TBTPreviewPanelForeground": ["bg", "GraphEdit"],
+}
+
+
+const FontOverrides := {
+	"TBTPropertyLabel": {
+		"theme_override_colors/font_color": 
+			["property_color", "Editor", Theme.DATA_TYPE_COLOR],
+	},
+}
+
+
+
 
 
 var context : TBTPlugin.Context
@@ -16,7 +43,7 @@ var tbt : TBTPlugin
 
 
 func _tbt_ready() -> void:
-	pass
+	_update_dialogs()
 
 
 func _tiles_inspector_added() -> void:
@@ -24,18 +51,58 @@ func _tiles_inspector_added() -> void:
 	_update_themes()
 
 
-func _update_subtrees() -> void:
+func _update_dialogs() -> void:
 	for dialog in tbt.dialog_windows:
 		dialog.theme = tbt.base_control.theme
-	tbt.tiles_inspector.theme = tbt.base_control.theme
-	tbt.tiles_preview.theme = tbt.base_control.theme
+
+
+func _update_panels() -> void:
+	for group in PanelOverrides.keys():
+		var panel := tbt.base_control.get_theme_stylebox(
+			PanelOverrides[group][THEME_TYPE], 
+			PanelOverrides[group][THEME_CATEGORY]
+		)
+		get_tree().set_group(group, "theme_override_styles/panel", panel)
+	
+
+
+
+func _update_fonts() -> void:
+	for group in FontOverrides.keys():
+		for property in FontOverrides[group].keys():
+			var override : Array = FontOverrides[group][property]
+			var method : String = ThemeMethods[override[THEME_DATA_TYPE]]
+			var value = tbt.base_control.call(
+				method, 
+				override[THEME_TYPE], 
+				override[THEME_CATEGORY]
+			)
+			get_tree().set_group(group, property, value)
+		
+#		for data_type in FontOverrides[group].keys():
+#			var method : String = ThemeMethods[data_type]
+#			var args : Array = FontOverrides[group][data_type]
+#			var data = tbt.base_control.callv(method, args)
+	
+	
+#const FontOverrides := {
+#	"TBTPropertyLabel": {
+#		"theme_override_colors/font_color": 
+#			["property_color", "Editor", Theme.DATA_TYPE_COLOR],
+#	}
+#}
+
+
+
 
 
 func _update_themes() -> void:
-	_update_subtrees()
+	tbt.output.debug("_update_themes()")
+	_update_panels()
+	_update_fonts()
 	return
 	
-	tbt.output.debug("_update_themes()")
+	
 	var base_control : Control = tbt.context.base_control
 	
 	if category_control_height == UNASSIGNED:
@@ -107,80 +174,13 @@ func _update_themes() -> void:
 				},
 			],
 		},
-		{
-			"group_name": "TBTPropertyLabel",
-			"updates": [
-				{
-					"property": "theme_override_colors/font_color",
-					"value":  base_control.get_theme_color("property_color", "Editor"),
-				},
-				{
-					"property": "theme_override_fonts/font",
-					"value":  base_control.get_theme_font("font", "Label"),
-				},
-				{
-					"property": "theme_override_font_sizes/font_size",
-					"value":  base_control.get_theme_font_size("main_size", "EditorFonts"),
-				},
-			],
-		},
 
-#		{
-#			"group_name": "TBTSectionButton",
-#			"updates": [
-#				{
-#					"property": "theme_override_colors/font_color",
-#					"value":  base_control.get_theme_color("font_color", "EditorInspectorSection"),
-#				},
-#				{
-#					"property": "theme_override_fonts/font",
-#					"value":  base_control.get_theme_font("main_button_font", "EditorFonts"),
-#				},
-#				{
-#					"property": "theme_override_font_sizes/font_size",
-#					"value":  base_control.get_theme_font_size("main_button_font_size", "EditorFonts"),
-#				},
-#				{
-#					"property": "theme_override_styles/normal",
-#					"value": base_control.get_theme_stylebox("custom_button", "Tree"),
-#				},
-#				{
-#					"property": "theme_override_styles/pressed",
-#					"value": base_control.get_theme_stylebox("custom_button_pressed", "Tree"),
-#				},
-#				{
-#					"property": "theme_override_styles/hover",
-#					"value": base_control.get_theme_stylebox("custom_button_hover", "Tree"),
-#				},
-##				{
-##					"property": ,
-##					"value": base_control.,
-##				},
-#			],
-#		},
 
 
 # ###########################################################################
 # 							PREVIEW PANEL
 # ###########################################################################
-		{
-			"group_name": "TBTPreviewPanelBackground",
-			"updates": [
-				{
-					"property": "theme_override_styles/panel",
-					"value":  base_control.get_theme_stylebox("BottomPanel", "EditorStyles"),
-				},
-			],
-		},
-		{
-			"group_name": "TBTPreviewPanelForeground",
-			"updates": [
-				{
-					"property": "theme_override_styles/panel",
-					"value": base_control.get_theme_stylebox("LaunchPadNormal", "EditorStyles"),
-				},
-			],
-		},
+		
 		{
 			"group_name": "TBTPreviewContainer",
 			"updates": [
@@ -293,49 +293,9 @@ func _update_themes() -> void:
 				},
 			],
 		},
-		{
-			"group_name": "TBTSeparator",
-			"updates": [
-				{
-					"property": "theme_override_styles/separator",
-					"value":  base_control.get_theme_stylebox("separator", "HSeparator"),
-				},
-			],
-		},
-		{
-			"group_name": "TBTLineEdit",
-			"updates": [
-				{
-					"property": "theme_override_styles/normal",
-					"value": base_control.get_theme_stylebox("normal", "LineEdit"),
-				},
-				{
-					"property": "theme_override_styles/focus",
-					"value": base_control.get_theme_stylebox("focus", "LineEdit"),
-				},
-				{
-					"property": "theme_override_styles/read_only",
-					"value": base_control.get_theme_stylebox("read_only", "LineEdit"),
-				},
-			],
-		},
-		{
-			"group_name": "TBTTextEdit",
-			"updates": [
-				{
-					"property": "theme_override_styles/focus",
-					"value": base_control.get_theme_stylebox("focus", "TextEdit"),
-				},
-				{
-					"property": "theme_override_styles/normal",
-					"value": base_control.get_theme_stylebox("normal", "TextEdit"),
-				},
-				{
-					"property": "theme_override_styles/read_only",
-					"value": base_control.get_theme_stylebox("read_only", "TextEdit"),
-				},
-			],
-		},
+
+
+
 		{
 			"group_name": "TBTEditFont",
 			"updates": [
@@ -379,152 +339,10 @@ func _update_themes() -> void:
 # ###########################################################################
 # 							CONTROLS
 # ###########################################################################
-		{
-			"group_name": "TBTOptionButton",
-			"updates": [
-				{
-					"property": "theme_override_styles/pressed",
-					"value":  base_control.get_theme_stylebox("pressed", "OptionButton"),
-				},
-				{
-					"property": "theme_override_styles/normal",
-					"value":  base_control.get_theme_stylebox("normal", "OptionButton"),
-				},
-				{
-					"property": "theme_override_styles/hover",
-					"value":  base_control.get_theme_stylebox("hover", "OptionButton"),
-				},
-				{
-					"property": "theme_override_styles/focus",
-					"value":  base_control.get_theme_stylebox("focus", "OptionButton"),
-				},
-				{
-					"property": "theme_override_styles/disabled",
-					"value":  base_control.get_theme_stylebox("disabled", "OptionButton"),
-				},
-			],
-		},
-		{
-			"group_name": "TBTHSlider",
-			"updates": [
-				{
-					"property": "theme_override_styles/slider",
-					"value":  base_control.get_theme_stylebox("slider", "HSlider"),
-				},
-				{
-					"property": "theme_override_styles/grabber_area",
-					"value":  base_control.get_theme_stylebox("grabber_area", "HSlider"),
-				},
-				{
-					"property": "theme_override_styles/grabber_area_highlight",
-					"value":  base_control.get_theme_stylebox("grabber_area_highlight", "HSlider"),
-				},
-			],
-		},
-		{
-			"group_name": "TBTTextButton",
-			"updates": [
-				{
-					"property": "theme_override_styles/disabled",
-					"value":  base_control.get_theme_stylebox("disabled", "InspectorActionButton"),
-				},
-				{
-					"property": "theme_override_styles/hover",
-					"value":  base_control.get_theme_stylebox("hover", "InspectorActionButton"),
-				},
-				{
-					"property": "theme_override_styles/normal",
-					"value":  base_control.get_theme_stylebox("normal", "InspectorActionButton"),
-				},
-				{
-					"property": "theme_override_styles/pressed",
-					"value":  base_control.get_theme_stylebox("pressed", "InspectorActionButton"),
-				},
-				{
-					"property": "theme_override_font_sizes/font_size",
-					"value":  base_control.get_theme_font_size("main_size", "EditorFonts"),
-				},
-			],
-		},
-		{
-			"group_name": "TBTMenuButton",
-			"updates": [
-				{
-					"property": "theme_override_styles/normal",
-					"value": base_control.get_theme_stylebox("normal", "MenuButton"),
-				},
-				{
-					"property": "theme_override_styles/pressed",
-					"value": base_control.get_theme_stylebox("pressed", "MenuButton"),
-				},
-				{
-					"property": "theme_override_styles/hover",
-					"value": base_control.get_theme_stylebox("hover", "MenuButton"),
-				},
-				{
-					"property": "theme_override_styles/disabled",
-					"value": base_control.get_theme_stylebox("disabled", "MenuButton"),
-				},
-				{
-					"property": "theme_override_styles/focus",
-					"value": base_control.get_theme_stylebox("focus", "MenuButton"),
-				},
-			],
-		},
 
-		{
-			"group_name": "TBTPopupMenu",
-			"updates": [
-				{
-					"property": "theme_override_styles/hover",
-					"value": base_control.get_theme_stylebox("hover", "PopupMenu"),
-				},
-				{
-					"property": "theme_override_styles/panel",
-					"value": base_control.get_theme_stylebox("panel", "PopupMenu"),
-				},
-				{
-					"property": "theme_override_styles/labeled_separator_left",
-					"value": base_control.get_theme_stylebox("labeled_separator_left", "PopupMenu"),
-				},
-				{
-					"property": "theme_override_styles/labeled_separator_right",
-					"value": base_control.get_theme_stylebox("labeled_separator_right", "PopupMenu"),
-				},
-				{
-					"property": "theme_override_styles/separator",
-					"value": base_control.get_theme_stylebox("separator", "PopupMenu"),
-				},
-				{
-					"property": "theme_override_fonts/font",
-					"value": base_control.get_theme_font("main", "EditorFonts"),
-				},
-				{
-					"property": "theme_override_font_sizes/font_size",
-					"value": base_control.get_theme_font_size("main_size", "EditorFonts"),
-				},
-				{
-					"property": "theme_override_colors/font_color",
-					"value": base_control.get_theme_color("font_color", "PopupMenu"),
-				},
-				{
-					"property": "theme_override_colors/font_hover_color",
-					"value": base_control.get_theme_color("font_hover_color", "PopupMenu"),
-				},
-				{
-					"property": "theme_override_colors/font_separator_color",
-					"value": base_control.get_theme_color("font_separator_color", "PopupMenu"),
-				},
-				{
-					"property": "theme_override_colors/font_disabled_color",
-					"value": base_control.get_theme_color("font_disabled_color", "PopupMenu"),
-				},
-#				{
-#					"property": ,
-#					"value": base_control.,
-#				},
-			],
-		},
+
+
+
 
 		
 		{

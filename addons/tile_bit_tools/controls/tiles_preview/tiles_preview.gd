@@ -145,21 +145,9 @@ func _on_preview_updated(bit_data : TBTPlugin.EditorBitData) -> void:
 	_update_preview_terrain()
 
 
-
 func _on_front_container_resized() -> void:
 	var front_height := front_container.size.y
 	back_panel.custom_minimum_size.y = front_height + 16
-
-
-#func _on_split_dragged(_offset : int) -> void:
-#	# TODO: test with different resolutions
-#	if back_panel_container.size.y <= initial_height * 0.75:
-#		preview_container.hide()
-#		collapsed_label.show()
-#	else:
-#		preview_container.show()
-#		collapsed_label.hide()
-
 
 
 func _toggle_expanded_state(p_expanded : bool) -> void:
@@ -168,7 +156,6 @@ func _toggle_expanded_state(p_expanded : bool) -> void:
 	expanded = p_expanded
 	expanded_controls.visible = expanded
 	collapsed_controls.visible = !expanded
-
 
 
 func _on_reset_button_pressed() -> void:

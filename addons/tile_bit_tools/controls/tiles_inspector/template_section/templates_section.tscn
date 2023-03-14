@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dki8mr7snyhi0" path="res://addons/tile_bit_tools/controls/icons/terrainmatchcornersandsides.svg" id="2_fx45l"]
 [ext_resource type="Texture2D" uid="uid://dbk8artbmpve8" path="res://addons/tile_bit_tools/controls/icons/terrainmatchcorners.svg" id="3_27ndx"]
 [ext_resource type="Texture2D" uid="uid://cw7cqd6x8aqy7" path="res://addons/tile_bit_tools/controls/icons/terrainmatchsides.svg" id="4_3xngl"]
-[ext_resource type="PackedScene" path="res://addons/tile_bit_tools/controls/tiles_inspector/template_section/template_info_panel.tscn" id="5_tlsqj"]
+[ext_resource type="PackedScene" uid="uid://bxhlehm73ligy" path="res://addons/tile_bit_tools/controls/tiles_inspector/template_section/template_info_panel.tscn" id="5_tlsqj"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t8sf7"]
 
@@ -18,7 +18,7 @@ script = ExtResource("1_i6wsq")
 [node name="HBoxContainer2" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="TagsMenuButton" type="MenuButton" parent="HBoxContainer2" groups=["TBTMenuButton"]]
+[node name="TagsMenuButton" type="MenuButton" parent="HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -58,7 +58,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Template"
 
-[node name="TemplatesOptionButton" type="OptionButton" parent="TemplateSectionPanel/VBoxContainer/HBoxContainer" groups=["TBTOptionButton"]]
+[node name="TemplatesOptionButton" type="OptionButton" parent="TemplateSectionPanel/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -106,7 +106,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Terrain Set"
 
-[node name="TerrainSetOptionButton" type="OptionButton" parent="TemplateSectionPanel/VBoxContainer/MarginContainer/VBoxContainer/TerrainContainer/MarginContainer/VBoxContainer/HBoxContainer" groups=["TBTOptionButton"]]
+[node name="TerrainSetOptionButton" type="OptionButton" parent="TemplateSectionPanel/VBoxContainer/MarginContainer/VBoxContainer/TerrainContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3

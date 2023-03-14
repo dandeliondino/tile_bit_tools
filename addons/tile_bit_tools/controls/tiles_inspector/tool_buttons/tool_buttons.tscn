@@ -1,7 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://cstj2nq00ct5m"]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://addons/tile_bit_tools/controls/tiles_inspector/tool_buttons/tool_buttons.gd" id="1_8r32g"]
-[ext_resource type="Script" path="res://addons/tile_bit_tools/controls/theme/icon_button.gd" id="3_hprs6"]
+[ext_resource type="Script" path="res://addons/tile_bit_tools/controls/shared/icon_button.gd" id="3_hprs6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cruxo"]
 content_margin_left = 12.0
