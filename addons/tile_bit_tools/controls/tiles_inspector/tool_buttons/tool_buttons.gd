@@ -97,7 +97,7 @@ func _update_bit_button() -> void:
 
 func _disable_bit_button() -> void:
 	bit_button.disabled = true
-	bit_button.tooltip_text = "Tiles must have a Terrain Set assigned to use this feature"
+	bit_button.tooltip_text = "Tiles must have a Terrain Set assigned"
 
 
 func _enable_bit_button() -> void:
