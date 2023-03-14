@@ -3,7 +3,7 @@ extends Node
 
 
 
-enum TerrainChanges {NONE, ERASE, FILL, TEMPLATE}
+enum TerrainChanges {NONE, ERASE, FILL, BITS, TEMPLATE}
 
 const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd")
 
@@ -12,6 +12,7 @@ var terrain_changes_texts := {
 	TerrainChanges.NONE: "",
 	TerrainChanges.ERASE: "Erase terrain",
 	TerrainChanges.FILL: "Fill terrain",
+	TerrainChanges.BITS: "Set terrain bits",
 	TerrainChanges.TEMPLATE: "Apply terrain template",
 }
 
@@ -45,6 +46,16 @@ func fill_terrain(terrain_set : int, terrain_id : int) -> void:
 	var terrain_mode : int = tbt.context.tile_set.get_terrain_set_mode(terrain_set)
 	preview_bit_data.fill_all_tile_terrains(terrain_set, terrain_mode, terrain_id)
 	current_terrain_change = TerrainChanges.FILL
+	_emit_preview_updated()
+
+
+# sets specific terrain bit of all selected tiles
+# adds on to any changes already made
+func set_terrain_bits(terrain_bit : int, terrain_id : int) -> void:
+	if !preview_bit_data:
+		preview_bit_data = _get_new_preview_data()
+	preview_bit_data.set_all_bit_terrains(terrain_bit, terrain_id)
+	current_terrain_change = TerrainChanges.BITS
 	_emit_preview_updated()
 
 

@@ -161,7 +161,7 @@ func get_bit_color(coords : Vector2i, bit : TerrainBits) -> Color:
 	return get_terrain_color(terrain_index)
 
 
-func get_terrain_color(terrain_index : int) -> Color:
+func get_terrain_color(_terrain_index : int) -> Color:
 	# override this function
 	return Color.BLACK
 
@@ -229,6 +229,11 @@ func replace_tile_terrains(coords : Vector2i, old_terrain_index : int, new_terra
 	for bit in get_terrain_bits_list(true): 
 		if get_bit_terrain(coords, bit) == old_terrain_index:
 			set_bit_terrain(coords, bit, new_terrain_index)
+
+
+func set_all_bit_terrains(terrain_bit : TerrainBits, terrain_index : int) -> void:
+	for coords in get_coordinates_list():
+		set_bit_terrain(coords, terrain_bit, terrain_index)
 
 
 

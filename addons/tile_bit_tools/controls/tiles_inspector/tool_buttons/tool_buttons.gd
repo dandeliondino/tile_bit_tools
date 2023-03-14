@@ -37,7 +37,7 @@ func _setup_fill_button() -> void:
 func _setup_bit_button() -> void:
 	if !tbt.context.bit_data.has_terrain_set():
 		bit_button.disabled = true
-		bit_button.tooltip_text = "Tiles must have a Terrain Set assigned first to use this feature"
+		bit_button.tooltip_text = "Tiles must have a Terrain Set assigned to use this feature"
 		return
 	
 	bit_button.disabled = false
@@ -70,8 +70,7 @@ func _create_terrain_popup(terrain_bit : int, item_list : Array) -> String:
 	return terrain_popup.name
 
 
-func _on_bit_button_terrain_id_pressed(terrain_id : int, terrain_bit : int) -> void:
-	print("terrain_bit=%s, terrain_id=%s" % [terrain_bit, terrain_id])
+
 
 
 
@@ -113,7 +112,12 @@ func _on_fill_button_popup_id_pressed(id : int) -> void:
 	var terrain_set : int = fill_menu_items[id].terrain_set
 	var terrain : int = fill_menu_items[id].terrain
 	tbt.tiles_manager.fill_terrain(terrain_set, terrain)
-	
+
+
+func _on_bit_button_terrain_id_pressed(terrain_id : int, terrain_bit : int) -> void:
+	print("terrain_bit=%s, terrain_id=%s" % [terrain_bit, terrain_id])
+	tbt.tiles_manager.set_terrain_bits(terrain_bit, terrain_id)
+
 
 func _on_erase_button_pressed() -> void:
 	tbt.tiles_manager.erase_terrains()
