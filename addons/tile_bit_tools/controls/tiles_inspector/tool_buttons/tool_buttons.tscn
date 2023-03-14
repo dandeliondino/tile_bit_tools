@@ -24,6 +24,17 @@ icon = ExtResource("2_0rn2x")
 flat = false
 alignment = 0
 
+[node name="ChangeBitButton" type="MenuButton" parent="." groups=["TBTTextButton"]]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(123, 0)
+layout_mode = 2
+tooltip_text = "Fill all terrain bits with a single terrain"
+theme_override_constants/h_separation = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_565yv")
+text = "Set Bit"
+flat = false
+alignment = 0
+
 [node name="EraseButton" type="Button" parent="." groups=["TBTTextButton"]]
 layout_mode = 2
 size_flags_horizontal = 0

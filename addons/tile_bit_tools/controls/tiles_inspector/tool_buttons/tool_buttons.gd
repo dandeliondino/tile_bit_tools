@@ -11,15 +11,32 @@ var tbt : TBTPlugin
 
 
 @onready var fill_button: MenuButton = %FillButton
+@onready var change_bit_button: MenuButton = %ChangeBitButton
 
 func _tbt_ready() -> void:
 	_setup_fill_button()
-
+	_setup_bit_button()
 
 func _setup_fill_button() -> void:
 	fill_button.get_popup().id_pressed.connect(_on_fill_button_popup_id_pressed)
 	fill_button.custom_minimum_size.x = fill_button.size.x + 22
 	_populate_fill_menu()
+
+
+func _setup_bit_button() -> void:
+	var item_list := [{"name": "Terrain ID (center bit)", "id": tbt.BitData.TerrainBits.CENTER}]
+	var mode := tbt.context.bit_data.terrain_mode
+	var cell_neighbors := tbt.context.bit_data.get_terrain_bits_list(false)
+	for cell_neighbor in cell_neighbors:
+		item_list.append({
+			"name": str(cell_neighbor), # TODO - friendly name
+			"id": cell_neighbor,
+		})
+	
+	for item in item_list:
+		change_bit_button.get_popup().add_item(item.name, item.id)
+	
+
 
 
 func _populate_fill_menu() -> void:
