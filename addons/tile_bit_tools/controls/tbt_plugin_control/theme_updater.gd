@@ -24,7 +24,17 @@ func _tiles_inspector_added() -> void:
 	_update_themes()
 
 
+func _update_subtrees() -> void:
+	for dialog in tbt.dialog_windows:
+		dialog.theme = tbt.base_control.theme
+	tbt.tiles_inspector.theme = tbt.base_control.theme
+	tbt.tiles_preview.theme = tbt.base_control.theme
+
+
 func _update_themes() -> void:
+	_update_subtrees()
+	return
+	
 	tbt.output.debug("_update_themes()")
 	var base_control : Control = tbt.context.base_control
 	

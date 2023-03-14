@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=2 format=3]
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://cs67cjf5v5e8m"]
 
 [ext_resource type="Script" path="res://addons/tile_bit_tools/core/template_bit_data.gd" id="1_5bw30"]
 
