@@ -6,10 +6,10 @@
 script = ExtResource("1_xoo0e")
 version = "0.2.0"
 template_name = "Blob (Tilesetter)"
-template_description = "Corners-and-Sides autotile in Tilesetter's layout. In Tilesetter, select the center tile, build borders for 'Blob', then select the tiles and export as 'Image'."
+template_description = "Corners-and-Sides autotile in Tilesetter's layout. In Tilesetter, select the center tile, build borders for 'Blob', then select the tiles and export as 'Image'. Does not include the stray single tile. Select that tile separately, and click 'Fill'."
 _custom_tags = ["Tilesetter"]
 template_terrain_count = 2
-example_folder_path = ""
+example_folder_path = "res://addons/tile_bit_tools/examples/tilesetter_blob/"
 _tiles = {
 Vector2i(0, 0): {
 0: 0,
