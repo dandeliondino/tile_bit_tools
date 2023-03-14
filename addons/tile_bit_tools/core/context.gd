@@ -19,6 +19,16 @@ var bit_data : EditorBitData
 
 var base_control : Control
 
+# {index : terrain_mode}
+var terrain_sets := {}
+
+# {terrain_set : [{
+#	"index": terrain_index,
+#	"color": color,
+#	"name": name,
+#},...]}
+var terrains_by_set := {}
+
 var ready_complete := false
 
 
@@ -49,17 +59,6 @@ func validate() -> Globals.Errors:
 	return Globals.Errors.OK
 
 
-# {index : terrain_mode}
-var terrain_sets := {}
-
-# {terrain_set : [{
-#	"index": terrain_index,
-#	"color": color,
-#	"name": name,
-#},...]}
-
-var terrains_by_set := {}
-
 func _populate_terrain_sets() -> void:
 	for i in range(tile_set.get_terrain_sets_count()):
 		terrain_sets[i] = tile_set.get_terrain_set_mode(i)
@@ -73,7 +72,14 @@ func _populate_terrains() -> void:
 				"id": i,
 				"text": tile_set.get_terrain_name(terrain_set, i),
 				"color": tile_set.get_terrain_color(terrain_set, i),
+				"icon": _get_terrain_icon(tile_set.get_terrain_color(terrain_set, i))
 			})
+
+
+func _get_terrain_icon(color : Color) -> ImageTexture:
+	var image := Image.create(16, 16, false, Image.FORMAT_RGB8)
+	image.fill(color)
+	return ImageTexture.create_from_image(image)
 
 
 func get_terrain_sets() -> Array:

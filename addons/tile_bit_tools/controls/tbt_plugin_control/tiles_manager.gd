@@ -77,7 +77,7 @@ func apply_bit_data() -> void:
 	tbt.output.info(terrain_changes_texts[current_terrain_change])
 	
 	if current_terrain_change == TerrainChanges.ERASE:
-		tbt.output.user("Erasing terrain set assignments will cause error spam of Condition 'terrain_set < 0' is true. Data should save without corruption. Please ignore.")
+		tbt.output.user("Erasing terrain set assignments may cause error spam of Condition 'terrain_set < 0' is true. Data should save without corruption. Please ignore.")
 		
 	for coords in tbt.context.tiles.keys():
 		var tile_data : TileData = tbt.context.tiles[coords]

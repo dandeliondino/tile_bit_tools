@@ -64,7 +64,7 @@ func _update_picker() -> void:
 		var icon := _get_icon(terrain_color)
 		terrain_option_button.add_icon_item(icon, terrain_name, i)
 
-
+# TODO: refactor to get icon from context
 func _get_icon(p_color : Color) -> ImageTexture:
 	var image := Image.create(16, 16, false, Image.FORMAT_RGB8)
 	image.fill(p_color)

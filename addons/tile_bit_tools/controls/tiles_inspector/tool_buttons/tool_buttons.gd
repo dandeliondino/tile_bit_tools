@@ -1,21 +1,28 @@
 @tool
 extends Control
 
+const TERRAIN_POPUP := "TerrainPopup"
 
 const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd")
 
 
 var fill_menu_items := {}
 
+var bit_button_bit_id : int
+var bit_button_terrain_id : int
+
 var tbt : TBTPlugin
 
 
 @onready var fill_button: MenuButton = %FillButton
-@onready var change_bit_button: MenuButton = %ChangeBitButton
+@onready var bit_button: MenuButton = %BitButton
+@onready var bit_button_popup := bit_button.get_popup()
+
 
 func _tbt_ready() -> void:
 	_setup_fill_button()
 	_setup_bit_button()
+
 
 func _setup_fill_button() -> void:
 	fill_button.get_popup().id_pressed.connect(_on_fill_button_popup_id_pressed)
@@ -23,19 +30,48 @@ func _setup_fill_button() -> void:
 	_populate_fill_menu()
 
 
+
+# Creating individual sub-menus, as cannot tell which item is selected in PopupMenu()
+# PopupMenu.get_current_index() does not appear to exist in 4.0
+# https://github.com/godotengine/godot/pull/38520
 func _setup_bit_button() -> void:
-	var item_list := [{"name": "Terrain ID (center bit)", "id": tbt.BitData.TerrainBits.CENTER}]
-	var mode := tbt.context.bit_data.terrain_mode
-	var cell_neighbors := tbt.context.bit_data.get_terrain_bits_list(false)
-	for cell_neighbor in cell_neighbors:
-		item_list.append({
-			"name": str(cell_neighbor), # TODO - friendly name
-			"id": cell_neighbor,
-		})
+	if !tbt.context.bit_data.has_terrain_set():
+		bit_button.disabled = true
+		bit_button.tooltip_text = "Tiles must have a Terrain Set assigned first to use this feature"
+		return
 	
+	bit_button.disabled = false
+	bit_button.tooltip_text = "Set a single terrain bit in selected tiles"
+	bit_button_popup.submenu_popup_delay = 0.0
+	
+	var terrain_bits_list := tbt.context.bit_data.get_terrain_bits_list(true)
+	var terrains_item_list := tbt.context.get_terrains_item_list(tbt.context.bit_data.terrain_set)
+	
+	for terrain_bit in terrain_bits_list:
+		var terrain_bit_name : String = tbt.texts.TERRAIN_BIT_TEXTS[terrain_bit]
+		bit_button_popup.add_item(terrain_bit_name, terrain_bit)
+		var idx := bit_button_popup.get_item_index(terrain_bit)
+		
+		var terrain_popup_name := _create_terrain_popup(terrain_bit, terrains_item_list)
+		
+		bit_button_popup.set_item_submenu(idx, terrain_popup_name)
+
+
+func _create_terrain_popup(terrain_bit : int, item_list : Array) -> String:
+	var terrain_popup := PopupMenu.new()
+	terrain_popup.name = TERRAIN_POPUP + str(terrain_bit)
+	bit_button_popup.add_child(terrain_popup)
+	terrain_popup.id_pressed.connect(_on_bit_button_terrain_id_pressed.bind(terrain_bit))
+
 	for item in item_list:
-		change_bit_button.get_popup().add_item(item.name, item.id)
+		terrain_popup.add_icon_item(item.icon, item.text, item.id)
+#		terrain_popup.add_item(item.text, item.id)
 	
+	return terrain_popup.name
+
+
+func _on_bit_button_terrain_id_pressed(terrain_id : int, terrain_bit : int) -> void:
+	print("terrain_bit=%s, terrain_id=%s" % [terrain_bit, terrain_id])
 
 
 

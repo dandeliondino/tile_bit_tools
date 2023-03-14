@@ -5,6 +5,7 @@ extends Resource
 ## Redefined CellNeighbors enum to include center tile (terrain).
 ## Allows tile.terrain not to require separate logic when iterating.
 enum TerrainBits {
+	CENTER=99,
 	TOP_LEFT_CORNER=TileSet.CELL_NEIGHBOR_TOP_LEFT_CORNER,
 	TOP_SIDE=TileSet.CELL_NEIGHBOR_TOP_SIDE,
 	TOP_RIGHT_CORNER=TileSet.CELL_NEIGHBOR_TOP_RIGHT_CORNER,
@@ -13,7 +14,6 @@ enum TerrainBits {
 	BOTTOM_SIDE=TileSet.CELL_NEIGHBOR_BOTTOM_SIDE,
 	BOTTOM_LEFT_CORNER=TileSet.CELL_NEIGHBOR_BOTTOM_LEFT_CORNER,
 	LEFT_SIDE=TileSet.CELL_NEIGHBOR_LEFT_SIDE,
-	CENTER=99,
 }
 
 const NULL_TERRAIN_INDEX := -1
@@ -62,10 +62,20 @@ enum _TileKeys {TERRAIN, PEERING_BITS}
 
 
 # ITERATOR HELPERS
+
+# returns terrain bits in terrain_set's mode
+# center bit, if requested, will be listed first
 func get_terrain_bits_list(include_center_bit := false) -> Array:
 	var list : Array = CellNeighborsByMode[terrain_mode].duplicate()
 	if include_center_bit:
-		list.append(TerrainBits.CENTER)
+		list.push_front(TerrainBits.CENTER)
+	return list
+
+# returns all terrain bits regardless of terrain_set's mode
+func get_all_terrain_bits(include_center_bit := false) -> Array:
+	var list : Array = CellNeighborsByMode[TileSet.TerrainMode.TERRAIN_MODE_MATCH_CORNERS_AND_SIDES].duplicate()
+	if include_center_bit:
+		list.push_front(TerrainBits.CENTER)
 	return list
 
 
@@ -76,6 +86,9 @@ func get_coordinates_list() -> Array:
 # RESOURCE DATA
 func has_data() -> bool:
 	return get_tile_count() > 0
+
+func has_terrain_set() -> bool:
+	return terrain_set != NULL_TERRAIN_SET
 
 
 func has_tile(coords : Vector2i) -> bool:
