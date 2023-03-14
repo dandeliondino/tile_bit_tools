@@ -108,6 +108,14 @@ func notify_tiles_inspector_removed() -> void:
 	set_process_input(false)
 
 
+func is_dialog_popped_up() -> bool:
+	for dialog in dialog_windows:
+		if dialog.visible:
+			return true
+	return false
+
+
+
 func _on_tiles_inspector_visibility_changed() -> void:
 	if tiles_inspector.is_visible_in_tree():
 		tiles_preview.show()
@@ -115,13 +123,6 @@ func _on_tiles_inspector_visibility_changed() -> void:
 	else:
 		tiles_preview.hide()
 		set_process_input(false)
-
-
-func is_dialog_popped_up() -> bool:
-	for dialog in dialog_windows:
-		if dialog.visible:
-			return true
-	return false
 
 
 # while tiles inspector is visible, watch for mouse clicks and 
@@ -150,8 +151,6 @@ func _input(event: InputEvent) -> void:
 	if tiles_preview.get_parent_control().get_global_rect().has_point(mouse_position):
 		if !tiles_preview.get_mouse_input_control().get_global_rect().has_point(mouse_position):
 			tiles_preview_collapse_requested.emit()
-
-	
 
 
 func _setup_tbt_plugin_control() -> void:

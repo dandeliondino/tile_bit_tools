@@ -28,7 +28,7 @@ var tbt : TBTPlugin
 @onready var auto_tags_label: Label = %AutoTagsLabel
 @onready var preview_rect: TextureRect = %PreviewRect
 
-@onready var save_path_label: Label = %SavePathLabel
+@onready var folder_option_button: OptionButton = %FolderOptionButton
 
 
 func _ready() -> void:
@@ -65,9 +65,10 @@ func close_dialog() -> void:
 func _setup_dialog() -> void:
 	_set_max_size()
 	_setup_texture()
-	_setup_initial_values()
 	_setup_autotags()
 	_setup_info_label()
+	_setup_folders_button()
+	_setup_initial_values()
 
 
 func _set_max_size() -> void:
@@ -95,6 +96,26 @@ func _setup_info_label() -> void:
 		"terrain_mode": tbt.texts.TERRAIN_MODE_TEXTS[template_bit_data.terrain_mode],
 		"type": "Built-in" if template_bit_data.built_in else "User",
 	})
+
+
+func _setup_folders_button() -> void:
+	folder_option_button.clear()
+	
+	for i in range(tbt.template_manager.template_folder_paths.size()):
+		var folder_path : Dictionary = tbt.template_manager.template_folder_paths[i]
+		if folder_path.type != tbt.Globals.TemplateTypes.USER:
+			continue
+		if !folder_path.has("name"):
+			continue
+		folder_option_button.add_item(folder_path.name, i)
+		
+		var tooltip : String = folder_path.tooltip + "\n" + folder_path.path
+		var idx := folder_option_button.get_item_index(i)
+		folder_option_button.set_item_tooltip(idx, tooltip)
+	
+	folder_option_button.get_popup().add_to_group("TBTPopupMenu")
+	
+
 
 
 func _setup_initial_values() -> void:

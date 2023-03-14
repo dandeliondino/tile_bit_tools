@@ -3,7 +3,7 @@ extends Object
 const VERSION := "0.2.0"
 
 # ------------------------
-# 	ERRORS
+# 	ENUMS
 # ------------------------
 
 enum Errors {
@@ -18,8 +18,7 @@ enum Errors {
 }
 
 
-
-
+enum TemplateTypes {BUILT_IN, USER}
 
 
 
@@ -28,8 +27,8 @@ enum Errors {
 # ------------------------
 
 const BUILTIN_TEMPLATES_PATH := "res://addons/tile_bit_tools/templates/"
-
-
+const GODOT_TEMPLATES_FOLDER := "/tile_bit_tools_templates/"
+const PROJECT_TEMPLATES_PATH := "user://addons/tile_bit_tools/templates/"
 
 # ------------------------
 # 	USER SETTINGS
@@ -40,7 +39,7 @@ const PROJECT_SETTINGS_PATH := "addons/tile_bit_tools/"
 const Settings := {
 	"user_templates_path": {
 		"path": PROJECT_SETTINGS_PATH + "paths/user_templates_path",
-		"default": "user://addons/tile_bit_tools/templates/",
+		"default": "",
 		"type": TYPE_STRING,
 		"hint_string": PROPERTY_HINT_DIR,
 	},

@@ -118,8 +118,7 @@ func _remove_template() -> void:
 
 func _on_delete_confirmed() -> void:
 	var path := template_bit_data.resource_path
-	var dir := tbt.template_manager.get_user_templates_dir()
-	dir.remove_absolute(path)
+	DirAccess.remove_absolute(path)
 	tbt.templates_update_requested.emit()
 
 

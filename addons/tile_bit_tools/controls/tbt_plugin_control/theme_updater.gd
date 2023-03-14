@@ -461,6 +461,62 @@ func _update_themes() -> void:
 				},
 			],
 		},
+
+		{
+			"group_name": "TBTPopupMenu",
+			"updates": [
+				{
+					"property": "theme_override_styles/hover",
+					"value": base_control.get_theme_stylebox("hover", "PopupMenu"),
+				},
+				{
+					"property": "theme_override_styles/panel",
+					"value": base_control.get_theme_stylebox("panel", "PopupMenu"),
+				},
+				{
+					"property": "theme_override_styles/labeled_separator_left",
+					"value": base_control.get_theme_stylebox("labeled_separator_left", "PopupMenu"),
+				},
+				{
+					"property": "theme_override_styles/labeled_separator_right",
+					"value": base_control.get_theme_stylebox("labeled_separator_right", "PopupMenu"),
+				},
+				{
+					"property": "theme_override_styles/separator",
+					"value": base_control.get_theme_stylebox("separator", "PopupMenu"),
+				},
+				{
+					"property": "theme_override_fonts/font",
+					"value": base_control.get_theme_font("main", "EditorFonts"),
+				},
+				{
+					"property": "theme_override_font_sizes/font_size",
+					"value": base_control.get_theme_font_size("main_size", "EditorFonts"),
+				},
+				{
+					"property": "theme_override_colors/font_color",
+					"value": base_control.get_theme_color("font_color", "PopupMenu"),
+				},
+				{
+					"property": "theme_override_colors/font_hover_color",
+					"value": base_control.get_theme_color("font_hover_color", "PopupMenu"),
+				},
+				{
+					"property": "theme_override_colors/font_separator_color",
+					"value": base_control.get_theme_color("font_separator_color", "PopupMenu"),
+				},
+				{
+					"property": "theme_override_colors/font_disabled_color",
+					"value": base_control.get_theme_color("font_disabled_color", "PopupMenu"),
+				},
+#				{
+#					"property": ,
+#					"value": base_control.,
+#				},
+			],
+		},
+
+		
 		{
 			"group_name": "TBTBackgroundPanel",
 			"updates": [

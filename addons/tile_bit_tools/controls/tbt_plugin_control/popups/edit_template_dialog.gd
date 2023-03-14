@@ -2,8 +2,10 @@
 extends "res://addons/tile_bit_tools/controls/tbt_plugin_control/popups/template_dialog.gd"
 
 
-var dir : DirAccess
 var save_path : String
+
+@onready var folder_label: Label = $PanelContainer/MarginContainer/VBoxContainer/HBoxContainer6/FolderLabel
+
 
 func _setup_connections() -> void:
 	tbt.edit_template_requested.connect(_on_edit_template_requested)
@@ -12,7 +14,6 @@ func _setup_connections() -> void:
 
 func _setup_edit_dialog(p_template_bit_data : TBTPlugin.TemplateBitData) -> void:
 	template_bit_data = p_template_bit_data
-	dir = tbt.template_manager.get_user_templates_dir()
 	save_path = template_bit_data.resource_path
 	
 	show_dialog()
@@ -24,7 +25,22 @@ func _setup_initial_values() -> void:
 	name_edit.text = template_bit_data.template_name
 	description_edit.text = template_bit_data.template_description
 	tags_edit.text = _custom_tags_to_string()
-	save_path_label.text = "Saving to: %s" % save_path
+	_update_folder_label()
+
+
+# unable to get selecting option button item to work...
+# using label instead
+func _update_folder_label() -> void:
+	var path = save_path.rsplit("/", true, 1)[0] + "/"
+	for i in range(tbt.template_manager.template_folder_paths.size()):
+		var folder_path : Dictionary = tbt.template_manager.template_folder_paths[i]
+		print("checking %s against %s" % [path, folder_path.path])
+		if path == folder_path.path:
+			folder_label.text = folder_path.name
+			folder_label.tooltip_text = folder_path.tooltip + "\n" + folder_path.path
+			return
+
+
 
 
 func _custom_tags_to_string() -> String:

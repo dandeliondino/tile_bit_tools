@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://job5gqt1xbrh"]
 
 [ext_resource type="Script" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/popups/save_template_dialog.gd" id="1_7pdu0"]
 
@@ -120,6 +120,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Custom tags is a comma-separated list"
+mouse_filter = 0
 text = "Custom Tags"
 
 [node name="TagsEdit" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer8" groups=["TBTEditFont", "TBTTextEdit"]]
@@ -134,11 +135,17 @@ layout_mode = 2
 [node name="HBoxContainer6" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="SavePathLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer6" groups=["TBTPropertyLabel"]]
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer6" groups=["TBTPropertyLabel"]]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Save Folder"
+
+[node name="FolderOptionButton" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer6" groups=["TBTOptionButton", "TBTPropertyLabel"]]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
-text = "user://addons/tile_bit_tools/templates/user_template01.tres"
+shortcut_in_tooltip = false
 
 [node name="HSeparator7" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer" groups=["TBTSeparator"]]
 layout_mode = 2

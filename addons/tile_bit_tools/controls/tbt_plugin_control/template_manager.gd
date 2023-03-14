@@ -1,7 +1,8 @@
 @tool
 extends Node
 
-
+const TEMPLATE_PREVIEW_TILE_WIDTH := 16
+const TEMPLATE_PREVIEW_TILE_SPACING := 0
 
 const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd")
 
@@ -12,6 +13,11 @@ var template_loader : TemplateLoader
 var bit_data_draw_node
 
 var tbt : TBTPlugin
+
+var editor_paths := EditorPaths.new()
+
+
+@onready var template_folder_paths : Array
 
 
 
@@ -27,12 +33,20 @@ func _tbt_ready() -> void:
 func _setup_bit_data_draw() -> void:
 	bit_data_draw_node = BitDataDrawNode.instantiate()
 	add_child(bit_data_draw_node)
+	bit_data_draw_node.tile_size = TEMPLATE_PREVIEW_TILE_WIDTH
+	bit_data_draw_node.tile_spacing = TEMPLATE_PREVIEW_TILE_SPACING
 	
 
 func _load_templates() -> void:
-	bit_data_draw_node.tile_size = 16
-	bit_data_draw_node.tile_spacing = 0
-	template_loader = TemplateLoader.new(tbt.Globals.BUILTIN_TEMPLATES_PATH, get_user_templates_path())
+	_update_template_folder_paths()
+	
+	for folder_path in template_folder_paths:
+		tbt.output.info("Loading templates in %s: %s" % [folder_path.name, folder_path.path])
+		if !DirAccess.dir_exists_absolute(folder_path.path):
+			tbt.output.debug("making path to template folder: %s" % folder_path.path)
+			DirAccess.make_dir_recursive_absolute(folder_path.path)
+			
+	template_loader = TemplateLoader.new(template_folder_paths)
 	_create_template_textures.call_deferred()
 	tbt.output.info("%s templates loaded" % template_loader.get_templates().size())
 
@@ -55,22 +69,47 @@ func update_templates() -> void:
 	tbt.templates_updated.emit()
 
 
-func get_user_templates_dir() -> DirAccess:
-	var path := get_user_templates_path()
-	var dir := DirAccess.open(path)
-	if !dir:
-		DirAccess.make_dir_recursive_absolute(path)
-		dir = DirAccess.open(path)
-		if !dir:
-			tbt.output.error("Unable to open user templates_to_tags directory")
-			return dir
-	return dir
-
-
 func get_bit_data_draw() -> SubViewport:
 	return bit_data_draw_node
 
 
 func get_user_templates_path() -> String:
-	return ProjectSettings.get_setting(tbt.Globals.Settings.user_templates_path.path)
+	return ProjectSettings.get_setting(TBTPlugin.Globals.Settings.user_templates_path.path)
+
+
+func _update_template_folder_paths() -> void:
+	template_folder_paths = [
+		{
+			"type": TBTPlugin.Globals.TemplateTypes.BUILT_IN,
+			"name": "Built-in Templates Folder",
+			"path": TBTPlugin.Globals.BUILTIN_TEMPLATES_PATH,
+		},
+		{
+			"type": TBTPlugin.Globals.TemplateTypes.USER,
+			"name": "Project Templates Folder",
+			"tooltip": "Templates saved here will only be available for this project",
+			"path": TBTPlugin.Globals.PROJECT_TEMPLATES_PATH,
+		},
+		{
+			"type": TBTPlugin.Globals.TemplateTypes.USER,
+			"name": "Shared Templates Folder",
+			"tooltip": "Templates saved here will be available to all projects on this computer with TileBitTools installed",
+			"path": editor_paths.get_data_dir() + TBTPlugin.Globals.GODOT_TEMPLATES_FOLDER,
+		},
+		# default is the same as project templates folder
+		{
+			"type": TBTPlugin.Globals.TemplateTypes.USER,
+			"name": "User Templates Folder",
+			"tooltip": "Template will be saved to the folder set in Project Settings -> Tile Bit Tools",
+			"path": get_user_templates_path(),
+		},
+	]
+	
+	for i in range(template_folder_paths.size()-1, -1, -1):
+		print(i)
+		if template_folder_paths[i].path == "":
+			template_folder_paths.remove_at(i)
+		
+	
+
 
