@@ -17,7 +17,7 @@ var terrain_changes_texts := {
 }
 
 
-var preview_bit_data : TBTPlugin.EditorBitData
+var preview_bit_data : TBTPlugin.EditorBitData = null
 var current_terrain_change := TerrainChanges.NONE
 
 var tbt : TBTPlugin
@@ -27,6 +27,18 @@ var tbt : TBTPlugin
 func _tbt_ready() -> void:
 	tbt.reset_requested.connect(_on_reset_requested)
 	tbt.apply_changes_requested.connect(_on_apply_changes_requested)
+
+
+func get_preview_terrain_set() -> int:
+	if preview_bit_data == null:
+		return -1
+	return preview_bit_data.terrain_set
+
+func has_preview() -> bool:
+	return preview_bit_data != null
+
+func has_preview_terrain_set() -> bool:
+	return preview_bit_data.terrain_set != preview_bit_data.NULL_TERRAIN_SET
 
 
 func clear_preview() -> void:
