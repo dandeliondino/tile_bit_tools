@@ -3,7 +3,7 @@ extends Node
 
 
 
-enum TerrainChanges {NONE, ERASE, FILL, TEMPLATE}
+enum TerrainChanges {NONE, ERASE, FILL, BITS, TEMPLATE}
 
 const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd")
 
@@ -12,11 +12,12 @@ var terrain_changes_texts := {
 	TerrainChanges.NONE: "",
 	TerrainChanges.ERASE: "Erase terrain",
 	TerrainChanges.FILL: "Fill terrain",
+	TerrainChanges.BITS: "Set terrain bits",
 	TerrainChanges.TEMPLATE: "Apply terrain template",
 }
 
 
-var preview_bit_data : TBTPlugin.EditorBitData
+var preview_bit_data : TBTPlugin.EditorBitData = null
 var current_terrain_change := TerrainChanges.NONE
 
 var tbt : TBTPlugin
@@ -26,6 +27,18 @@ var tbt : TBTPlugin
 func _tbt_ready() -> void:
 	tbt.reset_requested.connect(_on_reset_requested)
 	tbt.apply_changes_requested.connect(_on_apply_changes_requested)
+
+
+func get_preview_terrain_set() -> int:
+	if preview_bit_data == null:
+		return -1
+	return preview_bit_data.terrain_set
+
+func has_preview() -> bool:
+	return preview_bit_data != null
+
+func has_preview_terrain_set() -> bool:
+	return preview_bit_data.terrain_set != preview_bit_data.NULL_TERRAIN_SET
 
 
 func clear_preview() -> void:
@@ -45,6 +58,16 @@ func fill_terrain(terrain_set : int, terrain_id : int) -> void:
 	var terrain_mode : int = tbt.context.tile_set.get_terrain_set_mode(terrain_set)
 	preview_bit_data.fill_all_tile_terrains(terrain_set, terrain_mode, terrain_id)
 	current_terrain_change = TerrainChanges.FILL
+	_emit_preview_updated()
+
+
+# sets specific terrain bit of all selected tiles
+# adds on to any changes already made
+func set_terrain_bits(terrain_bit : int, terrain_id : int) -> void:
+	if !preview_bit_data:
+		preview_bit_data = _get_new_preview_data()
+	preview_bit_data.set_all_bit_terrains(terrain_bit, terrain_id)
+	current_terrain_change = TerrainChanges.BITS
 	_emit_preview_updated()
 
 
@@ -77,7 +100,7 @@ func apply_bit_data() -> void:
 	tbt.output.info(terrain_changes_texts[current_terrain_change])
 	
 	if current_terrain_change == TerrainChanges.ERASE:
-		tbt.output.user("Erasing terrain set assignments will cause error spam of Condition 'terrain_set < 0' is true. Data should save without corruption. Please ignore.")
+		tbt.output.user("Erasing terrain set assignments may cause error spam of Condition 'terrain_set < 0' is true. Data should save without corruption. Please ignore.")
 		
 	for coords in tbt.context.tiles.keys():
 		var tile_data : TileData = tbt.context.tiles[coords]
