@@ -1,66 +1,10 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://b5nbqr8ah0ay2"]
 
 [ext_resource type="Script" path="res://addons/tile_bit_tools/controls/tiles_inspector/tool_buttons/tool_buttons.gd" id="1_8r32g"]
 [ext_resource type="Script" path="res://addons/tile_bit_tools/controls/shared/icon_button.gd" id="3_hprs6"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cruxo"]
-content_margin_left = 12.0
-content_margin_top = 10.0
-content_margin_right = 64.0
-content_margin_bottom = 10.0
-bg_color = Color(0.24936, 0.26784, 0.29864, 0.5)
-border_color = Color(0.1155, 0.132, 0.1595, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-corner_detail = 5
-anti_aliasing = false
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ybcpk"]
-content_margin_left = 12.0
-content_margin_top = 10.0
-content_margin_right = 64.0
-content_margin_bottom = 10.0
-bg_color = Color(0.128625, 0.147, 0.177625, 1)
-border_color = Color(0.1155, 0.132, 0.1595, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-corner_detail = 5
-anti_aliasing = false
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vnicm"]
-content_margin_left = 12.0
-content_margin_top = 10.0
-content_margin_right = 64.0
-content_margin_bottom = 10.0
-bg_color = Color(1, 1, 1, 0.11)
-border_color = Color(1, 1, 1, 0.05)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-corner_detail = 5
-anti_aliasing = false
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j1ynk"]
-content_margin_left = 12.0
-content_margin_top = 10.0
-content_margin_right = 64.0
-content_margin_bottom = 10.0
-bg_color = Color(0.189, 0.216, 0.261, 1)
-border_color = Color(0.147, 0.168, 0.203, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-corner_detail = 5
-anti_aliasing = false
-
 [node name="ToolButtons" type="HBoxContainer"]
-theme_override_constants/separation = 16
+theme_override_constants/separation = 8
 alignment = 1
 script = ExtResource("1_8r32g")
 
@@ -68,13 +12,10 @@ script = ExtResource("1_8r32g")
 unique_name_in_owner = true
 custom_minimum_size = Vector2(123, 0)
 layout_mode = 2
+size_flags_horizontal = 4
 tooltip_text = "Fill all terrain bits in selected tiles"
 theme_override_constants/h_separation = 8
 theme_override_font_sizes/font_size = 28
-theme_override_styles/normal = SubResource("StyleBoxFlat_cruxo")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_ybcpk")
-theme_override_styles/hover = SubResource("StyleBoxFlat_vnicm")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_j1ynk")
 text = "Fill Terrain"
 flat = false
 alignment = 0
@@ -85,14 +26,11 @@ editor_name = "Bucket"
 unique_name_in_owner = true
 custom_minimum_size = Vector2(123, 0)
 layout_mode = 2
+size_flags_horizontal = 4
 tooltip_text = "Fill all terrain bits with a single terrain"
 theme_override_constants/h_separation = 8
 theme_override_font_sizes/font_size = 28
-theme_override_styles/normal = SubResource("StyleBoxFlat_cruxo")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_ybcpk")
-theme_override_styles/hover = SubResource("StyleBoxFlat_vnicm")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_j1ynk")
-text = "Set Bit"
+text = "Set Terrain Bits"
 flat = false
 alignment = 0
 script = ExtResource("3_hprs6")
@@ -101,16 +39,12 @@ editor_name = "EditKey"
 [node name="ClearButton" type="Button" parent="." groups=["TBTTextButton"]]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 4
 size_flags_vertical = 0
 theme_override_constants/h_separation = 8
 theme_override_font_sizes/font_size = 28
-theme_override_styles/normal = SubResource("StyleBoxFlat_cruxo")
-theme_override_styles/hover = SubResource("StyleBoxFlat_vnicm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_ybcpk")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_j1ynk")
 text = "Clear Terrain"
-alignment = 2
+alignment = 0
 script = ExtResource("3_hprs6")
 editor_name = "Clear"
 
