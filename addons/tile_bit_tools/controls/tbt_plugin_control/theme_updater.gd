@@ -166,6 +166,7 @@ func _tbt_ready() -> void:
 	tbt.theme_update_requested.connect(_on_theme_update_requested)
 	_setup_themes()
 
+
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_THEME_CHANGED:
 		if !is_instance_valid(tbt):
@@ -177,17 +178,18 @@ func _notification(what: int) -> void:
 func _tiles_inspector_added() -> void:
 	await get_tree().process_frame
 	if !height_setup_complete:
-		# if done under _setup_themes(), will not get get heights 
-		# if plugin activated on editor launch
+		# attempted under _setup_themes()
+		# will only run again if failed to get heights
 		_setup_custom_heights()
-	
-#	_setup_dynamic_containers()
 	_update_themes()
 
 
 # TODO: also call this from notification theme changed
 func _setup_themes() -> void:
-	height_setup_complete = false
+	# otherwise will not get on startup 
+	# and there will be noticeable pause on first opening tile inspector
+	await get_tree().create_timer(0.1).timeout
+	_setup_custom_heights()
 	_update_themes()
 
 
@@ -220,11 +222,16 @@ func _update_node(node : Node) -> void:
 
 
 func _setup_custom_heights() -> void:
-	category_panel_height = max(_get_height_by_class(CATEGORY_EDITOR_CLASS), DEFAULT_MINIMUM_HEIGHT)
-	section_button_height = max(_get_height_by_class(SECTION_EDITOR_CLASS), DEFAULT_MINIMUM_HEIGHT)
-#	prints("category_panel_height", category_panel_height)
-#	prints("section_button_height", section_button_height)
 	height_setup_complete = true
+	category_panel_height = _get_height_by_class(CATEGORY_EDITOR_CLASS)
+	if category_panel_height == 0:
+		category_panel_height = DEFAULT_MINIMUM_HEIGHT
+		height_setup_complete = false
+	section_button_height = _get_height_by_class(SECTION_EDITOR_CLASS)
+	if section_button_height == 0:
+		section_button_height = DEFAULT_MINIMUM_HEIGHT
+		height_setup_complete = false
+	tbt.output.debug("_setup_custom_heights() success=%s" % str(height_setup_complete))
 
 
 func _update_custom_heights() -> void:
@@ -247,8 +254,7 @@ func _on_theme_update_requested(node : Node) -> void:
 # finds first control of class that has a height > 0
 # returns height
 func _get_height_by_class(p_class_name : String) -> int:
-	var controls := tbt.base_control.find_children("*", p_class_name, true, false)
-	for control in controls:
+	for control in tbt.base_control.find_children("*", p_class_name, true, false):
 		var height : int = control.size.y
 		if height > 0:
 			return height

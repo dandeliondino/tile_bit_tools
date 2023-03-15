@@ -12,6 +12,7 @@ var tag : TemplateTag
 @onready var label: Label = %Label
 @onready var remove_button: Button = %RemoveButton
 
+
 func _ready() -> void:
 	remove_button.pressed.connect(_on_remove_button_pressed)
 
