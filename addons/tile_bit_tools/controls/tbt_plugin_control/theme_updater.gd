@@ -8,6 +8,9 @@ const CATEGORY_EDITOR_CLASS := "EditorInspectorCategory"
 const SECTION_EDITOR_CLASS := "EditorInspectorSection"
 const CATEGORY_PANEL_GROUP := "TBTCategoryPanel"
 const SECTION_BUTTON_GROUP := "TBTSectionButton"
+const DEFAULT_MINIMUM_HEIGHT := 16
+
+
 
 const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd")
 
@@ -139,34 +142,43 @@ var overrides_dict := {
 var category_panel_height := UNASSIGNED
 var section_button_height := UNASSIGNED
 
+var height_setup_complete := false
+
 # TODO: add request_apply_style for styling runtime generated controls
 
 var tbt : TBTPlugin
 
 
 func _tbt_ready() -> void:
+	tbt.theme_update_requested.connect(_on_theme_update_requested)
 	_setup_themes()
 
 
 func _tiles_inspector_added() -> void:
 	await get_tree().process_frame
+	if !height_setup_complete:
+		# if done under _setup_themes(), will not get get heights 
+		# if plugin activated on editor launch
+		_setup_custom_heights()
+	
+#	_setup_dynamic_containers()
 	_update_themes()
 
 
 # TODO: also call this from notification theme changed
 func _setup_themes() -> void:
-	_setup_custom_heights()
+	height_setup_complete = false
 	_update_themes()
 
 
 func _update_themes() -> void:
 	tbt.output.debug("_update_themes()")
-	_update_overrides()
+	_update_groups()
 	_update_custom_heights()
 
 
 
-func _update_overrides() -> void:
+func _update_groups() -> void:
 	for group in overrides_dict.keys():
 		for override in overrides_dict[group].keys():
 			var method : String = override_methods[override]
@@ -176,16 +188,41 @@ func _update_overrides() -> void:
 			get_tree().set_group(group, property, value)
 			
 
+func _update_node(node : Node) -> void:
+	for group in overrides_dict.keys():
+		if node.is_in_group(group):
+			for override in overrides_dict[group].keys():
+				var method : String = override_methods[override]
+				var args : Array = overrides_dict[group][override]
+				var property : String = override_properties[override]
+				var value = tbt.base_control.callv(method, args)
+				node.set(property, value)
+
 
 func _setup_custom_heights() -> void:
-	category_panel_height = _get_height_by_class(CATEGORY_EDITOR_CLASS)
-	section_button_height = _get_height_by_class(SECTION_EDITOR_CLASS)
+	category_panel_height = max(_get_height_by_class(CATEGORY_EDITOR_CLASS), DEFAULT_MINIMUM_HEIGHT)
+	section_button_height = max(_get_height_by_class(SECTION_EDITOR_CLASS), DEFAULT_MINIMUM_HEIGHT)
+#	prints("category_panel_height", category_panel_height)
+#	prints("section_button_height", section_button_height)
+	height_setup_complete = true
 
 
 func _update_custom_heights() -> void:
 	get_tree().set_group(CATEGORY_PANEL_GROUP, "custom_minimum_size", Vector2i(0, category_panel_height))
 	get_tree().set_group(SECTION_BUTTON_GROUP, "custom_minimum_size", Vector2i(0, section_button_height))
 
+
+#func _setup_dynamic_containers() -> void:
+#	for node in get_tree().get_nodes_in_group(tbt.Globals.GROUP_DYNAMIC_CONTAINER):
+#		if !node.child_entered_tree.is_connected(_on_dynamic_container_child_added):
+#			node.child_entered_tree.connect(_on_dynamic_container_child_added)
+
+
+func _on_theme_update_requested(node : Node) -> void:
+	await get_tree().process_frame
+	_update_node(node)
+	for child in node.find_children("*", "", true, false):
+		_update_node(child)
 
 # finds first control of class that has a height > 0
 # returns height

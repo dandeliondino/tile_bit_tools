@@ -38,7 +38,7 @@ popup/item_3/id = 4
 popup/item_4/text = "Godot 3 (Templates: 1)"
 popup/item_4/id = 7
 
-[node name="TagsContainer" type="HFlowContainer" parent="."]
+[node name="TagsContainer" type="HFlowContainer" parent="." groups=["TBTDynamicContainer"]]
 unique_name_in_owner = true
 layout_mode = 2
 
@@ -85,6 +85,7 @@ layout_mode = 2
 
 [node name="TemplateInfoPanel" parent="TemplateSectionPanel/VBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource("5_tlsqj")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="TerrainContainer" type="PanelContainer" parent="TemplateSectionPanel/VBoxContainer/MarginContainer/VBoxContainer" groups=["TBTSubPropertyPanel"]]
@@ -118,6 +119,6 @@ fit_to_longest_item = false
 layout_mode = 2
 theme_override_constants/margin_left = 16
 
-[node name="TerrainPickersContainer" type="VBoxContainer" parent="TemplateSectionPanel/VBoxContainer/MarginContainer/VBoxContainer/TerrainContainer/MarginContainer/VBoxContainer/MarginContainer" groups=["TBT_DYNAMIC_CONTAINER"]]
+[node name="TerrainPickersContainer" type="VBoxContainer" parent="TemplateSectionPanel/VBoxContainer/MarginContainer/VBoxContainer/TerrainContainer/MarginContainer/VBoxContainer/MarginContainer" groups=["TBTDynamicContainer"]]
 unique_name_in_owner = true
 layout_mode = 2

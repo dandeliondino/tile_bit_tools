@@ -31,6 +31,7 @@ func setup(p_tag : TemplateTag, base_control : Control) -> void:
 	stylebox.content_margin_bottom = 0
 	set("theme_override_styles/panel", stylebox)
 	
+	
 	# TODO: implement in future?
 #	if tag.color:
 #		var stylebox : StyleBoxFlat = get("theme_override_styles/panel")
