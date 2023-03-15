@@ -77,10 +77,17 @@ var overrides_dict := {
 	
 	# SAVE/EDIT DIALOGS
 	"TBTDialogWindow": {
-		Overrides.WINDOW_PANEL: ["panel", "EditorSettingsDialog"],
+		Overrides.WINDOW_PANEL: ["panel", "ProjectSettingsEditor"],
 	},
-	
-	
+	"TBTDialogPanelBackground": {
+		Overrides.PANEL: ["Background", "EditorStyles"],
+	},
+	"TBTDialogPanelForeground": {
+		Overrides.PANEL: ["PanelForeground", "EditorStyles"],
+	},
+	"TBTDialogPanelSection": {
+		Overrides.PANEL: ["panel", "Tree"],
+	},
 	# BUTTONS
 	"TBTTextButton": {
 		Overrides.FONT_COLOR: ["font_color", "Editor"],
