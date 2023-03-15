@@ -7,7 +7,7 @@ const UNASSIGNED := -1
 const CATEGORY_EDITOR_CLASS := "EditorInspectorCategory"
 const SECTION_EDITOR_CLASS := "EditorInspectorSection"
 const CATEGORY_PANEL_GROUP := "TBTCategoryPanel"
-const SECTION_BOX_GROUP := "TBTSectionBox"
+const SECTION_BUTTON_GROUP := "TBTSectionButton"
 
 const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd")
 
@@ -137,7 +137,7 @@ var overrides_dict := {
 
 
 var category_panel_height := UNASSIGNED
-var section_box_height := UNASSIGNED
+var section_button_height := UNASSIGNED
 
 # TODO: add request_apply_style for styling runtime generated controls
 
@@ -155,14 +155,14 @@ func _tiles_inspector_added() -> void:
 
 # TODO: also call this from notification theme changed
 func _setup_themes() -> void:
-	_setup_heights()
+	_setup_custom_heights()
 	_update_themes()
 
 
 func _update_themes() -> void:
 	tbt.output.debug("_update_themes()")
 	_update_overrides()
-	return
+	_update_custom_heights()
 
 
 
@@ -177,9 +177,14 @@ func _update_overrides() -> void:
 			
 
 
-func _setup_heights() -> void:
+func _setup_custom_heights() -> void:
 	category_panel_height = _get_height_by_class(CATEGORY_EDITOR_CLASS)
-	section_box_height = _get_height_by_class(SECTION_EDITOR_CLASS)
+	section_button_height = _get_height_by_class(SECTION_EDITOR_CLASS)
+
+
+func _update_custom_heights() -> void:
+	get_tree().set_group(CATEGORY_PANEL_GROUP, "custom_minimum_size", Vector2i(0, category_panel_height))
+	get_tree().set_group(SECTION_BUTTON_GROUP, "custom_minimum_size", Vector2i(0, section_button_height))
 
 
 # finds first control of class that has a height > 0

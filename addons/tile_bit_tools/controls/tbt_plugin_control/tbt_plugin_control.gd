@@ -76,14 +76,16 @@ func _ready() -> void:
 	set_process_input(false)
 	child_entered_tree.connect(_assign_child_by_class)
 	_setup_debug_signals()
-	_setup_tbt_plugin_control()
-	_inject_tbt_reference(self)
+	_setup_children()
 
 
 func setup(p_interface : EditorInterface, p_tiles_preview : Control) -> void:
 	interface = p_interface
 	base_control = interface.get_base_control()
 	icons = Icons.new(base_control)
+	
+	# here instead of _ready() so base_control is not null
+	_inject_tbt_reference(self)
 	
 	tiles_preview = p_tiles_preview
 	_inject_tbt_reference(tiles_preview, true)
@@ -149,7 +151,7 @@ func _input(event: InputEvent) -> void:
 			tiles_preview_collapse_requested.emit()
 
 
-func _setup_tbt_plugin_control() -> void:
+func _setup_children() -> void:
 	for child in _get_children_recursive(self):
 		_assign_child_by_class(child)
 
