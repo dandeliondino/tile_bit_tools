@@ -62,7 +62,7 @@ func update(p_template_bit_data : TBTPlugin.TemplateBitData) -> void:
 		edit_button.show()
 		remove_button.show()
 	
-	if template_bit_data.example_folder_path != "" && template_bit_data.example_folder_path.is_absolute_path():
+	if template_bit_data.example_folder_path != "" && DirAccess.dir_exists_absolute(template_bit_data.example_folder_path):
 		example_folder_path = template_bit_data.example_folder_path
 		example_button.show()
 	else:
