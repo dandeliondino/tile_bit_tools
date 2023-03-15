@@ -10,7 +10,8 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v7bmg"]
 
-[node name="TemplateInfoPanel" type="PanelContainer" groups=["TBTTemplateInspectorForeground"]]
+[node name="TemplateInfoPanel" type="PanelContainer" groups=["TBTSubinspectorOverlayPanel"]]
+visible = false
 custom_minimum_size = Vector2(0, 48)
 anchors_preset = 10
 anchor_right = 1.0
@@ -46,7 +47,7 @@ size_flags_horizontal = 3
 expand_mode = 1
 stretch_mode = 5
 
-[node name="DescriptionContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+[node name="DescriptionContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer" groups=["TBTInspectorMessagePanel"]]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_kuq0c")

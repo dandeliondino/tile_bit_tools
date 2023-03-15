@@ -89,6 +89,19 @@ var overrides_dict := {
 	"TBTCategoryPanel": {
 		Overrides.PANEL: ["bg", "EditorInspectorCategory"],
 	},
+	"TBTSubinspectorPanel": {
+		Overrides.PANEL: ["sub_inspector_property_bg0", "Editor"],
+	},
+	"TBTSubinspectorOverlayPanel": {
+		Overrides.PANEL: ["sub_inspector_bg0", "Editor"],
+	},
+	"TBTSubinspectorPropertiesPanel": {
+		Overrides.PANEL: ["panel", "Tree"],
+	},
+	"TBTInspectorMessagePanel": {
+		Overrides.PANEL: ["bg_group_note", "EditorProperty"],
+	},
+	
 	
 	# TILES PREVIEW
 	"TBTPreviewPanelBackground": {

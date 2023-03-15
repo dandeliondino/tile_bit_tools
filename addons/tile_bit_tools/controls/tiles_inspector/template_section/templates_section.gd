@@ -141,13 +141,15 @@ func _update_template_info_panel() -> void:
 
 
 func _update_template_panel() -> void:
-	var stylebox : StyleBox
 	if selected_template:
-		stylebox = tbt.base_control.get_theme_stylebox("sub_inspector_property_bg0", "Editor")
+		template_section_panel.add_to_group("TBTSubinspectorPanel")
+		tbt.theme_update_requested.emit(template_section_panel)
 	else:
-		stylebox = StyleBoxEmpty.new()
+		template_section_panel.remove_from_group("TBTSubinspectorPanel")
+		template_section_panel.set("theme_override_styles/panel", StyleBoxEmpty.new())
+
 	
-	template_section_panel.set("theme_override_styles/panel", stylebox)
+	
 	
 
 

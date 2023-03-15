@@ -81,7 +81,7 @@ theme_override_constants/margin_left = 16
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer2"]
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer2/VBoxContainer" groups=["TBTDescriptionBox"]]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer2/VBoxContainer" groups=["TBTInspectorMessagePanel"]]
 layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer2/VBoxContainer/PanelContainer"]
