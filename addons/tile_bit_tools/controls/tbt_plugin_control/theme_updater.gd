@@ -4,6 +4,11 @@ extends Node
 
 const UNASSIGNED := -1
 
+const CATEGORY_EDITOR_CLASS := "EditorInspectorCategory"
+const SECTION_EDITOR_CLASS := "EditorInspectorSection"
+const CATEGORY_PANEL_GROUP := "TBTCategoryPanel"
+const SECTION_BOX_GROUP := "TBTSectionBox"
+
 const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd")
 
 
@@ -131,8 +136,8 @@ var overrides_dict := {
 }
 
 
-var category_height := UNASSIGNED
-var section_height := UNASSIGNED
+var category_panel_height := UNASSIGNED
+var section_box_height := UNASSIGNED
 
 # TODO: add request_apply_style for styling runtime generated controls
 
@@ -140,7 +145,7 @@ var tbt : TBTPlugin
 
 
 func _tbt_ready() -> void:
-	pass
+	_setup_themes()
 
 
 func _tiles_inspector_added() -> void:
@@ -148,15 +153,16 @@ func _tiles_inspector_added() -> void:
 	_update_themes()
 
 
+# TODO: also call this from notification theme changed
+func _setup_themes() -> void:
+	_setup_heights()
+	_update_themes()
 
 
-
-func _update_dialogs() -> void:
-	for dialog in tbt.dialog_windows:
-		dialog.theme = tbt.base_control.theme
-
-
-
+func _update_themes() -> void:
+	tbt.output.debug("_update_themes()")
+	_update_overrides()
+	return
 
 
 
@@ -171,17 +177,27 @@ func _update_overrides() -> void:
 			
 
 
+func _setup_heights() -> void:
+	category_panel_height = _get_height_by_class(CATEGORY_EDITOR_CLASS)
+	section_box_height = _get_height_by_class(SECTION_EDITOR_CLASS)
 
 
+# finds first control of class that has a height > 0
+# returns height
+func _get_height_by_class(p_class_name : String) -> int:
+	var controls := tbt.base_control.find_children("*", p_class_name, true, false)
+	for control in controls:
+		var height : int = control.size.y
+		if height > 0:
+			return height
+	return 0
 
-func _update_themes() -> void:
-	tbt.output.debug("_update_themes()")
-	_update_overrides()
-	return
 	
 	
-	var base_control : Control = tbt.context.base_control
-#
+
+
+	
+
 #	if category_control_height == UNASSIGNED:
 #		var editor_inspector_category_control := base_control.find_children("*", "EditorInspectorCategory", true, false)[0]
 #		category_control_height = editor_inspector_category_control.size.y
