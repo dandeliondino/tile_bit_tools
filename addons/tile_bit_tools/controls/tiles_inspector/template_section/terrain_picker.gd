@@ -19,16 +19,18 @@ var terrain_set : int :
 		_update_picker()
 
 var tbt : TBTPlugin
+var template_mode : TileSet.TerrainMode
 
 @onready var terrain_label: Label = %TerrainLabel
 @onready var terrain_color_rect: ColorRect = %TerrainColorRect
 @onready var terrain_option_button: OptionButton = %TerrainOptionButton
 
 
-func setup(p_tbt : TBTPlugin, p_index : int, p_color : Color) -> void:
+func setup(p_tbt : TBTPlugin, p_index : int, p_color : Color, p_mode : TileSet.TerrainMode) -> void:
 	tbt = p_tbt
 	index = p_index
 	color = p_color
+	template_mode = p_mode
 	_update_label()
 
 
@@ -44,6 +46,13 @@ func get_selected_item_id() -> int:
 	return id
 
 
+func disable_picker(value : bool) -> void:
+	if value:
+		terrain_option_button.disabled = true
+	else:
+		terrain_option_button.disabled = false
+
+
 func _update_label() -> void:	
 	terrain_label.text = terrain_label_text % index
 	terrain_color_rect.color = color
@@ -51,24 +60,26 @@ func _update_label() -> void:
 
 func _update_picker() -> void:
 	terrain_option_button.clear()
-	terrain_option_button.add_item("", EMPTY_ITEM_ID)
+	terrain_option_button.add_item(tbt.texts.EMPTY_ITEM, EMPTY_ITEM_ID)
 	
 	if terrain_set == -1:
+		disable_picker(true)
 		return
+	
+	var terrain_set_mode := tbt.context.tile_set.get_terrain_set_mode(terrain_set)
+	if terrain_set_mode != template_mode:
+		disable_picker(true)
+		return
+	
+	disable_picker(false)
 	
 	var terrains_count := tbt.context.tile_set.get_terrains_count(terrain_set)
 	
 	for i in range(terrains_count):
 		var terrain_name := tbt.context.tile_set.get_terrain_name(terrain_set, i)
 		var terrain_color := tbt.context.tile_set.get_terrain_color(terrain_set, i)
-		var icon := _get_icon(terrain_color)
+		var icon : ImageTexture = tbt.context.get_terrain_icon(terrain_color)
 		terrain_option_button.add_icon_item(icon, terrain_name, i)
-
-# TODO: refactor to get icon from context
-func _get_icon(p_color : Color) -> ImageTexture:
-	var image := Image.create(16, 16, false, Image.FORMAT_RGB8)
-	image.fill(p_color)
-	return ImageTexture.create_from_image(image)
 
 
 func _emit_item_selected(_index := -1) -> void:

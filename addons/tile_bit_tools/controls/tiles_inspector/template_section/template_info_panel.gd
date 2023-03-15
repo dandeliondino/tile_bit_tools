@@ -32,6 +32,10 @@ func _ready() -> void:
 	hide()
 
 
+func _tbt_ready() -> void:
+	_toggle_description_expand_button(false)
+
+
 func update(p_template_bit_data : TBTPlugin.TemplateBitData) -> void:
 	template_bit_data = p_template_bit_data
 	
@@ -74,10 +78,10 @@ func update(p_template_bit_data : TBTPlugin.TemplateBitData) -> void:
 
 func _toggle_description_expand_button(value : bool) -> void:
 	if value:
-		expand_button.icon = preload("res://addons/tile_bit_tools/controls/icons/arrow_down.svg")
+		expand_button.icon = tbt.icons.get_icon(tbt.icons.ARROW_EXPANDED)
 		description_label.fit_content = true
 	else:
-		expand_button.icon = preload("res://addons/tile_bit_tools/controls/icons/arrow_right.svg")
+		expand_button.icon = tbt.icons.get_icon(tbt.icons.ARROW_COLLAPSED)
 		description_label.fit_content = false
 
 

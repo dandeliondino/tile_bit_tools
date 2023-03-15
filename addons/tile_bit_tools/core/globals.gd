@@ -86,4 +86,4 @@ const Settings := {
 # ------------------------
 
 
-const GROUP_DYNAMIC_CONTAINER := "TBT_DYNAMIC_CONTAINER"
+const GROUP_DYNAMIC_CONTAINER := "TBTDynamicContainer"

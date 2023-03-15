@@ -20,6 +20,7 @@ const TERRAIN_BIT_TEXTS := {
 	BitData.TerrainBits.CENTER: "Terrain ID (Center Bit)",
 }
 
+const EMPTY_ITEM := "<empty>"
 
 const WELCOME_MESSAGE := "Welcome to TileBitTools. Please report bugs or suggestions to github.com/dandeliondino/tile_bit_tools. To change which messages you see here, go to Project Settings -> General -> Addons -> Tile Bit Tools (make sure 'Advanced' is enabled)"
 const WELCOME_MESSAGE2 := "Note: Please back up your project before applying any changes."

@@ -19,10 +19,15 @@ class TemplateTag:
 	var test_func : Callable
 	var text : String
 	var color : Color
-	var icon : Texture2D
+	var icon := ""
 	var custom_tag := false
 	
 	var id : int
+	
+	var custom_tag_icons := {
+		"Godot 3": "Godot",
+		"Incomplete Autotile": "FileBroken",
+	}
 
 	func _init(p_text : String, p_test_func = null, p_icon = null, p_color = null):
 		text = p_text
@@ -32,6 +37,9 @@ class TemplateTag:
 			icon = p_icon
 		if p_color:
 			color = p_color
+			
+		if icon == "":
+			icon = custom_tag_icons.get(text, "")
 
 
 	func get_template_has_tag(bit_data : TemplateBitData) -> bool:
@@ -42,6 +50,13 @@ class TemplateTag:
 	
 	func get_test_result(bit_data : TemplateBitData) -> bool:
 		return test_func.call(bit_data)
+	
+	func get_icon(base_control : Control) -> Texture2D:
+		if icon == "":
+			return null
+		if icon.is_absolute_path():
+			return load(icon)
+		return base_control.get_theme_icon(icon, "EditorIcons")
 
 	func has_test() -> bool:
 		if test_func:
@@ -55,14 +70,14 @@ var tags := {
 		"Type: Built-In",
 		func(bit_data: TemplateBitData): 
 			return bit_data.built_in,
-		null,
+		"res://addons/tile_bit_tools/controls/icons/tile_bit_tools_16.svg",
 		null,
 	),
 	Tags.USER: TemplateTag.new(
 		"Type: User",
 		func(bit_data: TemplateBitData): 
 			return !bit_data.built_in,
-		null,
+		"File",
 		Color.YELLOW,
 	),
 #	Tags.ONE_OR_TWO_TERRAINS: TemplateTag.new(
@@ -83,21 +98,21 @@ var tags := {
 		"Mode: Corners and Sides",
 		func(bit_data: TemplateBitData):
 			return bit_data.terrain_mode == TileSet.TERRAIN_MODE_MATCH_CORNERS_AND_SIDES,
-		preload("res://addons/tile_bit_tools/controls/icons/terrainmatchcornersandsides.svg"),
+		"TerrainMatchCornersAndSides",
 		null,
 	),
 	Tags.MATCH_CORNERS: TemplateTag.new(
 		"Mode: Corners",
 		func(bit_data: TemplateBitData):
 			return bit_data.terrain_mode == TileSet.TERRAIN_MODE_MATCH_CORNERS,
-		preload("res://addons/tile_bit_tools/controls/icons/terrainmatchcorners.svg"),
+		"TerrainMatchCorners",
 		null,
 	),
 	Tags.MATCH_SIDES: TemplateTag.new(
 		"Mode: Sides",
 		func(bit_data: TemplateBitData):
 			return bit_data.terrain_mode == TileSet.TERRAIN_MODE_MATCH_SIDES,
-		preload("res://addons/tile_bit_tools/controls/icons/terrainmatchsides.svg"),
+		"TerrainMatchSides",
 		null,
 	),
 }
@@ -111,3 +126,5 @@ var tag_display := [
 #	Tags.ONE_OR_TWO_TERRAINS,
 #	Tags.THREE_PLUS_TERRAINS,
 ]
+
+

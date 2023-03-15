@@ -4,7 +4,7 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_n7nl4"]
 
-[node name="TemplateInfoList" type="ItemList" groups=["TBTPropertyLabel"]]
+[node name="TemplateInfoList" type="ItemList"]
 size_flags_horizontal = 3
 focus_mode = 0
 mouse_filter = 2

@@ -10,6 +10,8 @@ const TERRAIN_MODE_ICONS := {
 const EXPAND_PANEL := ["ExpandTree", "EditorIcons"]
 const COLLAPSE_PANEL := ["CollapseTree", "EditorIcons"]
 
+const ARROW_EXPANDED := ["arrow", "Tree"]
+const ARROW_COLLAPSED := ["arrow_collapsed", "Tree"]
 
 
 var control : Control

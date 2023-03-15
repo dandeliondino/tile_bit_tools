@@ -31,13 +31,16 @@ func _tbt_ready() -> void:
 
 func get_preview_terrain_set() -> int:
 	if preview_bit_data == null:
-		return -1
+		return TBTPlugin.BitData.NULL_TERRAIN_SET
 	return preview_bit_data.terrain_set
 
 func has_preview() -> bool:
 	return preview_bit_data != null
 
+
 func has_preview_terrain_set() -> bool:
+	if preview_bit_data == null:
+		return false
 	return preview_bit_data.terrain_set != preview_bit_data.NULL_TERRAIN_SET
 
 

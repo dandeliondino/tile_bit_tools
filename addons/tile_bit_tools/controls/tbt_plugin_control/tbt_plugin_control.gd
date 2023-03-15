@@ -19,6 +19,7 @@ signal apply_changes_requested
 signal tiles_preview_collapse_requested
 signal tiles_preview_expand_requested
 
+signal theme_update_requested(node)
 
 const TBT_PROPERTY_NAME := "tbt"
 const TBT_READY_METHOD := "_tbt_ready"
@@ -72,21 +73,20 @@ var tiles_preview : Control :
 		return tiles_preview
 
 
-
-
-
 func _ready() -> void:
 	set_process_input(false)
 	child_entered_tree.connect(_assign_child_by_class)
 	_setup_debug_signals()
-	_setup_tbt_plugin_control()
-	_inject_tbt_reference(self)
+	_setup_children()
 
 
 func setup(p_interface : EditorInterface, p_tiles_preview : Control) -> void:
 	interface = p_interface
 	base_control = interface.get_base_control()
 	icons = Icons.new(base_control)
+	
+	# here instead of _ready() so base_control is not null
+	_inject_tbt_reference(self)
 	
 	tiles_preview = p_tiles_preview
 	_inject_tbt_reference(tiles_preview, true)
@@ -98,15 +98,15 @@ func notify_tiles_inspector_added(p_tiles_inspector : Control) -> void:
 	_call_subtree(self, TILES_INSPECTOR_ADDED_METHOD)
 	tiles_inspector_added.emit()
 	tiles_inspector.visibility_changed.connect(_on_tiles_inspector_visibility_changed)
+	_setup_dynamic_containers()
 	set_process_input(true)
 	tiles_preview_expand_requested.emit()
 
 
 func notify_tiles_inspector_removed() -> void:
+	set_process_input(false)
 	_call_subtree(self, TILES_INSPECTOR_REMOVED_METHOD)
 	tiles_inspector_removed.emit()
-	set_process_input(false)
-
 
 func is_dialog_popped_up() -> bool:
 	for dialog in dialog_windows:
@@ -115,14 +115,24 @@ func is_dialog_popped_up() -> bool:
 	return false
 
 
+func _setup_dynamic_containers() -> void:
+	for node in get_tree().get_nodes_in_group(Globals.GROUP_DYNAMIC_CONTAINER):
+		if !node.child_entered_tree.is_connected(_on_dynamic_container_child_added):
+			node.child_entered_tree.connect(_on_dynamic_container_child_added)
+
+
+func _on_dynamic_container_child_added(node : Node) -> void:
+	_inject_tbt_reference(node, true)
+	theme_update_requested.emit(node)
+
 
 func _on_tiles_inspector_visibility_changed() -> void:
-	if tiles_inspector.is_visible_in_tree():
-		tiles_preview.show()
-		set_process_input(true)
-	else:
+	if !is_instance_valid(tiles_inspector) or !tiles_inspector.is_visible_in_tree():
 		tiles_preview.hide()
 		set_process_input(false)
+	else:
+		tiles_preview.show()
+		set_process_input(true)
 
 
 # while tiles inspector is visible, watch for mouse clicks and 
@@ -140,7 +150,8 @@ func _input(event: InputEvent) -> void:
 	
 	if tiles_inspector.get_parent_control().get_global_rect().has_point(mouse_position):
 		if tiles_inspector.get_global_rect().has_point(mouse_position):
-			tiles_preview_expand_requested.emit()
+			if !tiles_preview.expanded:
+				tiles_preview_expand_requested.emit()
 		else:
 			tiles_preview_collapse_requested.emit()
 		return
@@ -149,11 +160,11 @@ func _input(event: InputEvent) -> void:
 		return
 	
 	if tiles_preview.get_parent_control().get_global_rect().has_point(mouse_position):
-		if !tiles_preview.get_mouse_input_control().get_global_rect().has_point(mouse_position):
+		if !tiles_preview.get_mouse_input_rect().has_point(mouse_position):
 			tiles_preview_collapse_requested.emit()
 
 
-func _setup_tbt_plugin_control() -> void:
+func _setup_children() -> void:
 	for child in _get_children_recursive(self):
 		_assign_child_by_class(child)
 

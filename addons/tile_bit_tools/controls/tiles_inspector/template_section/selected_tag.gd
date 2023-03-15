@@ -12,6 +12,7 @@ var tag : TemplateTag
 @onready var label: Label = %Label
 @onready var remove_button: Button = %RemoveButton
 
+
 func _ready() -> void:
 	remove_button.pressed.connect(_on_remove_button_pressed)
 
@@ -21,15 +22,15 @@ func setup(p_tag : TemplateTag, base_control : Control) -> void:
 	
 	label.text = tag.text
 	
-	if tag.icon:
-		icon_rect.texture = tag.icon
+	icon_rect.texture = tag.get_icon(base_control)
 	
 	var stylebox : StyleBoxFlat = base_control.get_theme_stylebox("selected", "ItemList").duplicate(true)
-	stylebox.content_margin_left = 2
+	stylebox.content_margin_left = 6
 	stylebox.content_margin_right = 2
 	stylebox.content_margin_top = 0
 	stylebox.content_margin_bottom = 0
 	set("theme_override_styles/panel", stylebox)
+	
 	
 	# TODO: implement in future?
 #	if tag.color:

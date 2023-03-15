@@ -4,7 +4,8 @@ extends "res://addons/tile_bit_tools/controls/tbt_plugin_control/popups/template
 
 var save_path : String
 
-@onready var folder_label: Label = $PanelContainer/MarginContainer/VBoxContainer/HBoxContainer6/FolderLabel
+@onready var folder_label: Label = %FolderLabel
+
 
 
 func _setup_connections() -> void:

@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd" id="1_6xv2q"]
 [ext_resource type="Script" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/template_manager.gd" id="2_aj7pp"]
-[ext_resource type="PackedScene" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/popups/save_template_dialog.tscn" id="3_p4ion"]
-[ext_resource type="PackedScene" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/popups/edit_template_dialog.tscn" id="4_qymya"]
+[ext_resource type="PackedScene" uid="uid://job5gqt1xbrh" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/popups/save_template_dialog.tscn" id="3_p4ion"]
+[ext_resource type="PackedScene" uid="uid://cyxr6y64lkue6" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/popups/edit_template_dialog.tscn" id="4_qymya"]
 [ext_resource type="Script" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/tiles_manager.gd" id="5_v5epd"]
 [ext_resource type="Script" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/theme_updater.gd" id="6_mie0u"]
 
@@ -21,7 +21,9 @@ shadow_color = Color(0, 0, 0, 0.3)
 shadow_size = 8
 anti_aliasing = false
 
-[node name="TBTPlugin" type="Node"]
+[node name="TBTPlugin" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_6xv2q")
 
 [node name="TemplateManager" type="Node" parent="."]
@@ -30,17 +32,19 @@ script = ExtResource("2_aj7pp")
 [node name="TilesManager" type="Node" parent="."]
 script = ExtResource("5_v5epd")
 
-[node name="ThemeUpdater" type="Node" parent="."]
+[node name="ThemeUpdater" type="Control" parent="."]
+anchors_preset = 0
 script = ExtResource("6_mie0u")
 
-[node name="SaveDialogContainer" type="Node" parent="."]
+[node name="SaveDialogContainer" type="Control" parent="."]
+anchors_preset = 0
 
 [node name="SaveTemplateDialog" parent="SaveDialogContainer" instance=ExtResource("3_p4ion")]
 visible = false
 theme_override_styles/embedded_border = SubResource("StyleBoxFlat_3by6e")
 
-[node name="EditDialogContainer" type="Node" parent="."]
+[node name="EditDialogContainer" type="Control" parent="."]
+anchors_preset = 0
 
 [node name="EditTemplateDialog" parent="EditDialogContainer" instance=ExtResource("4_qymya")]
-visible = false
 theme_override_styles/embedded_border = SubResource("StyleBoxFlat_3by6e")

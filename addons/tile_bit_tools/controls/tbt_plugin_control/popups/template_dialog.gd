@@ -1,6 +1,8 @@
 @tool
 extends Window
 
+const MIN_WIDTH_PROPORTION := 0.2
+const MIN_HEIGHT_PROPORTION := 0.3
 
 
 # class extended by SaveTemplateDialog and EditTemplateDialog
@@ -73,7 +75,7 @@ func _setup_dialog() -> void:
 
 
 func _set_size() -> void:
-	set("min_size", Vector2i(Vector2(get_tree().root.size) * Vector2(0.3, 0.6)))
+	set("min_size", Vector2i(Vector2(get_tree().root.size) * Vector2(MIN_WIDTH_PROPORTION, MIN_HEIGHT_PROPORTION)))
 #	set("max_size", get_tree().root.size * 0.75)
 
 

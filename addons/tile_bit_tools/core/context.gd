@@ -72,11 +72,11 @@ func _populate_terrains() -> void:
 				"id": i,
 				"text": tile_set.get_terrain_name(terrain_set, i),
 				"color": tile_set.get_terrain_color(terrain_set, i),
-				"icon": _get_terrain_icon(tile_set.get_terrain_color(terrain_set, i))
+				"icon": get_terrain_icon(tile_set.get_terrain_color(terrain_set, i))
 			})
 
 
-func _get_terrain_icon(color : Color) -> ImageTexture:
+func get_terrain_icon(color : Color) -> ImageTexture:
 	var image := Image.create(16, 16, false, Image.FORMAT_RGB8)
 	image.fill(color)
 	return ImageTexture.create_from_image(image)

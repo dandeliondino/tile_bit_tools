@@ -77,8 +77,9 @@ func _update_tags_popup() -> void:
 	
 	for item in item_list:
 		var item_text : String = item.text + " (Templates: %s)" % item.count
-		if item.icon:
-			tags_popup.add_icon_item(item.icon, item_text, item.id)
+		var icon = item.tag.get_icon(tbt.base_control)
+		if icon:
+			tags_popup.add_icon_item(icon, item_text, item.id)
 		else:
 			tags_popup.add_item(item_text, item.id)
 	
@@ -141,13 +142,15 @@ func _update_template_info_panel() -> void:
 
 
 func _update_template_panel() -> void:
-	var stylebox : StyleBox
 	if selected_template:
-		stylebox = tbt.base_control.get_theme_stylebox("sub_inspector_property_bg0", "Editor")
+		template_section_panel.add_to_group("TBTSubinspectorPanel")
+		tbt.theme_update_requested.emit(template_section_panel)
 	else:
-		stylebox = StyleBoxEmpty.new()
+		template_section_panel.remove_from_group("TBTSubinspectorPanel")
+		template_section_panel.set("theme_override_styles/panel", StyleBoxEmpty.new())
+
 	
-	template_section_panel.set("theme_override_styles/panel", stylebox)
+	
 	
 
 
@@ -215,7 +218,7 @@ func _update_terrain_pickers_from_terrain_set() -> void:
 func _add_terrain_picker(index : int) -> Control:
 	var terrain_picker := TerrainPicker.instantiate()
 	terrain_pickers_container.add_child(terrain_picker)
-	terrain_picker.setup(tbt, index, selected_template.get_terrain_color(index))
+	terrain_picker.setup(tbt, index, selected_template.get_terrain_color(index), selected_template.terrain_mode)
 	terrain_set_option_button.item_selected.connect(terrain_picker._on_terrain_set_changed)
 	terrain_picker.item_selected.connect(_request_preview)
 	terrain_picker.terrain_set = selected_terrain_set
