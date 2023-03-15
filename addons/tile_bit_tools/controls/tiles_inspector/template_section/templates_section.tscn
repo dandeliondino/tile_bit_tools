@@ -49,6 +49,7 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_t8sf7")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TemplateSectionPanel"]
 layout_mode = 2
+theme_override_constants/separation = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="TemplateSectionPanel/VBoxContainer"]
 layout_mode = 2
@@ -76,7 +77,7 @@ popup/item_3/id = 2
 [node name="MarginContainer" type="MarginContainer" parent="TemplateSectionPanel/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 8
+theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
@@ -85,6 +86,7 @@ layout_mode = 2
 
 [node name="TemplateInfoPanel" parent="TemplateSectionPanel/VBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource("5_tlsqj")]
 unique_name_in_owner = true
+visible = true
 layout_mode = 2
 
 [node name="TerrainContainer" type="PanelContainer" parent="TemplateSectionPanel/VBoxContainer/MarginContainer/VBoxContainer" groups=["TBTSubinspectorPropertiesPanel"]]
