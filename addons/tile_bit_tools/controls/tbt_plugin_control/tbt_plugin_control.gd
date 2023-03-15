@@ -72,9 +72,6 @@ var tiles_preview : Control :
 		return tiles_preview
 
 
-
-
-
 func _ready() -> void:
 	set_process_input(false)
 	child_entered_tree.connect(_assign_child_by_class)
@@ -103,10 +100,9 @@ func notify_tiles_inspector_added(p_tiles_inspector : Control) -> void:
 
 
 func notify_tiles_inspector_removed() -> void:
+	set_process_input(false)
 	_call_subtree(self, TILES_INSPECTOR_REMOVED_METHOD)
 	tiles_inspector_removed.emit()
-	set_process_input(false)
-
 
 func is_dialog_popped_up() -> bool:
 	for dialog in dialog_windows:
@@ -117,12 +113,12 @@ func is_dialog_popped_up() -> bool:
 
 
 func _on_tiles_inspector_visibility_changed() -> void:
-	if tiles_inspector.is_visible_in_tree():
-		tiles_preview.show()
-		set_process_input(true)
-	else:
+	if !is_instance_valid(tiles_inspector) or !tiles_inspector.is_visible_in_tree():
 		tiles_preview.hide()
 		set_process_input(false)
+	else:
+		tiles_preview.show()
+		set_process_input(true)
 
 
 # while tiles inspector is visible, watch for mouse clicks and 
@@ -149,7 +145,7 @@ func _input(event: InputEvent) -> void:
 		return
 	
 	if tiles_preview.get_parent_control().get_global_rect().has_point(mouse_position):
-		if !tiles_preview.get_mouse_input_control().get_global_rect().has_point(mouse_position):
+		if !tiles_preview.get_mouse_input_rect().has_point(mouse_position):
 			tiles_preview_collapse_requested.emit()
 
 

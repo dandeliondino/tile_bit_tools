@@ -4,6 +4,8 @@ extends Control
 const EMPTY_RECT := Rect2i(0,0,0,0)
 const FRAME_0 := 0
 
+const BACK_PANEL_MARGIN := 12
+
 const DEFAULT_TERRAIN_OPACITY := 0.75
 
 const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd")
@@ -26,7 +28,7 @@ var expanded := true
 
 @onready var back_panel: Panel = %BackPanel
 @onready var v_split_container: VSplitContainer = %VSplitContainer
-@onready var front_container: MarginContainer = %FrontContainer
+@onready var front_container: Container = %FrontContainer
 
 
 @onready var collapsed_controls: Control = %CollapsedControls
@@ -66,8 +68,11 @@ func _tbt_ready() -> void:
 
 # returns control to determine if mouse click is
 # in panel
-func get_mouse_input_control() -> Control:
-	return back_panel
+func get_mouse_input_rect() -> Rect2:
+	var rect := back_panel.get_global_rect()
+	rect.position = rect.position - Vector2(0, 6)
+	rect.size = rect.size + Vector2(0, 6)
+	return rect
 	
 
 func _setup_textures() -> void:
@@ -147,7 +152,7 @@ func _on_preview_updated(bit_data : TBTPlugin.EditorBitData) -> void:
 
 func _on_front_container_resized() -> void:
 	var front_height := front_container.size.y
-	back_panel.custom_minimum_size.y = front_height + 16
+	back_panel.custom_minimum_size.y = front_height + BACK_PANEL_MARGIN
 
 
 func _toggle_expanded_state(p_expanded : bool) -> void:

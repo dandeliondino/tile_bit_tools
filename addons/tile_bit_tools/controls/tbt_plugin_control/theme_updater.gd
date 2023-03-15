@@ -10,15 +10,19 @@ const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_cont
 
 
 enum Overrides {
-	FONT, FONT_SIZE, FONT_COLOR, 
-	PANEL, WINDOW_PANEL, 
-	BUTTON_NORMAL, BUTTON_HOVER, BUTTON_PRESSED, BUTTON_DISABLED, BUTTON_FOCUS,
+	FONT, FONT_SIZE, FONT_COLOR, # Label
+	NORMAL_FONT, NORMAL_FONT_SIZE, DEFAULT_COLOR, # RichTextLabel
+	PANEL, WINDOW_PANEL,  # Panel
+	BUTTON_NORMAL, BUTTON_HOVER, BUTTON_PRESSED, BUTTON_DISABLED, BUTTON_FOCUS, # Button
 }
 
 var override_properties := {
 	Overrides.FONT: "theme_override_fonts/font",
 	Overrides.FONT_SIZE: "theme_override_font_sizes/font_size",
 	Overrides.FONT_COLOR: "theme_override_colors/font_color",
+	Overrides.NORMAL_FONT: "theme_override_fonts/normal_font",
+	Overrides.NORMAL_FONT_SIZE: "theme_override_font_sizes/normal_font_size",
+	Overrides.DEFAULT_COLOR: "theme_override_colors/default_color", 
 	Overrides.PANEL: "theme_override_styles/panel",
 	Overrides.WINDOW_PANEL: "theme_override_styles/embedded_border",
 	Overrides.BUTTON_NORMAL: "theme_override_styles/normal",
@@ -32,6 +36,9 @@ var override_methods := {
 	Overrides.FONT: "get_theme_font",
 	Overrides.FONT_SIZE: "get_theme_font_size",
 	Overrides.FONT_COLOR: "get_theme_color",
+	Overrides.NORMAL_FONT: "get_theme_font",
+	Overrides.NORMAL_FONT_SIZE: "get_theme_font_size",
+	Overrides.DEFAULT_COLOR: "get_theme_color", 
 	Overrides.PANEL: "get_theme_stylebox",
 	Overrides.WINDOW_PANEL: "get_theme_stylebox",
 	Overrides.BUTTON_NORMAL: "get_theme_stylebox",
@@ -56,8 +63,16 @@ var overrides_dict := {
 		Overrides.FONT_COLOR: ["font_color", "Editor"],
 	},
 	"TBTPropertyLabel": {
+		Overrides.FONT: ["main", "EditorFonts"],
+		Overrides.FONT_SIZE: ["main_size", "EditorFonts"],
 		Overrides.FONT_COLOR: ["property_color", "Editor"],
 	},
+	"TBTSubPropertyLabel": {
+		Overrides.FONT: ["main", "EditorFonts"],
+		Overrides.FONT_SIZE: ["main_size", "EditorFonts"],
+		Overrides.FONT_COLOR: ["sub_inspector_property_color", "Editor"],
+	},
+	
 	
 	# ----------------------------------------------------
 	#			PANELS
@@ -74,6 +89,15 @@ var overrides_dict := {
 	"TBTPreviewPanelForeground": {
 		Overrides.PANEL: ["bg", "GraphEdit"],
 	},
+	"TBTPreviewHBoxPanel": {
+		Overrides.PANEL: ["panel", "Tree"],
+	},
+	"TBTPlaceholderLabel": {
+		Overrides.NORMAL_FONT: ["font", "Label"],
+		Overrides.NORMAL_FONT_SIZE: ["main_size", "EditorFonts"],
+		Overrides.DEFAULT_COLOR: ["property_color", "Editor"],
+	},
+
 	
 	# SAVE/EDIT DIALOGS
 	"TBTDialogWindow": {
@@ -88,11 +112,15 @@ var overrides_dict := {
 	"TBTDialogPanelSection": {
 		Overrides.PANEL: ["panel", "Tree"],
 	},
+	
+	
 	# BUTTONS
 	"TBTTextButton": {
 		Overrides.FONT_COLOR: ["font_color", "Editor"],
-		Overrides.FONT: ["bold", "EditorFonts"],
-		Overrides.FONT_SIZE: ["bold_size", "EditorFonts"],
+		Overrides.FONT: ["main_button_font", "EditorFonts"],
+		Overrides.FONT_SIZE: ["main_button_font_size", "EditorFonts"],
+#		Overrides.FONT: ["bold", "EditorFonts"],
+#		Overrides.FONT_SIZE: ["bold_size", "EditorFonts"],
 		
 		Overrides.BUTTON_NORMAL: ["normal", "OptionButton"],
 		Overrides.BUTTON_HOVER: ["hover", "OptionButton"],
@@ -321,29 +349,7 @@ func _update_themes() -> void:
 #
 #
 #
-## ###########################################################################
-## 							DIALOG
-## ###########################################################################
-#		{
-#			"group_name": "TBTDialogWindow",
-#			"updates": [
-#				{
-#					"property": "theme_override_styles/embedded_border",
-#					"value": base_control.get_theme_stylebox("embedded_border", "Window"),
-#				},
-#			],
-#		},
-#		{
-#			"group_name": "TBTDialogPanel",
-#			"updates": [
-#				{
-#					"property": "theme_override_styles/panel",
-#					"value":  base_control.get_theme_stylebox("PanelForeground", "EditorStyles"),
-#				},
-#			],
-#		},
-#
-#
+
 #
 ## ###########################################################################
 ## 							CONTROLS

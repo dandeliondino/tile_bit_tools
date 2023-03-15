@@ -54,7 +54,7 @@ stretch_mode = 3
 
 [node name="CategoryLabel" type="Label" parent="CategoryPanel/HBoxContainer" groups=["TBTCategoryLabel"]]
 layout_mode = 2
-text = "Tile Bit Tools"
+text = "TileBitTools"
 
 [node name="ToolButtons" parent="." instance=ExtResource("4_vjqmp")]
 layout_mode = 2
