@@ -24,7 +24,7 @@ func setup(p_tag : TemplateTag, base_control : Control) -> void:
 	icon_rect.texture = tag.get_icon(base_control)
 	
 	var stylebox : StyleBoxFlat = base_control.get_theme_stylebox("selected", "ItemList").duplicate(true)
-	stylebox.content_margin_left = 2
+	stylebox.content_margin_left = 6
 	stylebox.content_margin_right = 2
 	stylebox.content_margin_top = 0
 	stylebox.content_margin_bottom = 0
