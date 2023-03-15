@@ -134,8 +134,8 @@ func _get_tag_as_item(tag_id : int, skip_if_unused := false, filtered_tags := []
 	return({
 		"id": tag_id,
 		"text": tag.text,
-		"icon": tag.icon,
 		"count": count,
+		"tag": tag,
 #		"color": tag.color, # TODO: implement in future?
 	})
 	

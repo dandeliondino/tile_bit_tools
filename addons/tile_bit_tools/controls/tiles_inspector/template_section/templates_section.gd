@@ -77,8 +77,9 @@ func _update_tags_popup() -> void:
 	
 	for item in item_list:
 		var item_text : String = item.text + " (Templates: %s)" % item.count
-		if item.icon:
-			tags_popup.add_icon_item(item.icon, item_text, item.id)
+		var icon = item.tag.get_icon(tbt.base_control)
+		if icon:
+			tags_popup.add_icon_item(icon, item_text, item.id)
 		else:
 			tags_popup.add_item(item_text, item.id)
 	
