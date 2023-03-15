@@ -1,5 +1,5 @@
 @tool
-extends Node
+extends Control
 
 
 const UNASSIGNED := -1
@@ -152,6 +152,13 @@ var tbt : TBTPlugin
 func _tbt_ready() -> void:
 	tbt.theme_update_requested.connect(_on_theme_update_requested)
 	_setup_themes()
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_THEME_CHANGED:
+		if !is_instance_valid(tbt):
+			return
+		_setup_themes()
+
 
 
 func _tiles_inspector_added() -> void:

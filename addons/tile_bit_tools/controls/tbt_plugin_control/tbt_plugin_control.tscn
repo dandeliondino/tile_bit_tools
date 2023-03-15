@@ -32,7 +32,8 @@ script = ExtResource("2_aj7pp")
 [node name="TilesManager" type="Node" parent="."]
 script = ExtResource("5_v5epd")
 
-[node name="ThemeUpdater" type="Node" parent="."]
+[node name="ThemeUpdater" type="Control" parent="."]
+anchors_preset = 0
 script = ExtResource("6_mie0u")
 
 [node name="SaveDialogContainer" type="Control" parent="."]
@@ -46,5 +47,4 @@ theme_override_styles/embedded_border = SubResource("StyleBoxFlat_3by6e")
 anchors_preset = 0
 
 [node name="EditTemplateDialog" parent="EditDialogContainer" instance=ExtResource("4_qymya")]
-visible = false
 theme_override_styles/embedded_border = SubResource("StyleBoxFlat_3by6e")

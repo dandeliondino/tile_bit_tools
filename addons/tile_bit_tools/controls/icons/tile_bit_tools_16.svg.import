@@ -5,7 +5,7 @@ type="CompressedTexture2D"
 uid="uid://cheop6l3022pn"
 path="res://.godot/imported/tile_bit_tools_16.svg-d3d960897b553a49b1b4c28f73a2a661.ctex"
 metadata={
-"editor_dark_theme": true,
+"editor_dark_theme": false,
 "editor_scale": 1.5,
 "has_editor_variant": true,
 "vram_texture": false
