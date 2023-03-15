@@ -218,7 +218,7 @@ func _update_terrain_pickers_from_terrain_set() -> void:
 func _add_terrain_picker(index : int) -> Control:
 	var terrain_picker := TerrainPicker.instantiate()
 	terrain_pickers_container.add_child(terrain_picker)
-	terrain_picker.setup(tbt, index, selected_template.get_terrain_color(index))
+	terrain_picker.setup(tbt, index, selected_template.get_terrain_color(index), selected_template.terrain_mode)
 	terrain_set_option_button.item_selected.connect(terrain_picker._on_terrain_set_changed)
 	terrain_picker.item_selected.connect(_request_preview)
 	terrain_picker.terrain_set = selected_terrain_set

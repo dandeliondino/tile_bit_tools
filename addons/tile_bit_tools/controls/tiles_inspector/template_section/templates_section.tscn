@@ -86,7 +86,6 @@ layout_mode = 2
 
 [node name="TemplateInfoPanel" parent="TemplateSectionPanel/VBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource("5_tlsqj")]
 unique_name_in_owner = true
-visible = true
 layout_mode = 2
 
 [node name="TerrainContainer" type="PanelContainer" parent="TemplateSectionPanel/VBoxContainer/MarginContainer/VBoxContainer" groups=["TBTSubinspectorPropertiesPanel"]]
