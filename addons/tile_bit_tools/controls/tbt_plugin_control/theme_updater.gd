@@ -92,13 +92,13 @@ var overrides_dict := {
 	
 	# TILES PREVIEW
 	"TBTPreviewPanelBackground": {
-		Overrides.PANEL: ["BottomPanel", "EditorStyles"],
+		Overrides.PANEL: ["panel", "TabContainer"],
 	},
 	"TBTPreviewPanelForeground": {
 		Overrides.PANEL: ["bg", "GraphEdit"],
 	},
 	"TBTPreviewHBoxPanel": {
-		Overrides.PANEL: ["panel", "Tree"],
+		Overrides.PANEL: ["MenuHover", "EditorStyles"],
 	},
 	"TBTPlaceholderLabel": {
 		Overrides.NORMAL_FONT: ["font", "Label"],

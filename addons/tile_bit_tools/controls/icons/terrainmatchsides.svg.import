@@ -5,7 +5,7 @@ type="CompressedTexture2D"
 uid="uid://cw7cqd6x8aqy7"
 path="res://.godot/imported/terrainmatchsides.svg-d216fbd9bb1d4a5fa80535d6e8ba72d4.ctex"
 metadata={
-"editor_dark_theme": false,
+"editor_dark_theme": true,
 "editor_scale": 1.5,
 "has_editor_variant": true,
 "vram_texture": false
