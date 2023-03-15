@@ -32,8 +32,27 @@ Introduction video:
 
 ![Results](https://github.com/dandeliondino/tile_bit_tools/blob/main/assets/tutorial_screenshot_05.png)
 
-## To give feedback:
-Find a bug? -> [Known Bugs and Reports](https://github.com/dandeliondino/tile_bit_tools/issues/2)
+
+## Warning on the use of Resource Files
+Like many other files encountered in a typical Godot project, template terrain data for TileBitTools is stored in plain-text Resource (`.tres`) files.
+
+This plugin will load all `.tres` resource files in the following folder locations:
+- Built-in templates folder: `res://addons/tile_bit_tools/templates`
+- Project-specific templates folder: `user://addons/tile_bit_tools/templates` (see [Accessing persistent user data (user://)](https://docs.godotengine.org/en/stable/tutorials/io/data_paths.html#accessing-persistent-user-data-user) for location)
+- Shared templates folder: [EditorPaths.get_data_dir()](https://docs.godotengine.org/en/stable/classes/class_editorpaths.html#class-editorpaths-method-get-data-dir) + `/tile_bit_tools_templates`
+- The user directory specified in Project Settings -> Addons -> TileBitTools (blank by default)
+
+**If a Resource file in one of these locations contains malicious code, it may be executed by Godot on loading.**
+
+To encounter malicious code would require a user to first separately download a ".tres" file containing the code, and for that user to place it in one of these specific folders. As this plugin is for game developers, not the general public, the potential risk of using this file format was determined to be outweighed by the benefits of: (1) not requiring serialization and (2) allowing users to edit the plain text tile data in an easy-to-read format.
+
+However, there are scenarios where users may want to share template terrain data online. Please exercise caution if doing so. See the [built-in templates here](https://github.com/dandeliondino/tile_bit_tools/tree/main/addons/tile_bit_tools/templates) for examples of what valid template files look like. They will only reference one script (`res://addons/tile_bit_tools/core/template_bit_data.gd`) and should be small in size (a 164-tile template is 14KB on disk).
+
+For more details regarding the risks of sharing Resource files, see this GDQuest video: ["I was COMPLETELY WRONG about saves in Godot... ( ; - ;)"](https://www.youtube.com/watch?v=j7p7cGj20jU)
+
+
+## Feedback
+Find a bug? -> [Bug Reports](https://github.com/dandeliondino/tile_bit_tools/issues/2)
 
 Have an autotile template that should be built-in? -> [Add More Built-in Terrain Templates](https://github.com/dandeliondino/tile_bit_tools/issues/4)
 

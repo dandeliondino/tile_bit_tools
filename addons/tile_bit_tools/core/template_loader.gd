@@ -200,16 +200,20 @@ func _load_auto_tags() -> void:
 func _load_templates_in_directory(path : String, mark_as_built_in := false) -> void:
 	var dir := DirAccess.open(path)
 	if !dir:
-		output.error("No directory found at %s" % path)
+		output.user("No directory found at %s" % path)
 		return
 	for file in dir.get_files():
 		if !file.ends_with("tres"):
 			continue
-		var file_path := path + file
+		
+		# use get_current_dir() instead of path + file to normalize slashes
+		var file_path := dir.get_current_dir() + "/" + file
+		
 		var template := load(file_path)
-		if !template:
-			output.error("Error loading template at %s" % file_path)
+		if !template or template.get_script() != TemplateBitData:
+			output.user("Error loading template at %s" % file_path)
 			continue
+		
 		
 		if mark_as_built_in:
 			template.built_in = true
