@@ -43,7 +43,7 @@ func _update_clear_button() -> void:
 		if tbt.tiles_manager.has_preview_terrain_set():
 			_enable_clear_button()
 		else:
-			_disable_bit_button()
+			_disable_clear_button()
 	elif tbt.context.bit_data.has_terrain_set():
 		_enable_clear_button()
 	else:

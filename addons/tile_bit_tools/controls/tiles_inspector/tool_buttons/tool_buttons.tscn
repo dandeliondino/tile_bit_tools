@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://addons/tile_bit_tools/controls/shared/icon_button.gd" id="3_hprs6"]
 
 [node name="ToolButtons" type="HBoxContainer"]
-theme_override_constants/separation = 8
+theme_override_constants/separation = 16
 alignment = 1
 script = ExtResource("1_8r32g")
 
@@ -14,6 +14,7 @@ custom_minimum_size = Vector2(123, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 tooltip_text = "Fill all terrain bits in selected tiles"
+focus_mode = 2
 theme_override_constants/h_separation = 8
 theme_override_font_sizes/font_size = 28
 text = "Fill Terrain"
@@ -28,6 +29,7 @@ custom_minimum_size = Vector2(123, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 tooltip_text = "Fill all terrain bits with a single terrain"
+focus_mode = 2
 theme_override_constants/h_separation = 8
 theme_override_font_sizes/font_size = 28
 text = "Set Terrain Bits"
