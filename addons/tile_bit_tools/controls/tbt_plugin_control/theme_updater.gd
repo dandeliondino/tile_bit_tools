@@ -188,20 +188,17 @@ func _notification(what: int) -> void:
 
 
 func _tiles_inspector_added() -> void:
-	await get_tree().process_frame
 	if !height_setup_complete:
-		# attempted under _setup_themes()
-		# will only run again if failed to get heights
+		# only needs to be done once
 		_setup_custom_heights()
+	await get_tree().process_frame
 	_update_themes()
 
 
 # TODO: also call this from notification theme changed
 func _setup_themes() -> void:
-	# otherwise will not get on startup 
-	# and there will be noticeable pause on first opening tile inspector
-	await get_tree().create_timer(0.1).timeout
-	_setup_custom_heights()
+	# remove from here to avoid pause when activating plugin
+#	_setup_custom_heights()
 	_update_themes()
 
 
