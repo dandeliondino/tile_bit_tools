@@ -9,6 +9,7 @@ The terrain system in Godot 4 is powerful and extensible, and has a lot of untap
 - Installation
 - Use
 - Feedback
+- Credits
 
 
 ## Features
@@ -20,17 +21,21 @@ The terrain system in Godot 4 is powerful and extensible, and has a lot of untap
     - Save new templates from the terrain bits on existing tiles. Statistics and previews are automatically generated.
     - Use as a quick way to copy-paste terrain bits.
     - Use as a back up for terrain data that was time-consuming to assign in case of crashes or corruption.
-    - Create complex, reusable templates and save them to a shared directory accessible to all projects on your computer.
+    - Save reusable templates to a shared directory accessible to all projects.
 - **Bulk tile bit editing buttons**
     - **Fill** - fill all selected tiles' terrain bits with a single terrain.
-    - **Set Bits** - set a specific bit to a single terrain in all selected tiles.
+    - **Set Bits** - set the terrain ID or a specific terrain peering bit to a single terrain in all selected tiles.
     - **Clear** - clear all terrain assignments from selected tiles.
+- **Options in Project Settings**
+    - Customize the template bit colors (default colors are from the color-blind safe 'bright' scheme from [Paul Tol](https://personal.sron.nl/~pault/))
+    - Customize which messages appear in the Output log
+    - Customize the template save folder location
 
 
 ## Installation
 
 ### From the Godot Asset Library:
-*TileBitTools is pending review on the Godot Asset Library. This page will be updated with a link once it is available for download.*
+*TileBitTools is pending review on the Godot Asset Library. This Readme will be updated with a link once it is available for download.*
 
 ### From Github:
 1. Go to Releases (right side of this page) to download the latest stable version.
@@ -53,21 +58,61 @@ This plugin is located in the **bottom TileSet editor**, in the **Select** tab. 
 2. Expand the "Apply Terrain Template" section and choose a template
     - Filter by tags to narrow the choices
     - Built-in templates all have detailed descriptions. Click the `>` button to expand the text.
-    - Built-in templates also come with examples you can use to experiment, or use as guides for arranging tiles in your image editor. Click the image icon to open their folder. Examples in v1.0 are all 16x16px and were adapted from [Kenney's Pixel Shmup](https://www.kenney.nl/assets/pixel-shmup).
+    - Built-in templates also come with examples you can use to experiment, or use as guides for arranging tiles in your image editor. Click the Examples button (image icon at the top-right of the template preview image) to open their folder. Examples in v1.0 are all 16px x 16px and were adapted from [Kenney's Pixel Shmup](https://www.kenney.nl/assets/pixel-shmup).
 3. Assign terrains
-    - As you assign terrains, you will see a preview generate
-    - If you want to place tiles on a empty background, leave the terrain that doesn't include the center bits empty (this is usually the last one listed)
+    - As you assign terrains, you will see a preview generate.
+    - If you want to place tiles on a empty background, leave the terrain that doesn't include the center bits empty (this is usually the last one listed).
     - Missing terrains? Only terrain sets and terrains that match the template's terrain mode will be available to choose. You can choose a different template, or create a new terrain set with the correct mode.
-4. Click to apply template
-    - This cannot be undone. But TileBitTools makes clearing and reassigning terrain bits fast and easy. So do not hesitate to experiment.
+4. Click Apply Changes (no undo)
+    - This cannot be undone. But TileBitTools makes clearing and reassigning terrain bits fast and easy. Do not hesitate to experiment.
 
 
 ### To save a template:
 1. Select tiles
 2. Expand the "Save Terrain Template" section and click "Save"
-3. 
+3. Fill out the fields in the Save Terrain Template dialog:
+    - Statistics/Preview
+        - You may see one more terrain here than you expect. If there were any empty bits in your selected tiles, the template generator will have assigned them to an additional terrain.
+            - When applying the template, you can ignore the extra terrain and leave it blank and no terrains will be assigned to those bits.
+            - You can also use this as feature as a shortcut: skip assigning a second (or third) terrain when you paint your terrain, save the tiles as a user template, then apply the template to the same times and assign a terrain to the formerly empty bits.
+    - Name
+    - Description - optional.
+    - Custom Tags - comma-separated text that will appear in the Filter drop-down; spaces in tag names are ok.
+    - Save Folder (see: Warning Regarding Resource Files)
+        - Project Templates Folder: Templates saved here will only be available for this project.
+        - Shared Templates Folder: Templates saved here will be available for any other projects on this computer that have TileBitTools installed
+        - User Templates Folder: This option will only appear if there is a directory specified in *Project Settings -> Addons -> TileBitTools*. This is intended for users who want templates in a specific location, such as a subfolder of the main project or in a git repository.
+4. Click Save.
+    - If "Show User Messages" is enabled in *Project Settings -> Addons -> TileBitTools*, you will see a confirmation in the output log that includes the save path.
+    - The template should immediately be available in the Template drop-down. Any custom tags will appear in `Select Tag to Filter...`
+    - All user templates are automatically assigned a user tag. Filter by "Type: User" to see only your own custom templates in the Template drop-down.
 
 
+### To edit a user template:
+1. Select tiles 
+    - Even if you are not planning to edit them, at least one normal (non-alternative) tile must be selected to open TileBitTools
+2. Select template
+    - Filter by "Type: User" to see only templates available to edit
+3. Click the Edit button (pencil icon at the top-right of the template preview image)
+4. Make changes in the Edit Terrain Template dialog
+    - Name
+    - Description
+    - Custom tags
+    - Save folder - this cannot be changed from within TileBitTools
+    - Terrain data cannot be edited. You can use the advanced techniques below to edit the files manually. But it may be easier to simply apply your template to tiles, make edits, then save as a new user template. If not needed, the old template can be deleted.
+
+#### Advanced edits
+- User templates can be moved from one user folder to another manually in the file system.
+- Terrain templates are plain-text Resource files (see: Warning Regarding Resource Files). You can open them in any text editor to make small changes or find-replace.
+- If you are making complex changes, you may want to extend [TemplateBitData](https://github.com/dandeliondino/tile_bit_tools/blob/main/addons/tile_bit_tools/core/template_bit_data.gd). It inherits [BitData](https://github.com/dandeliondino/tile_bit_tools/blob/main/addons/tile_bit_tools/core/bit_data.gd), which contains some helpful iterators and bit manipulation functions.
+
+*After making any changes outside of TileBitTools, go to Project Settings -> Plugins and toggle TileBitTools off and on again to reload the templates.*
+
+
+### To delete a user template:
+1. Select tiles
+2. Select template
+3. Click the Delete button (trash can icon at the top-right of the template preview image)
 
 
 ## Warning Regarding Resource Files
