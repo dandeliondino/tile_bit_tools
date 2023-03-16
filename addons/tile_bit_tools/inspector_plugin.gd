@@ -1,26 +1,26 @@
 @tool
 extends EditorInspectorPlugin
 
-
-# DO NOT USE -INF/-INF == will evaluate as equal to Vector2i(0,0)
+# Do not use Vector2i(-INF/-INF) - will evaluate as equal to Vector2i(0,0)
 const INVALID_COORDINATES := Vector2i(-1, -1)
 
 const Globals := preload("res://addons/tile_bit_tools/core/globals.gd")
+const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd")
+
+var TBTPluginControl := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.tscn")
 
 var Context := preload("res://addons/tile_bit_tools/core/context.gd")
-var SelectedTilesInspector := preload("res://addons/tile_bit_tools/controls/selected_tiles_inspector/selected_tiles_inspector.tscn")
-var PreviewPanel := preload("res://addons/tile_bit_tools/controls/preview_panel/preview_panel.tscn")
+var TilesInspector := preload("res://addons/tile_bit_tools/controls/tiles_inspector/tiles_inspector.tscn")
+var TilesPreview := preload("res://addons/tile_bit_tools/controls/tiles_preview/tiles_preview.tscn")
 
-var SharedNodesContainer := preload("res://addons/tile_bit_tools/controls/shared_nodes/shared_nodes_container.tscn")
-
-
-var _print := preload("res://addons/tile_bit_tools/core/print.gd").new()
+var output := preload("res://addons/tile_bit_tools/core/output.gd").new()
 
 var controls := {}
 var current_controls := []
 
 
 # Editor nodes
+var interface : EditorInterface
 var base_control : Control
 var tile_set_editor : Node
 var atlas_source_editor : Node
@@ -31,7 +31,7 @@ var tile_atlas_view : Node
 var atlas_source_proxy : Object
 var atlas_tile_proxy : Object
 
-var shared_nodes_container : Node
+var tbt_plugin_control : TBTPlugin
 
 var context : Node
 var tiles_inspector : Control
@@ -43,45 +43,50 @@ var tiles_preview : Control
 # 			SETUP
 # --------------------------------------
 
-func setup(interface : EditorInterface) -> Globals.Errors:
+func setup(p_interface : EditorInterface) -> Globals.Errors:
+	interface = p_interface
 	base_control = interface.get_base_control()
 	
 	tile_set_editor = _get_first_node_by_class(interface.get_base_control(), "TileSetEditor")
-	#_print.debug("tile_set_editor=%s" % tile_set_editor)
+	#output.debug("tile_set_editor=%s" % tile_set_editor)
 	if !tile_set_editor:
 		return Globals.Errors.FAILED
+
 	
 	atlas_source_editor = _get_first_node_by_class(tile_set_editor, "TileSetAtlasSourceEditor")
-	#_print.debug("atlas_source_editor=%s" % atlas_source_editor)
+	#output.debug("atlas_source_editor=%s" % atlas_source_editor)
 	if !atlas_source_editor:
 		return Globals.Errors.FAILED
-	var result := _setup_source_editor_button_connections()
-#	if result != OK:
-		#_print.error("_setup_source_editor_button_connections() failed", result)
-		# do not return FAILED, not a breaking condition
-#	else:
-		#_print.debug("atlas_source_editor buttons connected")
+		
+	# TODO: re-enable this (probably)
+#	_setup_source_editor_button_connections()
+
 	
 	tile_atlas_view = _get_first_node_by_class(tile_set_editor, "TileAtlasView")
-	#_print.debug("tile_atlas_view=%s" % tile_atlas_view)
+	#output.debug("tile_atlas_view=%s" % tile_atlas_view)
 	if !tile_atlas_view:
 		return Globals.Errors.FAILED
 	
 	atlas_source_proxy = _get_first_connected_object_by_class(atlas_source_editor, "TileSetAtlasSourceProxyObject")
-	#_print.debug("atlas_source_proxy=%s" % atlas_source_proxy)
+	#output.debug("atlas_source_proxy=%s" % atlas_source_proxy)
 	if !atlas_source_proxy:
 		return Globals.Errors.FAILED
 	
 	atlas_tile_proxy = _get_first_connected_object_by_class(atlas_source_editor, "AtlasTileProxyObject")
-	#_print.debug("atlas_tile_proxy=%s" % atlas_tile_proxy)
+	#output.debug("atlas_tile_proxy=%s" % atlas_tile_proxy)
 	if !atlas_tile_proxy:
 		return Globals.Errors.FAILED
 	
-	var shared_node_result := _setup_shared_nodes()
+#	_print_signals_and_connections(tile_atlas_view)
+	
+	_setup_tiles_preview()
+	
+	var shared_node_result := _setup_tbt_plugin_control()
 	if shared_node_result != OK:
 		return shared_node_result
 	
 	return Globals.Errors.OK
+
 
 
 # Finds "Setup", "Select", "Paint" buttons and
@@ -104,11 +109,21 @@ func _setup_source_editor_button_connections() -> Globals.Errors:
 	return Globals.Errors.OK
 
 
-func _setup_shared_nodes() -> Globals.Errors:
-	shared_nodes_container = SharedNodesContainer.instantiate()
-	base_control.add_child(shared_nodes_container)
-	_print.debug("shared nodes added")
+func _setup_tiles_preview() -> void:
+	tiles_preview = TilesPreview.instantiate()
+	tile_atlas_view.add_child(tiles_preview)
+	tiles_preview.hide()
+
+
+func _setup_tbt_plugin_control() -> Globals.Errors:
+	tbt_plugin_control = TBTPluginControl.instantiate()
+	base_control.add_child(tbt_plugin_control)
+	tbt_plugin_control.setup(interface, tiles_preview)
+	output.debug("TBTPluginControl added")
 	return Globals.Errors.OK
+
+
+
 
 
 # --------------------------------------
@@ -119,7 +134,7 @@ func _can_handle(object: Object) -> bool:
 	_clear_tiles_inspector()
 	
 	if object.is_class("AtlasTileProxyObject"):
-		_print.debug("_can_handle() => AtlasTileProxyObject")
+		output.debug("_can_handle() => AtlasTileProxyObject")
 		return true
 	
 	return false
@@ -127,16 +142,16 @@ func _can_handle(object: Object) -> bool:
 
 func _parse_end(object: Object) -> void:
 	if !object.is_class("AtlasTileProxyObject"):
-		_print.warning("_parse_end(): object is not AtlasTileProxyObject, instead it is %s" % object)
+		output.warning("_parse_end(): object is not AtlasTileProxyObject, instead it is %s" % object)
 		return
 	
 	var result := await _add_inspector()
 	if result != OK:
-#		_print.error("Inspector failed to add correctly, clearing remnants")
-		_print.debug("TileSet inspector failed to open (ERR %s)" % result)
+#		output.error("Inspector failed to add correctly, clearing remnants")
+		output.debug("TileSet inspector failed to open (ERR %s)" % result)
 		_clear_tiles_inspector()
 		return
-	_print.debug("Inspector added without errors")
+	output.debug("Inspector added without errors")
 
 
 
@@ -147,16 +162,13 @@ func _parse_end(object: Object) -> void:
 
 
 func _add_inspector() -> Globals.Errors:
-	_print.debug("_add_inspector()")
+	output.debug("_add_inspector()")
 	
 	var result := await _add_context()
 	if result != OK:
 		return result
 	
 	_add_tiles_inspector()
-		
-	_add_tiles_preview()
-	
 	_notify_tiles_inspector_added()
 	
 	return Globals.Errors.OK
@@ -183,7 +195,7 @@ func _add_context() -> Globals.Errors:
 	if context.tiles.is_empty():
 		return Globals.Errors.MISSING_TILES
 	
-	shared_nodes_container.add_child(context)
+	tbt_plugin_control.add_child(context)
 	if !context.ready_complete:
 		await context.ready
 	
@@ -191,29 +203,18 @@ func _add_context() -> Globals.Errors:
 
 
 func _add_tiles_inspector() -> void:
-	tiles_inspector = SelectedTilesInspector.instantiate()
+	tiles_inspector = TilesInspector.instantiate()
 	add_custom_control(tiles_inspector)
-
-
-func _add_tiles_preview() -> void:
-	# must await here
-	# when tiles are re-selected, tiles_preview will not add
-	# without first waiting for its prior instance to exit tree
-	# BUT if await delays _add_tiles_inspector(),
-	# add_custom_control() for tiles_inspector will fail silently
-	await _wait_for_tree_exit(tiles_preview)
-	tiles_preview = PreviewPanel.instantiate()
-	tile_atlas_view.add_child(tiles_preview)
-
+	
 
 
 func _wait_for_tree_exit(node) -> void:
 	if is_instance_valid(node):
 		if node.is_queued_for_deletion():
-			_print.debug("waiting for %s to leave tree" % node)
+			output.debug("waiting for %s to leave tree" % node)
 			await node.tree_exited
 		else:
-			_print.warning("%s not queued for deletion" % node)
+			output.warning("%s not queued for deletion" % node)
 			_clear_tiles_inspector()
 			await node.tree_exited
 
@@ -232,22 +233,22 @@ func clean_up() -> void:
 
 # Called when inspector data changed or focus moved away
 func _clear_tiles_inspector() -> Globals.Errors:
-	_print.debug("_clear_tiles_inspector()")
+	output.debug("_clear_tiles_inspector()")
 	if is_instance_valid(context):
 		context.queue_free()
 		_notify_tiles_inspector_removed()
 	if is_instance_valid(tiles_inspector):
 		tiles_inspector.queue_free()
-	if is_instance_valid(tiles_preview):
-		tiles_preview.queue_free()
 
 	return Globals.Errors.OK
 
 
 func _remove_shared_editor_nodes() -> void:
-	if is_instance_valid(shared_nodes_container):
-		shared_nodes_container.queue_free()
-	_print.debug("shared editor nodes removed")
+	if is_instance_valid(tbt_plugin_control):
+		tbt_plugin_control.queue_free()
+	if is_instance_valid(tiles_preview):
+		tiles_preview.queue_free()
+	output.debug("shared editor nodes removed")
 
 
 
@@ -273,7 +274,7 @@ func _get_current_tiles(source : TileSetAtlasSource) -> Dictionary:
 	for tile_data in tile_data_objects:
 		var coords := _find_coordinates_in_source(tile_data, source)
 		if coords == INVALID_COORDINATES:
-			_print.error("Unable to find tile in source")
+			output.error("Unable to find tile in source")
 			return {}
 		tiles[coords] = tile_data
 
@@ -312,11 +313,29 @@ func _get_connected_objects_by_class(object : Object, p_class_name : String) -> 
 
 
 func _notify_tiles_inspector_added() -> void:
-	if is_instance_valid(shared_nodes_container):
-		shared_nodes_container.notify_tiles_inspector_added(context)
+	if !tiles_inspector.ready_complete:
+		output.debug("awaiting tiles_inspector.ready")
+		await tiles_inspector.ready
+	if !tiles_preview.ready_complete:
+		output.debug("awaiting tiles_preview.ready")
+		await tiles_preview.ready
+	
+	# TODO: why is tiles_preview sometimes null???
+	if is_instance_valid(tbt_plugin_control):
+		tbt_plugin_control.notify_tiles_inspector_added(tiles_inspector)
 
 
 func _notify_tiles_inspector_removed() -> void:
-	if is_instance_valid(shared_nodes_container):
-		shared_nodes_container.notify_tiles_inspector_removed()
+	if is_instance_valid(tbt_plugin_control):
+		tbt_plugin_control.notify_tiles_inspector_removed()
 
+
+func _print_signals_and_connections(object : Object) -> void:
+	output.debug("object: %s" % object)
+	output.debug("incoming connections:")
+	for connection in object.get_incoming_connections():
+		output.debug("\n%s" % connection)
+	for signal_data in object.get_signal_list():
+		output.debug(signal_data.name)
+		for connection in object.get_signal_connection_list(signal_data.name):
+			output.debug("\n%s" % connection)

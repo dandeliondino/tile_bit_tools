@@ -1,7 +1,7 @@
 @tool
 extends "res://addons/tile_bit_tools/core/bit_data.gd"
 
-const additional_colors := [Color.BLUE_VIOLET, Color.GOLDENROD, Color.PALE_VIOLET_RED, Color.TEAL, Color.REBECCA_PURPLE, Color.WHEAT, Color.AQUA, Color.SALMON, Color.CHOCOLATE, Color.VIOLET, Color.CADET_BLUE, Color.NAVY_BLUE, Color.MAGENTA, Color.LAWN_GREEN, Color.KHAKI, Color.HOT_PINK, Color.FIREBRICK, Color.DARK_OLIVE_GREEN, Color.SADDLE_BROWN]
+const additional_colors := [Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN, Color.REBECCA_PURPLE, Color.WHEAT, Color.AQUA, Color.SALMON, Color.CHOCOLATE, Color.VIOLET, Color.CADET_BLUE, Color.NAVY_BLUE, Color.MAGENTA, Color.LAWN_GREEN, Color.KHAKI, Color.HOT_PINK, Color.FIREBRICK, Color.DARK_OLIVE_GREEN, Color.SADDLE_BROWN]
 
 const Globals := preload("res://addons/tile_bit_tools/core/globals.gd")
 const EditorBitData := preload("res://addons/tile_bit_tools/core/editor_bit_data.gd")
@@ -21,10 +21,10 @@ var preview_texture : Texture2D
 
 var terrain_colors := {
 	-1: Color.TRANSPARENT,
-	0: ProjectSettings.get_setting(Globals.Settings.colors_terrain_01.path),
-	1: ProjectSettings.get_setting(Globals.Settings.colors_terrain_02.path),
-	2: ProjectSettings.get_setting(Globals.Settings.colors_terrain_03.path),
-	3: ProjectSettings.get_setting(Globals.Settings.colors_terrain_04.path),
+	0: ProjectSettings.get_setting(Globals.Settings.colors_terrain_01.path) if ProjectSettings.get_setting(Globals.Settings.colors_terrain_01.path) != null else additional_colors[0],
+	1: ProjectSettings.get_setting(Globals.Settings.colors_terrain_02.path) if ProjectSettings.get_setting(Globals.Settings.colors_terrain_02.path) != null else additional_colors[1],
+	2: ProjectSettings.get_setting(Globals.Settings.colors_terrain_03.path) if ProjectSettings.get_setting(Globals.Settings.colors_terrain_03.path) != null else additional_colors[2],
+	3: ProjectSettings.get_setting(Globals.Settings.colors_terrain_04.path) if ProjectSettings.get_setting(Globals.Settings.colors_terrain_04.path) != null else additional_colors[3],
 }
 
 
@@ -46,7 +46,6 @@ func load_editor_bit_data(bit_data : EditorBitData) -> Globals.Errors:
 	# terrain_set will remain NULL_TERRAIN_SET (-1)
 	terrain_mode = bit_data.terrain_mode
 	var terrain_mapping := _get_terrain_mapping(bit_data)
-	print(terrain_mapping)
 	_load_tiles(bit_data, terrain_mapping)
 	
 	return Globals.Errors.OK

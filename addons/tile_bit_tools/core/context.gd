@@ -7,7 +7,7 @@ const EditorBitData := preload("res://addons/tile_bit_tools/core/editor_bit_data
 
 const Icons := preload("res://addons/tile_bit_tools/core/icons.gd")
 
-#var _print := preload("res://addons/tile_bit_tools/core/print.gd").new()
+#var _print := preload("res://addons/tile_bit_tools/core/output.gd").new()
 var texts := preload("res://addons/tile_bit_tools/core/texts.gd").new()
 
 
@@ -19,11 +19,21 @@ var bit_data : EditorBitData
 
 var base_control : Control
 
+# {index : terrain_mode}
+var terrain_sets := {}
+
+# {terrain_set : [{
+#	"index": terrain_index,
+#	"color": color,
+#	"name": name,
+#},...]}
+var terrains_by_set := {}
+
 var ready_complete := false
 
 
 func _ready() -> void:
-	add_to_group(Globals.GROUP_CONTEXT)
+	# TODO: remove this?
 	ready_complete = true
 
 
@@ -49,17 +59,6 @@ func validate() -> Globals.Errors:
 	return Globals.Errors.OK
 
 
-# {index : terrain_mode}
-var terrain_sets := {}
-
-# {terrain_set : [{
-#	"index": terrain_index,
-#	"color": color,
-#	"name": name,
-#},...]}
-
-var terrains_by_set := {}
-
 func _populate_terrain_sets() -> void:
 	for i in range(tile_set.get_terrain_sets_count()):
 		terrain_sets[i] = tile_set.get_terrain_set_mode(i)
@@ -73,7 +72,14 @@ func _populate_terrains() -> void:
 				"id": i,
 				"text": tile_set.get_terrain_name(terrain_set, i),
 				"color": tile_set.get_terrain_color(terrain_set, i),
+				"icon": get_terrain_icon(tile_set.get_terrain_color(terrain_set, i))
 			})
+
+
+func get_terrain_icon(color : Color) -> ImageTexture:
+	var image := Image.create(16, 16, false, Image.FORMAT_RGB8)
+	image.fill(color)
+	return ImageTexture.create_from_image(image)
 
 
 func get_terrain_sets() -> Array:

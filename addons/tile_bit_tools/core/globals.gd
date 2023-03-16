@@ -1,9 +1,9 @@
 extends Object
 
-const VERSION := "0.1.1"
+const VERSION := "0.2.0"
 
 # ------------------------
-# 	ERRORS
+# 	ENUMS
 # ------------------------
 
 enum Errors {
@@ -18,8 +18,7 @@ enum Errors {
 }
 
 
-
-
+enum TemplateTypes {BUILT_IN, USER}
 
 
 
@@ -28,8 +27,8 @@ enum Errors {
 # ------------------------
 
 const BUILTIN_TEMPLATES_PATH := "res://addons/tile_bit_tools/templates/"
-
-
+const GODOT_TEMPLATES_FOLDER := "/tile_bit_tools_templates/"
+const PROJECT_TEMPLATES_PATH := "user://addons/tile_bit_tools/templates/"
 
 # ------------------------
 # 	USER SETTINGS
@@ -40,7 +39,7 @@ const PROJECT_SETTINGS_PATH := "addons/tile_bit_tools/"
 const Settings := {
 	"user_templates_path": {
 		"path": PROJECT_SETTINGS_PATH + "paths/user_templates_path",
-		"default": "user://addons/tile_bit_tools/templates/",
+		"default": "",
 		"type": TYPE_STRING,
 		"hint_string": PROPERTY_HINT_DIR,
 	},
@@ -59,24 +58,26 @@ const Settings := {
 		"default": false,
 		"type": TYPE_BOOL,
 	},
+	# Default colors from the "bright" color scheme at
+	# https://personal.sron.nl/~pault/
 	"colors_terrain_01": {
 		"path": PROJECT_SETTINGS_PATH + "colors/template_terrain_1",
-		"default": Color.RED,
+		"default": Color("228833"), # green
 		"type": TYPE_COLOR,
 	},
 	"colors_terrain_02": {
 		"path": PROJECT_SETTINGS_PATH + "colors/template_terrain_2",
-		"default": Color.BLUE,
+		"default":  Color("AA3377"), # pink
 		"type": TYPE_COLOR,
 	},
 	"colors_terrain_03": {
 		"path": PROJECT_SETTINGS_PATH + "colors/template_terrain_3",
-		"default": Color.YELLOW,
+		"default": Color("CCBB44"), # yellow
 		"type": TYPE_COLOR,
 	},
 	"colors_terrain_04": {
 		"path": PROJECT_SETTINGS_PATH + "colors/template_terrain_4",
-		"default": Color.GREEN,
+		"default": Color("4477AA"), # blue
 		"type": TYPE_COLOR,
 	},
 }
@@ -87,6 +88,4 @@ const Settings := {
 # ------------------------
 
 
-const GROUP_INSPECTOR_MANAGER := "TBT_INSPECTOR_MANAGER"
-const GROUP_TILES_MANAGER := "TBT_TILES_MANAGER"
-const GROUP_CONTEXT := "TBT_CONTEXT"
+const GROUP_DYNAMIC_CONTAINER := "TBTDynamicContainer"
