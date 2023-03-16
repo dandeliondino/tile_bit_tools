@@ -1,6 +1,6 @@
 extends Object
 
-const VERSION := "0.2.1"
+const VERSION := "1.0.0"
 
 # ------------------------
 # 	ENUMS
