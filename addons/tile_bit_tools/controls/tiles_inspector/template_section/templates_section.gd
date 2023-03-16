@@ -135,6 +135,7 @@ func _on_template_selected(index : int) -> void:
 	_update_terrain_sets()
 	_update_terrain_pickers_from_template()
 	_update_template_info_panel()
+	tbt.tiles_manager.clear_preview()
 
 
 func _update_template_info_panel() -> void:

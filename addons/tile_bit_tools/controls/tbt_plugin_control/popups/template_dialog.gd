@@ -1,7 +1,7 @@
 @tool
 extends Window
 
-const MIN_WIDTH_PROPORTION := 0.2
+const MIN_WIDTH_PROPORTION := 0.3
 const MIN_HEIGHT_PROPORTION := 0.3
 
 

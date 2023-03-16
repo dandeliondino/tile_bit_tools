@@ -39,7 +39,8 @@ func _update_folder_label() -> void:
 			folder_label.text = folder_path.name
 			folder_label.tooltip_text = folder_path.tooltip + "\n" + folder_path.path
 			return
-
+	folder_label.text = path # if cannot find saved path, list path itself
+	folder_label.tooltip_text = ""
 
 
 

@@ -58,24 +58,26 @@ const Settings := {
 		"default": false,
 		"type": TYPE_BOOL,
 	},
+	# Default colors from the "bright" color scheme at
+	# https://personal.sron.nl/~pault/
 	"colors_terrain_01": {
 		"path": PROJECT_SETTINGS_PATH + "colors/template_terrain_1",
-		"default": Color.RED,
+		"default": Color("228833"), # green
 		"type": TYPE_COLOR,
 	},
 	"colors_terrain_02": {
 		"path": PROJECT_SETTINGS_PATH + "colors/template_terrain_2",
-		"default": Color.BLUE,
+		"default":  Color("AA3377"), # pink
 		"type": TYPE_COLOR,
 	},
 	"colors_terrain_03": {
 		"path": PROJECT_SETTINGS_PATH + "colors/template_terrain_3",
-		"default": Color.YELLOW,
+		"default": Color("CCBB44"), # yellow
 		"type": TYPE_COLOR,
 	},
 	"colors_terrain_04": {
 		"path": PROJECT_SETTINGS_PATH + "colors/template_terrain_4",
-		"default": Color.GREEN,
+		"default": Color("4477AA"), # blue
 		"type": TYPE_COLOR,
 	},
 }

@@ -148,7 +148,19 @@ var overrides_dict := {
 		Overrides.BUTTON_PRESSED: ["pressed", "OptionButton"],
 		Overrides.BUTTON_DISABLED: ["disabled", "OptionButton"],
 		Overrides.BUTTON_FOCUS: ["focus", "OptionButton"],
-	}
+	},
+	"TBTToolButton": {
+		Overrides.FONT_COLOR: ["font_color", "Editor"],
+		Overrides.FONT: ["main", "EditorFonts"],
+		Overrides.FONT_SIZE: ["main_size", "EditorFonts"],
+		
+		Overrides.BUTTON_NORMAL: ["normal", "OptionButton"],
+		Overrides.BUTTON_HOVER: ["hover", "OptionButton"],
+		Overrides.BUTTON_PRESSED: ["pressed", "OptionButton"],
+		Overrides.BUTTON_DISABLED: ["disabled", "OptionButton"],
+		Overrides.BUTTON_FOCUS: ["focus", "OptionButton"],
+	},
+	
 }
 
 
@@ -176,20 +188,17 @@ func _notification(what: int) -> void:
 
 
 func _tiles_inspector_added() -> void:
-	await get_tree().process_frame
 	if !height_setup_complete:
-		# attempted under _setup_themes()
-		# will only run again if failed to get heights
+		# only needs to be done once
 		_setup_custom_heights()
+	await get_tree().process_frame
 	_update_themes()
 
 
 # TODO: also call this from notification theme changed
 func _setup_themes() -> void:
-	# otherwise will not get on startup 
-	# and there will be noticeable pause on first opening tile inspector
-	await get_tree().create_timer(0.1).timeout
-	_setup_custom_heights()
+	# remove from here to avoid pause when activating plugin
+#	_setup_custom_heights()
 	_update_themes()
 
 
@@ -239,12 +248,6 @@ func _update_custom_heights() -> void:
 	get_tree().set_group(SECTION_BUTTON_GROUP, "custom_minimum_size", Vector2i(0, section_button_height))
 
 
-#func _setup_dynamic_containers() -> void:
-#	for node in get_tree().get_nodes_in_group(tbt.Globals.GROUP_DYNAMIC_CONTAINER):
-#		if !node.child_entered_tree.is_connected(_on_dynamic_container_child_added):
-#			node.child_entered_tree.connect(_on_dynamic_container_child_added)
-
-
 func _on_theme_update_requested(node : Node) -> void:
 	await get_tree().process_frame
 	_update_node(node)
@@ -262,243 +265,4 @@ func _get_height_by_class(p_class_name : String) -> int:
 
 	
 	
-
-
-	
-
-#	if category_control_height == UNASSIGNED:
-#		var editor_inspector_category_control := base_control.find_children("*", "EditorInspectorCategory", true, false)[0]
-#		category_control_height = editor_inspector_category_control.size.y
-
-#	var theme_updates := [
-#		{
-#			"group_name": "TBTEditorInspectorCategory",
-#			"updates": [
-#				{
-#					"property": "theme_override_styles/panel",
-#					"value":  base_control.get_theme_stylebox("bg", "EditorInspectorCategory"),
-#				},
-#				{
-#					"property": "custom_minimum_size",
-#					"value": Vector2i(0, category_control_height),
-#				}
-#			],
-#		},
-#		{
-#			"group_name": "TBTEditorInspectorCategoryLabel",
-#			"updates": [
-#				{
-#					"property": "theme_override_colors/font_color",
-#					"value":  base_control.get_theme_color("font_color", "Label"),
-#				},
-#				{
-#					"property": "theme_override_fonts/font",
-#					"value":  base_control.get_theme_font("main_button_font", "EditorFonts"),
-#				},
-#				{
-#					"property": "theme_override_font_sizes/font_size",
-#					"value":  base_control.get_theme_font_size("main_button_font_size", "EditorFonts"),
-#				},
-#			],
-#		},
-#		{
-#			"group_name": "TBTPreviewHeader",
-#			"updates": [
-#				{
-#					"property": "theme_override_colors/font_color",
-#					"value":  base_control.get_theme_color("font_color", "Label"),
-#				},
-#				{
-#					"property": "theme_override_fonts/font",
-#					"value":  base_control.get_theme_font("main_button_font", "EditorFonts"),
-#				},
-#				{
-#					"property": "theme_override_font_sizes/font_size",
-#					"value":  base_control.get_theme_font_size("main_button_font_size", "EditorFonts"),
-#				},
-#			],
-#		},
-#		{
-#			"group_name": "TBTPreviewSubHeader",
-#			"updates": [
-#				{
-#					"property": "theme_override_colors/font_color",
-#					"value":  base_control.get_theme_color("font_color", "Label"),
-#				},
-#				{
-#					"property": "theme_override_fonts/font",
-#					"value":  base_control.get_theme_font("main_button_font", "EditorFonts"),
-#				},
-#				{
-#					"property": "theme_override_font_sizes/font_size",
-#					"value":  base_control.get_theme_font_size("main_button_font_size", "EditorFonts"),
-#				},
-#			],
-#		},
-#
-#
-#
-## ###########################################################################
-## 							PREVIEW PANEL
-## ###########################################################################
-#
-#		{
-#			"group_name": "TBTPreviewContainer",
-#			"updates": [
-#				{
-#					"property": "theme_override_styles/panel",
-#					"value":  base_control.get_theme_stylebox("LaunchPadNormal", "EditorStyles"),
-#				},
-#			],
-#		},
-#		{
-#			"group_name": "TBTPreviewBox",
-#			"updates": [
-#				{
-#					"property": "theme_override_styles/panel",
-#					"value":  base_control.get_theme_stylebox("child_bg", "EditorProperty"),
-#				},
-#			],
-#		},
-#		{
-#			"group_name": "TBTPlaceholderLabel",
-#			"updates": [
-#				{
-#					"property": "theme_override_colors/default_color",
-#					"value":  base_control.get_theme_color("property_color", "Editor"),
-#				},
-#				{
-#					"property": "theme_override_fonts/normal_font",
-#					"value":  base_control.get_theme_font("font", "Label"),
-#				},
-#				{
-#					"property": "theme_override_font_sizes/normal_font_size",
-#					"value":  base_control.get_theme_font_size("main_size", "EditorFonts"),
-#				},
-#			],
-#		},
-#
-#
-## ###########################################################################
-## 							TEMPLATE INSPECTOR
-## ###########################################################################
-#
-#
-#		{
-#			"group_name": "TBTTemplateInspectorBackground",
-#			"updates": [
-#				{
-#					"property": "theme_override_styles/panel",
-#					"value":  base_control.get_theme_stylebox("sub_inspector_property_bg0", "Editor"),
-#				},
-#			],
-#		},
-#		{
-#			"group_name": "TBTTemplateInspectorForeground",
-#			"updates": [
-#				{
-#					"property": "theme_override_styles/panel",
-#					"value": base_control.get_theme_stylebox("sub_inspector_bg0", "Editor"),
-#				},
-#			],
-#		},
-#		{
-#			"group_name": "TBTDescriptionBox",
-#			"updates": [
-#				{
-#					"property": "theme_override_styles/panel",
-#					"value": base_control.get_theme_stylebox("bg_group_note", "EditorProperty"),
-#				},
-#			],
-#		},
-#		{
-#			"group_name": "TBTSubPropertyPanel",
-#			"updates": [
-#				{
-#					"property": "theme_override_styles/panel",
-#					"value": base_control.get_theme_stylebox("Information3dViewport", "EditorStyles"),
-#				},
-#			],
-#		},
-#		{
-#			"group_name": "TBTTag",
-#			"updates": [
-#				{
-#					"property": "theme_override_styles/panel",
-#					"value": base_control.get_theme_stylebox("selected", "ItemList"),
-#				},
-#			],
-#		},
-#
-#
-#
-#
-
-#
-## ###########################################################################
-## 							CONTROLS
-## ###########################################################################
-#
-#
-#
-#
-#
-#
-#		{
-#			"group_name": "TBTBackgroundPanel",
-#			"updates": [
-#				{
-#					"property": "theme_override_styles/panel",
-#					"value":  base_control.get_theme_stylebox("panel", "Tree"),
-#				},
-#			],
-#		},
-#				{
-#			"group_name": "TBTSectionButton",
-#			"updates": [
-#				{
-#					"property": "theme_override_styles/disabled",
-#					"value":  base_control.get_theme_stylebox("disabled", "InspectorActionButton"),
-#				},
-#				{
-#					"property": "theme_override_styles/hover",
-#					"value":  base_control.get_theme_stylebox("hover", "InspectorActionButton"),
-#				},
-#				{
-#					"property": "theme_override_styles/normal",
-#					"value":  base_control.get_theme_stylebox("normal", "InspectorActionButton"),
-#				},
-#				{
-#					"property": "theme_override_styles/pressed",
-#					"value":  base_control.get_theme_stylebox("normal", "InspectorActionButton"),
-#				},
-#				{
-#					"property": "theme_override_colors/font_color",
-#					"value":  base_control.get_theme_color("font_color", "EditorInspectorSection"),
-#				},
-#				{
-#					"property": "theme_override_colors/font_pressed_color",
-#					"value":  base_control.get_theme_color("font_color", "EditorInspectorSection"),
-#				},
-#				{
-#					"property": "theme_override_colors/font_hover_color",
-#					"value":  base_control.get_theme_color("font_color", "EditorInspectorSection"),
-#				},
-#				{
-#					"property": "theme_override_fonts/font",
-#					"value":  base_control.get_theme_font("main_button_font", "EditorFonts"),
-#				},
-#				{
-#					"property": "theme_override_font_sizes/font_size",
-#					"value":  base_control.get_theme_font_size("main_button_font_size", "EditorFonts"),
-#				},
-#			],
-#		},
-#	]
-
-#
-#	for entry in theme_updates:
-#		for update in entry.updates:
-#			get_tree().call_group(entry.group_name, "set", update.property, update.value)
-#
 

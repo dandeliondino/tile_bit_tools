@@ -1,45 +1,31 @@
-![TileBitTools: A Godot 4 TileSet editor plugin](https://github.com/dandeliondino/tile_bit_tools/blob/0.1.1/assets/header.png)
+# TileBitTools
 
-This plugin applies built-in and user-generated terrain bit (autotile) templates to a TileSet.
+TileBitTools is a Godot 4 plugin for autotile templates and terrain bit editing.
 
-Godot 4.0's new TileSet/TileMap system is powerful and extensible, but has a lot of untapped potential. The goal of this plugin is to enable fast iterations, to assist in migrating from Godot 3.5, and to speed up the learning process for new users.
-
-Introduction video:
-[![TileBitTools Video](http://img.youtube.com/vi/t3BHoKArXlA/0.jpg)](http://www.youtube.com/watch?v=t3BHoKArXlA)
+For the full, up-to-date readme and documentation, see [github.com/dandeliondino/tile_bit_tools](https://github.com/dandeliondino/tile_bit_tools)
 
 
-## To install:
-*TileBitTools is currently only available here on Github as a download. It will be submitted to Godot Asset Library in the near future.*
-1. Go to Code -> download ZIP
-2. Copy the `addons/tile_bit_tools` folder to your project
-3. Go to Project Settings -> Addons and enable TileBitTools
 
-## To use:
-*TileBitTools is still experimental, please back up first.*
-1. Select tiles in the bottom TileSet editor
-2. Choose a template
-3. Assign terrains
-4. Click to apply template
+## Warning Regarding Resource Files
+Like many other files in a typical Godot project, template terrain data for TileBitTools is saved in plain-text Resource (`.tres`) files.
 
-![1. Select tiles](https://github.com/dandeliondino/tile_bit_tools/blob/0.1.1/assets/tutorial_screenshot_01.png)
+This plugin will load all `.tres` resource files in the following folder locations:
+- Built-in templates folder: `res://addons/tile_bit_tools/templates`
+- Project-specific templates folder: `user://addons/tile_bit_tools/templates` (see [Accessing persistent user data (user://)](https://docs.godotengine.org/en/stable/tutorials/io/data_paths.html#accessing-persistent-user-data-user) for location)
+- Shared templates folder: [EditorPaths.get_data_dir()](https://docs.godotengine.org/en/stable/classes/class_editorpaths.html#class-editorpaths-method-get-data-dir) + `/tile_bit_tools_templates`
+- The custom user directory specified in *Project Settings -> Addons -> TileBitTools* (blank by default)
 
-![2. Choose template](https://github.com/dandeliondino/tile_bit_tools/blob/0.1.1/assets/tutorial_screenshot_02.png)
+**If a Resource file in one of these locations contains malicious code, it may be executed by Godot on loading.**
 
-![3. Assign terrains](https://github.com/dandeliondino/tile_bit_tools/blob/0.1.1/assets/tutorial_screenshot_03.png)
+To encounter malicious code would require a user to first separately download a `.tres` file containing the code, and for that user to place it in one of these specific folders. As this plugin is for game developers, not the general public, the potential risk of using this file format was determined to be outweighed by the benefits of: (1) not requiring serialization and (2) allowing users to edit the plain text tile data in an easy-to-read format.
 
-![4. Apply template](https://github.com/dandeliondino/tile_bit_tools/blob/0.1.1/assets/tutorial_screenshot_04.png)
+However, there are scenarios where users may want to share template terrain data online. Please exercise caution if doing so. See the [built-in templates here](https://github.com/dandeliondino/tile_bit_tools/tree/main/addons/tile_bit_tools/templates) for examples of what normal template files look like. They will only reference one script (`res://addons/tile_bit_tools/core/template_bit_data.gd`) and should be small in size (a 164-tile template is 14KB on disk).
 
-![Results](https://github.com/dandeliondino/tile_bit_tools/blob/0.1.1/assets/tutorial_screenshot_05.png)
-
-## To give feedback:
-Find a bug? -> [Known Bugs and Reports](https://github.com/dandeliondino/tile_bit_tools/issues/2)
-
-Have an autotile template that should be built-in? -> [Add More Built-in Terrain Templates](https://github.com/dandeliondino/tile_bit_tools/issues/4)
-
-Have an idea for a new feature? -> [Future Directions and Suggestions](https://github.com/dandeliondino/tile_bit_tools/issues/3)
+For more details regarding the risks of sharing Resource files, see this video from GDQuest: ["I was COMPLETELY WRONG about saves in Godot... ( ; - ;)"](https://www.youtube.com/watch?v=j7p7cGj20jU)
 
 
-# Credits
+
+## Credits
 Concept inspired by [Wareya's Godot Tile Setup Helper](https://github.com/wareya/godot-tile-setup-helper) for Godot 3.5
 
 Huge thanks to [YuriSizov's Godot Editor Theme Explorer](https://github.com/YuriSizov/godot-editor-theme-explorer) and [Zylann's Editor Debugger](https://github.com/Zylann/godot_editor_debugger_plugin)
@@ -48,26 +34,4 @@ The example tilesets are adapted from [Kenney's Pixel Shmup](https://www.kenney.
 
 The TileBitTools icon is modified from [Kenney's Game Icons](https://www.kenney.nl/assets/game-icons) ([License: CCO 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/))
 
-The fonts in the header are [Lilita One](https://fonts.google.com/specimen/Lilita+One) (SIL Open Font License 1.1) and [Fira Code](https://github.com/tonsky/FiraCode) (SIL Open Font License 1.1).
-
-Other icons included with this addon are from the Godot 4 editor with the following license:
->Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md).
->Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
-
->Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
->The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
->THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+The fonts in the header and images are [Lilita One](https://fonts.google.com/specimen/Lilita+One) (SIL Open Font License 1.1) and [Fira Code](https://github.com/tonsky/FiraCode) (SIL Open Font License 1.1).

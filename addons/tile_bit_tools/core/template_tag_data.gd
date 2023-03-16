@@ -26,7 +26,7 @@ class TemplateTag:
 	
 	var custom_tag_icons := {
 		"Godot 3": "Godot",
-		"Incomplete Autotile": "FileBroken",
+		"Incomplete Autotile": "NodeWarning",
 	}
 
 	func _init(p_text : String, p_test_func = null, p_icon = null, p_color = null):
@@ -70,7 +70,7 @@ var tags := {
 		"Type: Built-In",
 		func(bit_data: TemplateBitData): 
 			return bit_data.built_in,
-		"res://addons/tile_bit_tools/controls/icons/tile_bit_tools_16.svg",
+		"Tools",
 		null,
 	),
 	Tags.USER: TemplateTag.new(
