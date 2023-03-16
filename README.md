@@ -1,4 +1,4 @@
-![TileBitTools](https://github.com/dandeliondino/tile_bit_tools/blob/0.1.1/assets/header.png)
+![TileBitTools](https://github.com/dandeliondino/tile_bit_tools/blob/main/assets/header.png)
 
 TileBitTools is a Godot 4 plugin for autotile templates and terrain bit editing.
 
