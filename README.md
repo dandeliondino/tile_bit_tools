@@ -1,4 +1,4 @@
-![TileBitTools](https://github.com/dandeliondino/tile_bit_tools/blob/main/assets/header.png)
+![TileBitTools](https://raw.githubusercontent.com/dandeliondino/tile_bit_tools/main/assets/header.png)
 
 TileBitTools is a Godot 4 plugin for autotile templates and terrain bit editing.
 
@@ -7,29 +7,38 @@ The terrain system in Godot 4 is powerful and extensible, and has a lot of untap
 ## Contents
 - Features
 - Installation
-- Use
+- How to use
+    - Terrain bit editing buttons
+    - Apply a template
+    - Save a template
+    - Edit a template
+    - Delete a template
 - Warning Regarding Resource Files
 - Feedback
 - Credits
 
 
 ## Features
-- **Built-in autotile templates for all 3 terrain modes**
+- **Built-in autotile templates for all three Godot 4 terrain modes**
     - **3x3 minimal**, **3x3 16-tile** and **2x2** templates from Godot 3 documentation.
     - **Blob**, **Wang** and **Wang 3-terrain** templates to match Tilesetter's default export.
     - **Simple 9- and 4-tile** templates. These are modular corner-mode templates that match tile configurations commonly found in spritesheets.
+- **Tips and example tiles for all built-in templates**
+- **Terrain bit editing buttons** to make changes like 'Fill' and 'Clear' to multiple tiles or peering bits in one click
 - **Custom user template creation**
     - Save new templates from the terrain peering bits on existing tiles. Statistics and previews are automatically generated.
     - Use as a quick way to copy-paste terrain bits.
     - Or use to save complex, reusable templates to a shared directory accessible to all projects.
-- **Bulk tile bit editing buttons**
-    - **Fill** - fill all selected tiles' terrain data with a single terrain.
-    - **Set Bits** - set the terrain ID or a specific terrain peering bit to a single terrain in all selected tiles.
-    - **Clear** - clear all terrain data from selected tiles.
 - **Options in Project Settings**
     - Customize the template bit colors (default colors are from the color-blind-friendly 'bright' scheme from [Paul Tol](https://personal.sron.nl/~pault/))
     - Customize which messages appear in the Output log
     - Customize the template save folder location
+
+
+### Limitations
+- Even using Godot 3 autotile templates, tile placement will not work exactly the same as it did in Godot 3, as the core matching algorithm is different
+- Hex and isometric tiles are not supported
+- Alternative tiles are not supported
 
 
 ## Installation
@@ -48,15 +57,22 @@ The terrain system in Godot 4 is powerful and extensible, and has a lot of untap
 1. Delete the `addons/tile_bit_tools` folder from your project
 
 
-## Use
+## How to use
 *Please back up your project before making any changes. Godot 4 is still new, and TileBitTools is even newer, so unexpected behavior may occur.*
 
 TileBitTools is located in the bottom TileSet editor, in the Select tab. To access any of its functions, the first step is to select tiles.
 
-### To apply a template:
+### Terrain bit editing buttons
+- **Fill** - fill all selected tiles' terrain data with a single terrain.
+- **Set Bits** - set the terrain ID or a specific terrain peering bit to a single terrain in all selected tiles.
+- **Clear** - clear all terrain data from selected tiles.
+
+### Apply a template:
+![](https://raw.githubusercontent.com/dandeliondino/tile_bit_tools/main/assets/tutorials/apply_template.gif)
+
 1. **Select tiles**
 2. **Expand the `Apply Terrain Template` section and choose a template**
-    - Filter by tags to narrow the choices
+    - Press `Select Tag to Filter...` to narrow the choices
     - Built-in templates all have detailed descriptions. Click the `>` button to expand the text.
     - Built-in templates also come with examples you can use for experimenting or as guides for arranging tiles in an image editor. Click the `Examples` button (top-right of the template preview image) to open the folder for that template. Examples in v1.0 are all adapted from [Kenney's Pixel Shmup](https://www.kenney.nl/assets/pixel-shmup) (CC0).
 3. **Assign terrains**
@@ -67,7 +83,7 @@ TileBitTools is located in the bottom TileSet editor, in the Select tab. To acce
     - This cannot be undone. But TileBitTools makes clearing and reassigning terrain bits fast and easy. Back up, but do not hesitate to experiment.
 
 
-### To save a template:
+### Save a template:
 1. **Select tiles**
 2. **Expand the `Save Terrain Template` section and press `Save Template`**
 3. **Enter information in the Save Terrain Template dialog**
@@ -88,7 +104,7 @@ TileBitTools is located in the bottom TileSet editor, in the Select tab. To acce
     - All user templates are automatically assigned a user tag. Filter by "Type: User" to see only your own custom templates in the Template drop-down.
 
 
-### To edit a template:
+### Edit a template:
 1. **Select tiles** 
     - Even if you are not planning to edit them, at least one normal (non-alternative) tile must be selected to open TileBitTools
 2. **Select template**
@@ -105,12 +121,12 @@ TileBitTools is located in the bottom TileSet editor, in the Select tab. To acce
 #### Advanced edits
 - User templates can be moved from one user folder to another manually in the file system.
 - Terrain templates are plain-text Resource files (see: *Warning Regarding Resource Files*). You can open them in any text editor to make small changes or find-replace.
-- If you are making complex changes, you may want to extend [TemplateBitData](https://github.com/dandeliondino/tile_bit_tools/blob/main/addons/tile_bit_tools/core/template_bit_data.gd), the Resource script. It inherits [BitData](https://github.com/dandeliondino/tile_bit_tools/blob/main/addons/tile_bit_tools/core/bit_data.gd), which contains some helpful iterators and bit manipulation functions.
+- If you are making complex changes, you may want to extend [TemplateBitData](https://github.com/dandeliondino/tile_bit_tools/blob/main/addons/tile_bit_tools/core/template_bit_data.gd), the Resource script. It inherits [BitData](https://github.com/dandeliondino/tile_bit_tools/blob/main/addons/tile_bit_tools/core/bit_data.gd), which contains some helpful iterators and terrain bit manipulation functions.
 
 *After making any changes outside of Godot, go to Project Settings -> Plugins and toggle TileBitTools off and on again to reload the templates.*
 
 
-### To delete a template:
+### Delete a template:
 1. Select tiles
 2. Select template
 3. Click the `Delete` button (top-right of the template preview image)
@@ -132,8 +148,6 @@ To encounter malicious code would require a user to first separately download a 
 However, there are scenarios where users may want to share template terrain data online. Please exercise caution if doing so. See the [built-in templates here](https://github.com/dandeliondino/tile_bit_tools/tree/main/addons/tile_bit_tools/templates) for examples of what normal template files look like. They will only reference one script (`res://addons/tile_bit_tools/core/template_bit_data.gd`) and should be small in size (a 164-tile template is 14KB on disk).
 
 For more details regarding the risks of sharing Resource files, see this video from GDQuest: ["I was COMPLETELY WRONG about saves in Godot... ( ; - ;)"](https://www.youtube.com/watch?v=j7p7cGj20jU)
-
-
 
 
 ## Feedback
