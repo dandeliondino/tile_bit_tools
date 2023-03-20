@@ -88,6 +88,11 @@ func setup(p_interface : EditorInterface) -> Globals.Errors:
 	return Globals.Errors.OK
 
 
+func _reset() -> void:
+	clean_up()
+	setup.call_deferred(interface)
+
+
 
 # Finds "Setup", "Select", "Paint" buttons and
 # connects pressed to resetting inspector controls 
@@ -163,6 +168,13 @@ func _parse_end(object: Object) -> void:
 func _add_inspector() -> Globals.Errors:
 	output.debug("_add_inspector()")
 	
+	# partial fix for issue #34
+	if !is_instance_valid(tbt_plugin_control):
+		output.error("tbt_plugin_control invalid")
+		_reset()
+		return Globals.Errors.INVALID_TBT_PLUGIN_CONTROL
+	
+	
 	var result := await _add_context()
 	if result != OK:
 		return result
@@ -226,8 +238,8 @@ func _wait_for_tree_exit(node) -> void:
 func clean_up() -> void:
 	_remove_shared_editor_nodes()
 	_clear_tiles_inspector()
-	# TODO
-	pass
+
+
 
 
 # Called when inspector data changed or focus moved away

@@ -10,6 +10,7 @@ const ERROR_TEXTS := {
 	Globals.Errors.MISSING_SOURCE: "TileSetAtlasSource not found",
 	Globals.Errors.MISSING_TILES: "TileData not found",
 	Globals.Errors.MISSING_BIT_DATA: "TileData failed to parse",
+	Globals.Errors.INVALID_TBT_PLUGIN_CONTROL: "Plugin restarting",
 	Globals.Errors.MULTIPLE_TERRAIN_SETS: "Selected tiles contain more than one terrain set",
 	Globals.Errors.UNSUPPORTED_SHAPE: "Current tile shape is not supported",
 }
