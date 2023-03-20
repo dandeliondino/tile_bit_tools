@@ -7,6 +7,7 @@ const VERSION := "1.0.1"
 # ------------------------
 
 enum Errors {
+	NULL_ERROR = -999,
 	OK = Error.OK,
 	FAILED = Error.FAILED,
 	MISSING_TILE_SET = 900,

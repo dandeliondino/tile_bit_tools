@@ -1,6 +1,13 @@
 extends Object
 
+const Globals := preload("res://addons/tile_bit_tools/core/globals.gd")
 const BitData := preload("res://addons/tile_bit_tools/core/bit_data.gd")
+
+
+const ERROR_TEXTS := {
+	Globals.Errors.OK: "OK"
+}
+
 
 const TERRAIN_MODE_TEXTS := {
 	TileSet.TerrainMode.TERRAIN_MODE_MATCH_CORNERS_AND_SIDES : "Corners and Sides",
@@ -19,6 +26,7 @@ const TERRAIN_BIT_TEXTS := {
 	BitData.TerrainBits.LEFT_SIDE: "Left Side",
 	BitData.TerrainBits.CENTER: "Terrain ID (Center Bit)",
 }
+
 
 const EMPTY_ITEM := "<empty>"
 
