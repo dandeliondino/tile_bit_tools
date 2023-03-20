@@ -1,28 +1,54 @@
-# TileBitTools
+![TileBitTools](https://raw.githubusercontent.com/dandeliondino/tile_bit_tools/main/assets/header.png)
 
 TileBitTools is a Godot 4 plugin for autotile templates and terrain bit editing.
 
-For the full, up-to-date readme and documentation, see [github.com/dandeliondino/tile_bit_tools](https://github.com/dandeliondino/tile_bit_tools)
+The terrain system in Godot 4 is powerful and extensible, and has a lot of untapped potential. The goal of this plugin is to enable fast iterations, to assist in migrating from Godot 3, and to speed up the learning process for new users.
+
+## Features
+- **Built-in autotile templates for all three Godot 4 terrain modes**
+    - **3x3 minimal**, **3x3 16-tile** and **2x2** templates from Godot 3 documentation.
+    - **Blob**, **Wang** and **Wang 3-terrain** templates to match Tilesetter's default export.
+    - **Simple 9- and 4-tile** templates. These are modular corner-mode templates that match tile configurations commonly found in spritesheets.
+- **Tips and example tiles for all built-in templates**
+- **Terrain bit editing buttons** to make changes like 'Fill' and 'Clear' to multiple tiles or peering bits in one click
+- **Custom user template creation**
+    - Save new templates from the terrain peering bits on existing tiles. Statistics and previews are automatically generated.
+    - Use as a quick way to copy-paste terrain bits.
+    - Or use to save complex, reusable templates to a shared directory accessible to all projects.
+- **Options in Project Settings**
+    - Customize the template bit colors (default colors are from the color-blind-friendly 'bright' scheme from [Paul Tol](https://personal.sron.nl/~pault/))
+    - Customize which messages appear in the Output log
+    - Customize the template save folder location
 
 
+## Limitations
+- Even using Godot 3 autotile templates, tile placement will not work exactly the same as it did in Godot 3, as the core matching algorithm is different
+- Hex and isometric tiles are not supported
+- Alternative tiles are not supported
 
-## Warning Regarding Resource Files
-Like many other files in a typical Godot project, template terrain data for TileBitTools is saved in plain-text Resource (`.tres`) files.
 
-This plugin will load all `.tres` resource files in the following folder locations:
-- Built-in templates folder: `res://addons/tile_bit_tools/templates`
-- Project-specific templates folder: `user://addons/tile_bit_tools/templates` (see [Accessing persistent user data (user://)](https://docs.godotengine.org/en/stable/tutorials/io/data_paths.html#accessing-persistent-user-data-user) for location)
-- Shared templates folder: [EditorPaths.get_data_dir()](https://docs.godotengine.org/en/stable/classes/class_editorpaths.html#class-editorpaths-method-get-data-dir) + `/tile_bit_tools_templates`
-- The custom user directory specified in *Project Settings -> Addons -> TileBitTools* (blank by default)
+## How to use
+*Please back up your project before making any changes. Godot 4 is still new, and TileBitTools is even newer, so unexpected behavior may occur.*
 
-**If a Resource file in one of these locations contains malicious code, it may be executed by Godot on loading.**
+TileBitTools is located in the bottom TileSet editor, in the Select tab. To access any of its functions, the first step is to select tiles.
 
-To encounter malicious code would require a user to first separately download a `.tres` file containing the code, and for that user to place it in one of these specific folders. As this plugin is for game developers, not the general public, the potential risk of using this file format was determined to be outweighed by the benefits of: (1) not requiring serialization and (2) allowing users to edit the plain text tile data in an easy-to-read format.
+See the following pages for detailed directions:
 
-However, there are scenarios where users may want to share template terrain data online. Please exercise caution if doing so. See the [built-in templates here](https://github.com/dandeliondino/tile_bit_tools/tree/main/addons/tile_bit_tools/templates) for examples of what normal template files look like. They will only reference one script (`res://addons/tile_bit_tools/core/template_bit_data.gd`) and should be small in size (a 164-tile template is 14KB on disk).
+- [Installation](https://github.com/dandeliondino/tile_bit_tools/wiki/1.-Installation)
+- [Bulk terrain editing buttons](https://github.com/dandeliondino/tile_bit_tools/wiki/2.-Bulk-Terrain-Editing-Buttons)
+- Templates
+    - [Applying templates](https://github.com/dandeliondino/tile_bit_tools/wiki/3.1-Applying-Templates)
+    - [Saving templates](https://github.com/dandeliondino/tile_bit_tools/wiki/3.2-Saving-Templates)
+    - [Editing templates](https://github.com/dandeliondino/tile_bit_tools/wiki/3.3-Editing-Templates)
+- [Warning regarding resource files](https://github.com/dandeliondino/tile_bit_tools/wiki/X.-Warning-Regarding-Resource-Files)
 
-For more details regarding the risks of sharing Resource files, see this video from GDQuest: ["I was COMPLETELY WRONG about saves in Godot... ( ; - ;)"](https://www.youtube.com/watch?v=j7p7cGj20jU)
 
+## Feedback
+Find a bug? -> [Known Bugs and Reports](https://github.com/dandeliondino/tile_bit_tools/issues/2)
+
+Have an autotile template that should be built-in? -> [Add More Built-in Terrain Templates](https://github.com/dandeliondino/tile_bit_tools/issues/4)
+
+Have an idea for a new feature? -> [Future Directions and Suggestions](https://github.com/dandeliondino/tile_bit_tools/issues/3)
 
 
 ## Credits
