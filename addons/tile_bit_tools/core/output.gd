@@ -7,7 +7,7 @@ enum MessageTypes {USER, INFO, DEBUG}
 const OUTPUT_TEMPLATE := "[color=palegreen]TileBitTools:[/color] %s"
 const COLOR_TEMPLATE := "[color={color}]{msg}[/color]"
 
-const ERROR_TEXT_TEMPLATE := "{error_text} {error_code_text}"
+const ERROR_TEXT_TEMPLATE := "{error_text} (ERR {error})"
 const ERROR_CODE_TEMPLATE := "(ERR {error})"
 const OK_CODE_TEMPLATE := "(OK)"
 

@@ -5,7 +5,13 @@ const BitData := preload("res://addons/tile_bit_tools/core/bit_data.gd")
 
 
 const ERROR_TEXTS := {
-	Globals.Errors.OK: "OK"
+#	Globals.Errors.OK: "result=OK",
+	Globals.Errors.MISSING_TILE_SET: "TileSet not found",
+	Globals.Errors.MISSING_SOURCE: "TileSetAtlasSource not found",
+	Globals.Errors.MISSING_TILES: "TileData not found",
+	Globals.Errors.MISSING_BIT_DATA: "TileData failed to parse",
+	Globals.Errors.MULTIPLE_TERRAIN_SETS: "Selected tiles contain more than one terrain set",
+	Globals.Errors.UNSUPPORTED_SHAPE: "Current tile shape is not supported",
 }
 
 
