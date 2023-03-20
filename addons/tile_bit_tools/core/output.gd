@@ -15,6 +15,7 @@ const MESSAGE_ERROR_TEMPLATE := "{msg} ({error_string})"
 
 const DEFAULT_ERROR_TEXT := "An error occurred"
 const ERROR_COLOR := "salmon"
+const WARNING_COLOR := "yellow"
 const OK_COLOR := "palegreen"
 
 const Globals := preload("res://addons/tile_bit_tools/core/globals.gd")
@@ -46,14 +47,32 @@ func debug(msg : String, error := Globals.Errors.NULL_ERROR) -> void:
 	_print_msg(msg, error, MessageTypes.DEBUG)
 
 
-# deprecated
-func error(msg : String, error := Globals.Errors.NULL_ERROR) -> void:
-	_print_msg(msg, error, MessageTypes.DEBUG)
+func error(msg : String, error : int = Globals.Errors.NULL_ERROR) -> void:
+	if error != Globals.Errors.NULL_ERROR:
+		msg = ERROR_TEXT_TEMPLATE.format({
+			"error_text": msg,
+			"error": error,
+		})
+	msg = COLOR_TEMPLATE.format({
+		"color": ERROR_COLOR,
+		"msg": msg,
+	})
+	
+	_print_msg(msg, Globals.Errors.NULL_ERROR, MessageTypes.DEBUG)
 
 
-# deprecated
-func warning(msg : String, error := Globals.Errors.NULL_ERROR) -> void:
-	_print_msg(msg, error, MessageTypes.DEBUG)
+func warning(msg : String, error : int = Globals.Errors.NULL_ERROR) -> void:
+	if error != Globals.Errors.NULL_ERROR:
+		msg = ERROR_TEXT_TEMPLATE.format({
+			"error_text": msg,
+			"error": error,
+		})
+	msg = COLOR_TEMPLATE.format({
+		"color": WARNING_COLOR,
+		"msg": msg,
+	})
+	
+	_print_msg(msg, Globals.Errors.NULL_ERROR, MessageTypes.DEBUG)
 
 
 
