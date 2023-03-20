@@ -120,6 +120,7 @@ TileBitTools is located in the bottom TileSet editor, in the Select tab. To acce
 
 #### Advanced edits
 - User templates can be moved from one user folder to another manually in the file system.
+- If templates are located in the project folder, can edit open and edit them in the sidebar like any other resource.
 - Terrain templates are plain-text Resource files (see: *Warning Regarding Resource Files*). You can open them in any text editor to make small changes or find-replace.
 - If you are making complex changes, you may want to extend [TemplateBitData](https://github.com/dandeliondino/tile_bit_tools/blob/main/addons/tile_bit_tools/core/template_bit_data.gd), the Resource script. It inherits [BitData](https://github.com/dandeliondino/tile_bit_tools/blob/main/addons/tile_bit_tools/core/bit_data.gd), which contains some helpful iterators and terrain bit manipulation functions.
 
