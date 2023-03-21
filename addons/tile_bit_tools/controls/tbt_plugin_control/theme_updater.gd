@@ -9,7 +9,7 @@ const SECTION_EDITOR_CLASS := "EditorInspectorSection"
 const CATEGORY_PANEL_GROUP := "TBTCategoryPanel"
 const SECTION_BUTTON_GROUP := "TBTSectionButton"
 const DEFAULT_MINIMUM_HEIGHT := 16
-
+const DEFAULT_MAXIMUM_HEIGHT := 64
 
 
 const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd")
@@ -169,7 +169,6 @@ var section_button_height := UNASSIGNED
 
 var height_setup_complete := false
 
-# TODO: add request_apply_style for styling runtime generated controls
 
 var tbt : TBTPlugin
 
@@ -195,10 +194,9 @@ func _tiles_inspector_added() -> void:
 	_update_themes()
 
 
-# TODO: also call this from notification theme changed
 func _setup_themes() -> void:
 	# remove from here to avoid pause when activating plugin
-#	_setup_custom_heights()
+	_setup_custom_heights()
 	_update_themes()
 
 
@@ -233,11 +231,13 @@ func _update_node(node : Node) -> void:
 func _setup_custom_heights() -> void:
 	height_setup_complete = true
 	category_panel_height = _get_height_by_class(CATEGORY_EDITOR_CLASS)
-	if category_panel_height == 0:
+	tbt.output.debug("category_panel_height=%s" % category_panel_height)
+	if not category_panel_height in range(DEFAULT_MINIMUM_HEIGHT, DEFAULT_MAXIMUM_HEIGHT):
 		category_panel_height = DEFAULT_MINIMUM_HEIGHT
 		height_setup_complete = false
 	section_button_height = _get_height_by_class(SECTION_EDITOR_CLASS)
-	if section_button_height == 0:
+	tbt.output.debug("section_button_height=%s" % section_button_height)
+	if not section_button_height in range(DEFAULT_MINIMUM_HEIGHT, DEFAULT_MAXIMUM_HEIGHT):
 		section_button_height = DEFAULT_MINIMUM_HEIGHT
 		height_setup_complete = false
 	tbt.output.debug("_setup_custom_heights() success=%s" % str(height_setup_complete))
@@ -257,11 +257,11 @@ func _on_theme_update_requested(node : Node) -> void:
 # finds first control of class that has a height > 0
 # returns height
 func _get_height_by_class(p_class_name : String) -> int:
-	for control in tbt.base_control.find_children("*", p_class_name, true, false):
-		var height : int = control.size.y
-		if height > 0:
-			return height
-	return 0
+	var controls := tbt.atlas_source_editor.find_children("*", p_class_name, true, false)
+	if controls.size() == 0:
+		return 0
+	
+	return controls[0].size.y
 
 	
 	

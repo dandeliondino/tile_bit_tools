@@ -45,6 +45,7 @@ var texts : Texts = Texts.new()
 var icons : Icons
 
 var interface : EditorInterface
+var atlas_source_editor : Node
 var base_control : Control
 
 var template_manager : TemplateManager
@@ -80,9 +81,11 @@ func _ready() -> void:
 	_setup_children()
 
 
-func setup(p_interface : EditorInterface, p_tiles_preview : Control) -> void:
+func setup(p_interface : EditorInterface, p_atlas_source_editor : Node, p_tiles_preview : Control) -> void:
 	interface = p_interface
 	base_control = interface.get_base_control()
+	atlas_source_editor = p_atlas_source_editor
+	
 	icons = Icons.new(base_control)
 	
 	# here instead of _ready() so base_control is not null

@@ -123,7 +123,7 @@ func _setup_tiles_preview() -> void:
 func _setup_tbt_plugin_control() -> Globals.Errors:
 	tbt_plugin_control = TBTPluginControl.instantiate()
 	base_control.add_child(tbt_plugin_control)
-	tbt_plugin_control.setup(interface, tiles_preview)
+	tbt_plugin_control.setup(interface, atlas_source_editor, tiles_preview)
 	output.debug("TBTPluginControl added")
 	return Globals.Errors.OK
 
