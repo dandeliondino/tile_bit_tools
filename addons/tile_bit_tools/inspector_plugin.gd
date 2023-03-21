@@ -58,9 +58,6 @@ func setup(p_interface : EditorInterface) -> Globals.Errors:
 	if !atlas_source_editor:
 		return Globals.Errors.FAILED
 		
-	# TODO: re-enable this (probably)
-#	_setup_source_editor_button_connections()
-
 	
 	tile_atlas_view = _get_first_node_by_class(tile_set_editor, "TileAtlasView")
 	#output.debug("tile_atlas_view=%s" % tile_atlas_view)
@@ -86,6 +83,11 @@ func setup(p_interface : EditorInterface) -> Globals.Errors:
 		return shared_node_result
 	
 	return Globals.Errors.OK
+
+
+func _reset() -> void:
+	clean_up()
+	setup.call_deferred(interface)
 
 
 
@@ -118,7 +120,7 @@ func _setup_tiles_preview() -> void:
 func _setup_tbt_plugin_control() -> Globals.Errors:
 	tbt_plugin_control = TBTPluginControl.instantiate()
 	base_control.add_child(tbt_plugin_control)
-	tbt_plugin_control.setup(interface, tiles_preview)
+	tbt_plugin_control.setup(interface, atlas_source_editor, tiles_preview)
 	output.debug("TBTPluginControl added")
 	return Globals.Errors.OK
 
@@ -147,11 +149,10 @@ func _parse_end(object: Object) -> void:
 	
 	var result := await _add_inspector()
 	if result != OK:
-#		output.error("Inspector failed to add correctly, clearing remnants")
-		output.debug("TileSet inspector failed to open (ERR %s)" % result)
+		output.user("TilesInspector not added", result)
 		_clear_tiles_inspector()
 		return
-	output.debug("Inspector added without errors")
+	output.debug("TilesInspector added", result)
 
 
 
@@ -163,6 +164,18 @@ func _parse_end(object: Object) -> void:
 
 func _add_inspector() -> Globals.Errors:
 	output.debug("_add_inspector()")
+	
+	# partial fix for issue #34
+	if !is_instance_valid(tbt_plugin_control):
+		output.error("tbt_plugin_control invalid")
+		_reset()
+		return Globals.Errors.INVALID_TBT_PLUGIN_CONTROL
+	
+	# tiles preview has sometimes been invalid too
+	if !is_instance_valid(tiles_preview):
+		output.error("tiles_preview invalid")
+		_reset()
+		return Globals.Errors.INVALID_TILES_PREVIEW
 	
 	var result := await _add_context()
 	if result != OK:
@@ -227,8 +240,8 @@ func _wait_for_tree_exit(node) -> void:
 func clean_up() -> void:
 	_remove_shared_editor_nodes()
 	_clear_tiles_inspector()
-	# TODO
-	pass
+
+
 
 
 # Called when inspector data changed or focus moved away
@@ -320,7 +333,6 @@ func _notify_tiles_inspector_added() -> void:
 		output.debug("awaiting tiles_preview.ready")
 		await tiles_preview.ready
 	
-	# TODO: why is tiles_preview sometimes null???
 	if is_instance_valid(tbt_plugin_control):
 		tbt_plugin_control.notify_tiles_inspector_added(tiles_inspector)
 

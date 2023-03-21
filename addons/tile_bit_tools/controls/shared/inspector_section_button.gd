@@ -41,6 +41,7 @@ func _tbt_ready() -> void:
 	expand_container = get_node_or_null(expand_container_path)
 	if expand_container == null:
 		tbt.output.error("Expand container null")
+		return
 	
 	icon_expanded = tbt.icons.get_icon(tbt.icons.ARROW_EXPANDED)
 	icon_collapsed = tbt.icons.get_icon(tbt.icons.ARROW_COLLAPSED)

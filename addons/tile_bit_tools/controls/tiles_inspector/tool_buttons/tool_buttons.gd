@@ -163,7 +163,7 @@ func _on_fill_button_popup_id_pressed(id : int) -> void:
 
 
 func _on_bit_button_terrain_id_pressed(terrain_id : int, terrain_bit : int) -> void:
-	print("terrain_bit=%s, terrain_id=%s" % [terrain_bit, terrain_id])
+#	print("terrain_bit=%s, terrain_id=%s" % [terrain_bit, terrain_id])
 	tbt.tiles_manager.set_terrain_bits(terrain_bit, terrain_id)
 
 

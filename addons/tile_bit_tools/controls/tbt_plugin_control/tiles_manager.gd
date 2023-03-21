@@ -7,7 +7,7 @@ enum TerrainChanges {NONE, ERASE, FILL, BITS, TEMPLATE}
 
 const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd")
 
-# TODO: move to texts
+# TODO: move to texts; currently unused
 var terrain_changes_texts := {
 	TerrainChanges.NONE: "",
 	TerrainChanges.ERASE: "Erase terrain",

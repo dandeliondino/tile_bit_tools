@@ -125,7 +125,8 @@ func _save() -> void:
 	var result := ResourceSaver.save(template_bit_data, path)
 	
 	if result != OK:
-		tbt.output.error("Error saving template", result)
+		tbt.output.user("Error saving template", tbt.Globals.Errors.FAILED)
+		tbt.output.debug("ResourceSaver error: %s" % result)
 		close_dialog()
 		return
 	

@@ -105,9 +105,8 @@ func _load_terrain_set(tile_data : TileData) -> Globals.Errors:
 	return Globals.Errors.OK
 
 
-# if a peering bit is unset, get_terrain_peering_bit() will cause error spam 
+# if a peering bit is unset, get_terrain_peering_bit() sometimes causes error spam 
 # of "!is_valid_terrain_peering_bit(p_peering_bit)" is true"
-# TODO: request proposal
 func _load_terrain(coords : Vector2i, tile_data : TileData) -> void:
 	set_tile_terrain(coords, tile_data.terrain)
 	

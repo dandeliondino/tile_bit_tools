@@ -1,6 +1,21 @@
 extends Object
 
+const Globals := preload("res://addons/tile_bit_tools/core/globals.gd")
 const BitData := preload("res://addons/tile_bit_tools/core/bit_data.gd")
+
+
+const ERROR_TEXTS := {
+#	Globals.Errors.OK: "result=OK",
+	Globals.Errors.MISSING_TILE_SET: "TileSet not found",
+	Globals.Errors.MISSING_SOURCE: "TileSetAtlasSource not found",
+	Globals.Errors.MISSING_TILES: "TileData not found",
+	Globals.Errors.MISSING_BIT_DATA: "TileData failed to parse",
+	Globals.Errors.INVALID_TBT_PLUGIN_CONTROL: "TBTPluginControl invalid",
+	Globals.Errors.INVALID_TILES_PREVIEW: "TilesPreview invalid",
+	Globals.Errors.MULTIPLE_TERRAIN_SETS: "Selected tiles contain more than one terrain set",
+	Globals.Errors.UNSUPPORTED_SHAPE: "Current tile shape is not supported",
+}
+
 
 const TERRAIN_MODE_TEXTS := {
 	TileSet.TerrainMode.TERRAIN_MODE_MATCH_CORNERS_AND_SIDES : "Corners and Sides",
@@ -19,6 +34,7 @@ const TERRAIN_BIT_TEXTS := {
 	BitData.TerrainBits.LEFT_SIDE: "Left Side",
 	BitData.TerrainBits.CENTER: "Terrain ID (Center Bit)",
 }
+
 
 const EMPTY_ITEM := "<empty>"
 

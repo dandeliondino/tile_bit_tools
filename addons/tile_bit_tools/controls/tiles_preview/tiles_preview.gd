@@ -130,7 +130,7 @@ func _update_preview_terrain() -> void:
 
 
 func _create_base_image() -> void:
-	var texture := tbt.context.source.get_runtime_texture()
+	var texture := tbt.context.source.texture
 	base_image = texture.get_image().get_region(image_crop_rect)
 
 
@@ -138,7 +138,7 @@ func _update_image_crop_rect() -> void:
 	image_crop_rect = EMPTY_RECT
 	
 	for coords in tbt.context.tiles.keys():
-		var rect := tbt.context.source.get_runtime_tile_texture_region(coords, FRAME_0)
+		var rect := tbt.context.source.get_tile_texture_region(coords, FRAME_0)
 		if image_crop_rect == EMPTY_RECT:
 			image_crop_rect = rect
 		else:

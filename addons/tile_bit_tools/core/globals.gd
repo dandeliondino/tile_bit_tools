@@ -1,20 +1,24 @@
 extends Object
 
-const VERSION := "1.0.0"
+const VERSION := "1.0.1"
 
 # ------------------------
 # 	ENUMS
 # ------------------------
 
 enum Errors {
+	NULL_ERROR = -999,
 	OK = Error.OK,
 	FAILED = Error.FAILED,
 	MISSING_TILE_SET = 900,
 	MISSING_SOURCE = 901,
 	MISSING_TILES = 902,
 	MISSING_BIT_DATA = 903,
+	INVALID_TBT_PLUGIN_CONTROL=904,
+	INVALID_TILES_PREVIEW=905,
 	MULTIPLE_TERRAIN_SETS = 910,
 	UNSUPPORTED_SHAPE = 911,
+	
 }
 
 
@@ -62,22 +66,22 @@ const Settings := {
 	# https://personal.sron.nl/~pault/
 	"colors_terrain_01": {
 		"path": PROJECT_SETTINGS_PATH + "colors/template_terrain_1",
-		"default": Color("228833"), # green
+		"default": Color("AA3377"), # pink
 		"type": TYPE_COLOR,
 	},
 	"colors_terrain_02": {
 		"path": PROJECT_SETTINGS_PATH + "colors/template_terrain_2",
-		"default":  Color("AA3377"), # pink
+		"default":  Color("CCBB44"), # yellow
 		"type": TYPE_COLOR,
 	},
 	"colors_terrain_03": {
 		"path": PROJECT_SETTINGS_PATH + "colors/template_terrain_3",
-		"default": Color("CCBB44"), # yellow
-		"type": TYPE_COLOR,
+		"default": Color("228833"), # green
+		"type": TYPE_COLOR,   
 	},
 	"colors_terrain_04": {
 		"path": PROJECT_SETTINGS_PATH + "colors/template_terrain_4",
-		"default": Color("4477AA"), # blue
+		"default": Color("66ccee"), # cyan
 		"type": TYPE_COLOR,
 	},
 }
