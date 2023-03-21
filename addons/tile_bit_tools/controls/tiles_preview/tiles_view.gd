@@ -19,6 +19,9 @@ var upscale_by_max_size := {
 @onready var terrain_overlay_rect: TextureRect = %TerrainOverlayRect
 
 
+func _ready() -> void:
+	terrain_overlay_rect.texture = terrain_viewport.get_texture()
+
 
 func setup_base_tiles(texture : Texture2D, base_size : Vector2i) -> void:
 	base_tiles_rect.texture = texture
