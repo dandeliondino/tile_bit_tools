@@ -41,7 +41,7 @@ func _load_templates() -> void:
 	_update_template_folder_paths()
 	
 	for folder_path in template_folder_paths:
-		tbt.output.info("Loading templates in %s: %s" % [folder_path.name, folder_path.path])
+		tbt.output.debug("Loading templates in %s: %s" % [folder_path.name, folder_path.path])
 		if !DirAccess.dir_exists_absolute(folder_path.path):
 			tbt.output.debug("making path to template folder: %s" % folder_path.path)
 			DirAccess.make_dir_recursive_absolute(folder_path.path)
@@ -55,13 +55,6 @@ func _create_template_textures() -> void:
 	for template in template_loader.get_templates():
 		template.preview_texture = await bit_data_draw_node.get_bit_texture(template)
 #		tbt.output.debug("Created preview texture for %s" % template.template_name)
-
-
-# TODO: remove
-func get_current_context() -> TBTPlugin.Context:
-	if tbt:
-		return tbt.context
-	return null
 
 
 func update_templates() -> void:

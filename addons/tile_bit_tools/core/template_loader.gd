@@ -29,8 +29,6 @@ var _custom_tags := {}
 
 var _display_tag_ids := []
 
-# TODO
-#var tag_display_list := []
 
 
 func _init(template_folder_paths : Array) -> void:
@@ -170,26 +168,6 @@ func get_templates_item_list(filter_by_tags := []) -> Array:
 	
 	return item_list
 
-
-
-#func _update_templates() -> void:
-#	# TODO: clear functions
-##	_templates_to_tags.clear()
-##	tags_by_id.clear()
-##	_tags_to_templates.clear()
-##	tag_display_list.clear()
-#	_load_auto_tags()
-#	_load_templates()
-#	print("\ntemplates: ")
-#	print(_templates)
-#	print("\ntags: ")
-#	print(_tags)
-#	print("\ntemplates_to_tags: ")
-#	print(_templates_to_tags)
-#	print("\ntags_to_templates: ")
-#	print(_tags_to_templates)
-#	print("\ncustom_tags: ")
-#	print(_custom_tags)
 
 
 func _load_auto_tags() -> void:

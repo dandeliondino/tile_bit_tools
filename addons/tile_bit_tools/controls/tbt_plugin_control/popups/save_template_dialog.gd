@@ -14,9 +14,9 @@ func _setup_save_dialog() -> void:
 	
 	var result := template_bit_data.load_editor_bit_data(tbt.context.bit_data)
 	if result != OK:
-		tbt.output.error("Cannot create template from editor data", result) # TODO: error codes and popup message
-			# TODO: message_box_requested not implemented
-		tbt.message_box_requested.emit("Cannot create template from editor data (ERR %s)" % result)
+		tbt.output.user("Cannot create template from editor data", result)
+		# TODO: message_box_requested not implemented
+#		tbt.message_box_requested.emit("Cannot create template from editor data (ERR %s)" % result)
 		hide()
 	
 	show_dialog()

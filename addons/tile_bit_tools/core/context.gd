@@ -33,7 +33,6 @@ var ready_complete := false
 
 
 func _ready() -> void:
-	# TODO: remove this?
 	ready_complete = true
 
 
@@ -105,7 +104,6 @@ func get_terrain_sets_item_list(terrain_mode : TileSet.TerrainMode) -> Array:
 				"terrain_mode": terrain_mode,
 				"text": "[%s]" % [index],
 				"icon": icons.get_icon(icons.TERRAIN_MODE_ICONS[terrain_mode]),
-				# TODO: add icon
 			})
 	return terrain_set_list
 

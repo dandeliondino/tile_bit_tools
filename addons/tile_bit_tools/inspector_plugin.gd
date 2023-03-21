@@ -58,9 +58,6 @@ func setup(p_interface : EditorInterface) -> Globals.Errors:
 	if !atlas_source_editor:
 		return Globals.Errors.FAILED
 		
-	# TODO: re-enable this (probably)
-#	_setup_source_editor_button_connections()
-
 	
 	tile_atlas_view = _get_first_node_by_class(tile_set_editor, "TileAtlasView")
 	#output.debug("tile_atlas_view=%s" % tile_atlas_view)
@@ -174,6 +171,11 @@ func _add_inspector() -> Globals.Errors:
 		_reset()
 		return Globals.Errors.INVALID_TBT_PLUGIN_CONTROL
 	
+	# tiles preview has sometimes been invalid too
+	if !is_instance_valid(tiles_preview):
+		output.error("tiles_preview invalid")
+		_reset()
+		return Globals.Errors.INVALID_TILES_PREVIEW
 	
 	var result := await _add_context()
 	if result != OK:
@@ -331,7 +333,6 @@ func _notify_tiles_inspector_added() -> void:
 		output.debug("awaiting tiles_preview.ready")
 		await tiles_preview.ready
 	
-	# TODO: why is tiles_preview sometimes null???
 	if is_instance_valid(tbt_plugin_control):
 		tbt_plugin_control.notify_tiles_inspector_added(tiles_inspector)
 
