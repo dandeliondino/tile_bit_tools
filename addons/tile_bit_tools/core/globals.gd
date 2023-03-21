@@ -80,7 +80,7 @@ const Settings := {
 	},
 	"colors_terrain_04": {
 		"path": PROJECT_SETTINGS_PATH + "colors/template_terrain_4",
-		"default": Color("4477AA"), # blue
+		"default": Color("66ccee"), # cyan
 		"type": TYPE_COLOR,
 	},
 }
