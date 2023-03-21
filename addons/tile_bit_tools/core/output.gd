@@ -123,7 +123,10 @@ func _format_error(msg : String, error : Globals.Errors) -> String:
 
 
 func _is_message_type_enabled(msg_type : MessageTypes) -> bool:
-	return ProjectSettings.get_setting(message_type_settings[msg_type])
+	var value = ProjectSettings.get_setting(message_type_settings[msg_type])
+	if value == null:
+		return false
+	return value
 
 
 func _get_error_string(error : Globals.Errors, skip_text_if_null := false) -> String:
