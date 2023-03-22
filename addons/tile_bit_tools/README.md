@@ -4,6 +4,13 @@ TileBitTools is a Godot 4 plugin for autotile templates and terrain bit editing.
 
 The terrain system in Godot 4 is powerful and extensible, and has a lot of untapped potential. The goal of this plugin is to enable fast iterations, to assist in migrating from Godot 3, and to speed up the learning process for new users.
 
+*Click on the screenshots below to expand*
+
+[![Animated gif demonstrating how to apply a template](https://raw.githubusercontent.com/dandeliondino/tile_bit_tools/main/assets/tutorials/apply_template_thumb.gif)](https://github.com/dandeliondino/tile_bit_tools/blob/main/assets/tutorials/apply_template.gif)
+[![Screenshot of a built-in template](https://raw.githubusercontent.com/dandeliondino/tile_bit_tools/main/assets/tips_and_examples_thumb.png)](https://github.com/dandeliondino/tile_bit_tools/blob/main/assets/tips_and_examples.png)
+[![Screenshot of the Save Template dialog window](https://raw.githubusercontent.com/dandeliondino/tile_bit_tools/main/assets/save_custom_templates_thumb.png)](https://github.com/dandeliondino/tile_bit_tools/blob/main/assets/save_custom_templates.png)
+[![Screenshots of setting up a 3-terrain tileset](https://raw.githubusercontent.com/dandeliondino/tile_bit_tools/main/assets/terrain_transitions_thumb.png)](https://github.com/dandeliondino/tile_bit_tools/blob/main/assets/terrain_transitions.png)
+
 ## Features
 - **Built-in autotile templates for all three Godot 4 terrain modes**
     - **3x3 minimal**, **3x3 16-tile** and **2x2** templates from Godot 3 documentation.
