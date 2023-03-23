@@ -45,7 +45,7 @@ See the following pages for detailed directions:
 - [Bulk terrain editing buttons](https://github.com/dandeliondino/tile_bit_tools/wiki/2.-Bulk-Terrain-Editing-Buttons)
 - Templates
     - [Applying templates](https://github.com/dandeliondino/tile_bit_tools/wiki/3.1-Applying-Templates)
-    - [Saving templates](https://github.com/dandeliondino/tile_bit_tools/wiki/3.2-Saving-Templates)
+    - [Saving templates](https://github.com/dandeliondino/tile_bit_tools/wiki/3.2-Saving-Templates) - ***If you are saving a significant amount of data in your templates, please make sure they are being backed up and/or added to a version control system. There are rare cases of [template data being deleted on editor startup](https://github.com/dandeliondino/tile_bit_tools/issues/49).***
     - [Editing templates](https://github.com/dandeliondino/tile_bit_tools/wiki/3.3-Editing-Templates)
 - [Warning regarding resource files](https://github.com/dandeliondino/tile_bit_tools/wiki/X.-Warning-Regarding-Resource-Files)
 
