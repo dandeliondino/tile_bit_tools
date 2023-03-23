@@ -1,6 +1,8 @@
 @tool
 extends EditorInspectorPlugin
 
+const TERRAINS_TAB_TITLE := "Terrains"
+
 # Do not use Vector2i(-INF/-INF) - will evaluate as equal to Vector2i(0,0)
 const INVALID_COORDINATES := Vector2i(-1, -1)
 
@@ -12,6 +14,7 @@ var TBTPluginControl := preload("res://addons/tile_bit_tools/controls/tbt_plugin
 var Context := preload("res://addons/tile_bit_tools/core/context.gd")
 var TilesInspector := preload("res://addons/tile_bit_tools/controls/tiles_inspector/tiles_inspector.tscn")
 var TilesPreview := preload("res://addons/tile_bit_tools/controls/tiles_preview/tiles_preview.tscn")
+var TerrainsTab := preload("res://addons/tile_bit_tools/controls/terrains_tab/terrains_tab.tscn")
 
 var output := preload("res://addons/tile_bit_tools/core/output.gd").new()
 
@@ -23,6 +26,7 @@ var current_controls := []
 var interface : EditorInterface
 var base_control : Control
 var tile_set_editor : Node
+var tab_bar : TabBar
 var atlas_source_editor : Node
 var tile_atlas_view : Node
 
@@ -37,6 +41,8 @@ var context : Node
 var tiles_inspector : Control
 var tiles_preview : Control
 
+var terrains_tab : Control
+var terrains_tab_index : int
 
 
 # --------------------------------------
@@ -52,6 +58,10 @@ func setup(p_interface : EditorInterface) -> Globals.Errors:
 	if !tile_set_editor:
 		return Globals.Errors.FAILED
 
+	tab_bar = _get_first_node_by_class(tile_set_editor, "TabBar")
+#	output.debug("tab_bar=%s" % tab_bar)
+	_setup_terrains_tab()
+	
 	
 	atlas_source_editor = _get_first_node_by_class(tile_set_editor, "TileSetAtlasSourceEditor")
 	#output.debug("atlas_source_editor=%s" % atlas_source_editor)
@@ -90,7 +100,6 @@ func _reset() -> void:
 	setup.call_deferred(interface)
 
 
-
 # Finds "Setup", "Select", "Paint" buttons and
 # connects pressed to resetting inspector controls 
 func _setup_source_editor_button_connections() -> Globals.Errors:
@@ -109,6 +118,15 @@ func _setup_source_editor_button_connections() -> Globals.Errors:
 		button.pressed.connect(_clear_tiles_inspector)
 
 	return Globals.Errors.OK
+
+
+func _setup_terrains_tab() -> void:
+	tab_bar.add_tab(TERRAINS_TAB_TITLE, preload("res://addons/tile_bit_tools/controls/icons/tile_bit_tools_16.svg"))
+	tab_bar.tab_changed.connect(_on_tab_changed)
+	terrains_tab_index = tab_bar.tab_count - 1
+	terrains_tab = TerrainsTab.instantiate()
+	tile_set_editor.add_child(terrains_tab)
+	terrains_tab.hide()
 
 
 func _setup_tiles_preview() -> void:
@@ -155,6 +173,12 @@ func _parse_end(object: Object) -> void:
 	output.debug("TilesInspector added", result)
 
 
+func _on_tab_changed(idx : int) -> void:
+	print("tab changed to %s" % idx)
+	if idx == terrains_tab_index:
+		terrains_tab.show()
+	else:
+		terrains_tab.hide()
 
 
 # --------------------------------------
@@ -238,9 +262,8 @@ func _wait_for_tree_exit(node) -> void:
 
 # Called from parent plugin when addon unloaded
 func clean_up() -> void:
-	_remove_shared_editor_nodes()
+	_remove_editor_nodes()
 	_clear_tiles_inspector()
-
 
 
 
@@ -256,15 +279,23 @@ func _clear_tiles_inspector() -> Globals.Errors:
 	return Globals.Errors.OK
 
 
-func _remove_shared_editor_nodes() -> void:
-	if is_instance_valid(tbt_plugin_control):
-		tbt_plugin_control.queue_free()
+func _remove_editor_nodes() -> void:
+	_remove_terrains_tab()
 	if is_instance_valid(tiles_preview):
 		tiles_preview.queue_free()
+	if is_instance_valid(tbt_plugin_control):
+		tbt_plugin_control.queue_free()
 	output.debug("shared editor nodes removed")
 
 
-
+func _remove_terrains_tab() -> void:
+	if tab_bar.tab_count > terrains_tab_index:
+		# make sure it is not current before removing it
+		if tab_bar.current_tab == terrains_tab_index:
+			tab_bar.current_tab = 0
+		tab_bar.remove_tab(terrains_tab_index)
+	if is_instance_valid(terrains_tab):
+		terrains_tab.queue_free()
 
 
 
