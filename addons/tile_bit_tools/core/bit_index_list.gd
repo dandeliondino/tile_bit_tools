@@ -21,51 +21,45 @@ var TerrainBitWeights := {
 }
 
 
-# transition_sets = [
-#	"terrain_id": terrain_id,
-#	"peering_terrain_ids": [terrain_id, ...],
-#]
-var transition_sets := []
+# transition_sets = {
+#		"transition_set_id": {
+#			"terrain_id": terrain_id,
+#			"peering_terrain_ids": [terrain_id, ...],
+#			"tiles": {},
+#	}
+# }
+var transition_sets := {}
 
-# bit_indexes[transition_set_id][idx] = [list of coordinates]
-var bit_indexes := {}
 
 
-func _get_or_add_transition_set(terrain_id : int, peering_terrain_ids : Array) -> int:
-	for i in range(transition_sets.size()):
-		var set : Dictionary = transition_sets[i]
-		if set.terrain_id != terrain_id:
-			continue
-		if peering_terrain_ids.size() != set.peering_terrain_ids.size():
-			continue
-		var peering_terrains_match := true
-		for id in peering_terrain_ids:
-			if !set.peering_terrain_ids.has(id):
-				peering_terrains_match = false
-				break
-		if peering_terrains_match:
-			return i
+func _get_transition_set_id(terrain_id : int, peering_terrain_ids : Array) -> String:
+	if peering_terrain_ids.size() == 0:
+		return str(terrain_id)
 	
-	transition_sets.append({
-		"terrain_id": terrain_id,
-		"peering_terrain_ids": peering_terrain_ids,
-	})
-	return transition_sets.size() - 1
+	peering_terrain_ids.sort()
+	return "%s__%s" % [terrain_id, "_".join(peering_terrain_ids)]
+
+
+func _get_or_add_transition_set(terrain_id : int, peering_terrain_ids : Array) -> String:
+	var transition_set_id := _get_transition_set_id(terrain_id, peering_terrain_ids)
+	if !transition_sets.has(transition_set_id):
+		transition_sets[transition_set_id] = {
+			"terrain_id": terrain_id,
+			"peering_terrain_ids": peering_terrain_ids,
+			"tiles": {},
+		}
+	return transition_set_id
 
 
 func setup_from_bit_data(bit_data : BitData) -> void:
-	bit_indexes = {}
+	transition_sets.clear()
+	
 	for coords in bit_data.get_coordinates_list():
 		var terrain_id := bit_data.get_tile_terrain(coords)
 		var peering_terrains : Array = bit_data.get_tile_peering_terrains(coords)
 		var transition_set_id := _get_or_add_transition_set(terrain_id, peering_terrains)
-		
-		if !bit_indexes.has(transition_set_id):
-			bit_indexes[transition_set_id] = {}
-		
 		var tile_index := _get_bitwise_index(terrain_id, bit_data.get_tile_bits_dict(coords))
-		
-		bit_indexes[transition_set_id][tile_index] = coords
+		transition_sets[transition_set_id].tiles[tile_index] = coords
 		
 
 func _get_bitwise_index(terrain_id : int, tile_bits_dict : Dictionary) -> int:
@@ -76,14 +70,14 @@ func _get_bitwise_index(terrain_id : int, tile_bits_dict : Dictionary) -> int:
 	return index
 
 
-func get_terrain_tiles_list(transition_set_id : int) -> Array:
-	var tiles_list : Array = bit_indexes[transition_set_id].keys().duplicate()
+func get_terrain_tiles_list(transition_set_id : String) -> Array:
+	var tiles_list : Array = transition_sets[transition_set_id].tiles.keys().duplicate()
 	tiles_list.sort()
 	return tiles_list
 
 
 func print_tiles() -> void:
-	for transition_set_id in bit_indexes.keys():
+	for transition_set_id in transition_sets.keys():
 		print()
 		print("transition_set_id=%s" % transition_set_id)
 		print(get_terrain_tiles_list(transition_set_id))
@@ -91,7 +85,7 @@ func print_tiles() -> void:
 		print()
 
 
-func is_set_complete(transition_set_id : int) -> bool:
+func is_set_complete(transition_set_id : String) -> bool:
 	var tiles_list := get_terrain_tiles_list(transition_set_id)
 	for index in TilesByMode[TileSet.TERRAIN_MODE_MATCH_CORNERS_AND_SIDES]:
 		if not index in tiles_list:
