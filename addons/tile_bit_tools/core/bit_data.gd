@@ -6,7 +6,6 @@ extends Resource
 ## Allows tile.terrain not to require separate logic when iterating.
 enum TerrainBits {
 	CENTER=99,
-	TOP_LEFT_CORNER=TileSet.CELL_NEIGHBOR_TOP_LEFT_CORNER,
 	TOP_SIDE=TileSet.CELL_NEIGHBOR_TOP_SIDE,
 	TOP_RIGHT_CORNER=TileSet.CELL_NEIGHBOR_TOP_RIGHT_CORNER,
 	RIGHT_SIDE=TileSet.CELL_NEIGHBOR_RIGHT_SIDE,
@@ -14,6 +13,7 @@ enum TerrainBits {
 	BOTTOM_SIDE=TileSet.CELL_NEIGHBOR_BOTTOM_SIDE,
 	BOTTOM_LEFT_CORNER=TileSet.CELL_NEIGHBOR_BOTTOM_LEFT_CORNER,
 	LEFT_SIDE=TileSet.CELL_NEIGHBOR_LEFT_SIDE,
+	TOP_LEFT_CORNER=TileSet.CELL_NEIGHBOR_TOP_LEFT_CORNER,
 }
 
 const NULL_TERRAIN_INDEX := -1
@@ -48,6 +48,7 @@ var CellNeighborsByMode := {
 }
 
 
+
 enum _TileKeys {TERRAIN, PEERING_BITS}
 
 
@@ -58,6 +59,8 @@ enum _TileKeys {TERRAIN, PEERING_BITS}
 
 @export var terrain_set := NULL_TERRAIN_SET
 @export var terrain_mode := TileSet.TerrainMode.TERRAIN_MODE_MATCH_CORNERS_AND_SIDES
+
+
 
 
 
@@ -143,6 +146,20 @@ func get_tile_terrain(coords : Vector2i) -> int:
 	return _tiles[coords].get(_TileKeys.TERRAIN, NULL_TERRAIN_INDEX)
 
 
+# returns list of terrain_ids in peering bits
+# excluding any that match the terrain_id of the tile
+func get_tile_peering_terrains(coords : Vector2i) -> Array:
+	var terrains := []
+	var terrain_id := get_tile_terrain(coords)
+	for bit in get_terrain_bits_list(false):
+		var peering_terrain := get_bit_terrain(coords, bit)
+		if peering_terrain == terrain_id:
+			continue
+		if not terrains.has(peering_terrain):
+			terrains.append(peering_terrain)
+	return terrains
+
+
 func set_bit_terrain(coords : Vector2i, bit : TerrainBits, terrain_index : int) -> void:
 	if bit == TerrainBits.CENTER:
 		set_tile_terrain(coords, terrain_index)
@@ -154,6 +171,11 @@ func get_bit_terrain(coords : Vector2i, bit : TerrainBits) -> int:
 	if bit == TerrainBits.CENTER:
 		return get_tile_terrain(coords)
 	return _tiles[coords][_TileKeys.PEERING_BITS].get(bit, NULL_TERRAIN_INDEX)
+
+
+func get_tile_bits_dict(coords : Vector2i) -> Dictionary:
+	# if any possibility of manipulation, will need to add .duplicate()
+	return _tiles[coords][_TileKeys.PEERING_BITS]
 
 
 func get_bit_color(coords : Vector2i, bit : TerrainBits) -> Color:
@@ -239,7 +261,6 @@ func set_all_bit_terrains(terrain_bit : TerrainBits, terrain_index : int) -> voi
 
 func _clear_tile_peering_bits(coords : Vector2i) -> void:
 	_tiles[coords][_TileKeys.PEERING_BITS].clear()
-
 
 
 

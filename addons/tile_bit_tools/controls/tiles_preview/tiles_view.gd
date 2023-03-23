@@ -37,6 +37,11 @@ func set_terrain_overlay_opacity(value : float) -> void:
 func set_bit_data(bit_data : BitData) -> void:
 	bit_data_draw.bit_data = bit_data
 	terrain_viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
+	if !bit_data:
+		return
+	var bit_index_list := preload("res://addons/tile_bit_tools/core/bit_index_list.gd").new()
+	bit_index_list.setup_from_bit_data(bit_data)
+	bit_index_list.print_tiles()
 
 
 func _get_upscale_factor(base_size : Vector2i) -> int:
