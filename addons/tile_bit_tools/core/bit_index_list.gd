@@ -28,6 +28,8 @@ var TerrainBitWeights := {
 #			"tiles": {},
 #	}
 # }
+
+# transition_sets
 var transition_sets := {}
 
 

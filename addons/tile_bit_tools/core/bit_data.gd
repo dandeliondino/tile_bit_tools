@@ -22,6 +22,36 @@ const NULL_TERRAIN_MODE := -1
 
 const BitData := preload("res://addons/tile_bit_tools/core/bit_data.gd")
 
+
+class TileBits:
+	# bits[TerrainBit] = terrain_id
+	var bits : Dictionary
+	var terrain_id : int
+	var peering_terrains : Array
+	
+	func _init(p_bits := {}) -> void:
+		bits = p_bits
+		terrain_id = bits[TerrainBits.CENTER]
+		_update_peering_terrains()
+	
+	
+	func get_peering_terrains_count() -> int:
+		return peering_terrains.size()
+	
+	
+	func is_base_tile() -> bool:
+		return get_peering_terrains_count() == 0
+	
+
+	func _update_peering_terrains() -> void:
+		peering_terrains = []
+		for bit in bits.keys():
+			if bits[bit] != terrain_id:
+				if !peering_terrains.has(bits[bit]):
+					peering_terrains.append(bits[bit])
+
+
+
 var CellNeighborsByMode := {
 	TileSet.TerrainMode.TERRAIN_MODE_MATCH_CORNERS_AND_SIDES: [
 		TileSet.CELL_NEIGHBOR_TOP_LEFT_CORNER,
