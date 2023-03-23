@@ -1,3 +1,4 @@
+@tool
 extends Resource
 
 const BitData := preload("res://addons/tile_bit_tools/core/bit_data.gd")
@@ -45,6 +46,42 @@ func setup_from_bit_data(bit_data : BitData, source_id := -1) -> void:
 	_distribute_base_tiles()
 	
 
+# TODO: update to support alternative tiles
+func setup_from_tile_set(tile_set : TileSet) -> void:
+	transition_sets = {}
+	base_tiles = {}
+	
+	for source_id in range(tile_set.get_source_count()):
+		if not tile_set.get_source(source_id) is TileSetAtlasSource:
+			print("source is not atlas source")
+			continue
+		var source : TileSetAtlasSource = tile_set.get_source(source_id)
+		print("source=%s" % source)
+		for tile_index in range(source.get_tiles_count()):
+			var coords := source.get_tile_id(tile_index) 
+			print("evaluating tile at coords=%s" % coords)
+			var tile_data := source.get_tile_data(coords, 0)
+			var terrain_set := tile_data.terrain_set
+			if terrain_set < 0:
+				continue
+			
+			# TODO: move global mode inside function
+			var terrain_mode = tile_set.get_terrain_set_mode(terrain_set)
+			var bits_dict := {}
+			for bit in BitData.CellNeighborsByMode[terrain_mode]:
+				bits_dict[bit] = tile_data.get_terrain_peering_bit(bit)
+				
+			var tile_bits := BitData.TileBits.new(tile_data.terrain, bits_dict)
+			var tile_location := TransitionSet.TileLocation.new(source_id, coords)
+			if tile_bits.is_base_tile():
+				_add_base_tile(tile_bits, tile_location)
+				continue
+			
+			var transition_set := _get_transition_set(tile_bits)
+			transition_set.add_tile(tile_bits, tile_location)
+
+	_distribute_base_tiles()
+
 
 func _add_base_tile(tile_bits : BitData.TileBits, tile_location : TransitionSet.TileLocation) -> void:
 		if !base_tiles.has(tile_bits.terrain_id):
@@ -61,37 +98,7 @@ func _distribute_base_tiles() -> void:
 
 
 func print_tiles() -> void:
+	print("print_tiles")
 	for transition_set in transition_sets.values():
 		transition_set.print_tiles()
 
-
-#
-#func _get_bitwise_index(terrain_id : int, tile_bits_dict : Dictionary) -> int:
-#	var index := 0
-#	for bit in tile_bits_dict.keys():
-#		if tile_bits_dict[bit] == terrain_id:
-#			index += TerrainBitWeights[bit]
-#	return index
-#
-#
-#func get_terrain_tiles_list(transition_set_id : String) -> Array:
-#	var tiles_list : Array = transition_sets[transition_set_id].tiles.keys().duplicate()
-#	tiles_list.sort()
-#	return tiles_list
-#
-#
-#func print_tiles() -> void:
-#	for transition_set_id in transition_sets.keys():
-#		print()
-#		print("transition_set_id=%s" % transition_set_id)
-#		print(get_terrain_tiles_list(transition_set_id))
-#		print("is_set_complete()=%s" % is_set_complete(transition_set_id))
-#		print()
-#
-#
-#func is_set_complete(transition_set_id : String) -> bool:
-#	var tiles_list := get_terrain_tiles_list(transition_set_id)
-#	for index in TilesByMode[TileSet.TERRAIN_MODE_MATCH_CORNERS_AND_SIDES]:
-#		if not index in tiles_list:
-#			return false
-#	return true

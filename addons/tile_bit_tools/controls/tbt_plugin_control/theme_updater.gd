@@ -85,6 +85,12 @@ var overrides_dict := {
 	# ----------------------------------------------------
 	#			PANELS
 	# ----------------------------------------------------
+	# TERRAINS TAB
+	"TBTEditorPanel": {
+		Overrides.PANEL: ["panel", "Tree"],
+	},
+	
+	
 	# TILES INSPECTOR
 	"TBTCategoryPanel": {
 		Overrides.PANEL: ["bg", "EditorInspectorCategory"],

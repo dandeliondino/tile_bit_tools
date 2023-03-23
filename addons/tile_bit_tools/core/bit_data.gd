@@ -57,7 +57,7 @@ class TileBits:
 
 
 
-var CellNeighborsByMode := {
+const CellNeighborsByMode := {
 	TileSet.TerrainMode.TERRAIN_MODE_MATCH_CORNERS_AND_SIDES: [
 		TileSet.CELL_NEIGHBOR_TOP_LEFT_CORNER,
 		TileSet.CELL_NEIGHBOR_TOP_SIDE,
@@ -116,6 +116,13 @@ func get_all_terrain_bits(include_center_bit := false) -> Array:
 		list.push_front(TerrainBits.CENTER)
 	return list
 
+
+## needed because CellNeighborsByMode not accessible from external scripts
+#func get_terrain_bits_by_mode(mode : TileSet.TerrainMode, include_center_bit := false) -> Array:
+#	var list : Array = CellNeighborsByMode[mode]
+#	if include_center_bit:
+#		list.push_front(TerrainBits.CENTER)
+#	return list
 
 func get_coordinates_list() -> Array:
 	return _tiles.keys()

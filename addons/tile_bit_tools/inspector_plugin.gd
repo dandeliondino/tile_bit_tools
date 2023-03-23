@@ -138,7 +138,7 @@ func _setup_tiles_preview() -> void:
 func _setup_tbt_plugin_control() -> Globals.Errors:
 	tbt_plugin_control = TBTPluginControl.instantiate()
 	base_control.add_child(tbt_plugin_control)
-	tbt_plugin_control.setup(interface, atlas_source_editor, tiles_preview)
+	tbt_plugin_control.setup(interface, atlas_source_editor, tiles_preview, terrains_tab)
 	output.debug("TBTPluginControl added")
 	return Globals.Errors.OK
 
@@ -174,12 +174,10 @@ func _parse_end(object: Object) -> void:
 
 
 func _on_tab_changed(idx : int) -> void:
-	print("tab changed to %s" % idx)
 	if idx == terrains_tab_index:
-		terrains_tab.show()
+		tbt_plugin_control.notify_terrains_tab_show_requested(_get_current_tile_set())
 	else:
-		terrains_tab.hide()
-
+		tbt_plugin_control.notify_terrains_tab_hide_requested()
 
 # --------------------------------------
 # 		ADD INSPECTOR

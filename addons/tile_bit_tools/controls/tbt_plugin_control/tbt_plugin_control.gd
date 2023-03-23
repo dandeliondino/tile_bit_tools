@@ -5,6 +5,9 @@ extends Node
 signal tiles_inspector_added
 signal tiles_inspector_removed
 
+signal terrains_tab_show_requested(tile_set)
+signal terrains_tab_hide_requested
+
 signal templates_updated
 signal templates_update_requested
 
@@ -73,6 +76,13 @@ var tiles_preview : Control :
 			return null
 		return tiles_preview
 
+var terrains_tab : Control : 
+	get:
+		if !_is_reference_valid(terrains_tab):
+			return null
+		return terrains_tab
+
+
 
 func _ready() -> void:
 	set_process_input(false)
@@ -81,7 +91,7 @@ func _ready() -> void:
 	_setup_children()
 
 
-func setup(p_interface : EditorInterface, p_atlas_source_editor : Node, p_tiles_preview : Control) -> void:
+func setup(p_interface : EditorInterface, p_atlas_source_editor : Node, p_tiles_preview : Control, p_terrains_tab : Control) -> void:
 	interface = p_interface
 	base_control = interface.get_base_control()
 	atlas_source_editor = p_atlas_source_editor
@@ -93,6 +103,9 @@ func setup(p_interface : EditorInterface, p_atlas_source_editor : Node, p_tiles_
 	
 	tiles_preview = p_tiles_preview
 	_inject_tbt_reference(tiles_preview, true)
+	
+	terrains_tab = p_terrains_tab
+	_inject_tbt_reference(terrains_tab, true)
 	
 	
 func notify_tiles_inspector_added(p_tiles_inspector : Control) -> void:
@@ -110,6 +123,16 @@ func notify_tiles_inspector_removed() -> void:
 	set_process_input(false)
 	_call_subtree(self, TILES_INSPECTOR_REMOVED_METHOD)
 	tiles_inspector_removed.emit()
+
+
+func notify_terrains_tab_show_requested(tile_set : TileSet) -> void:
+	terrains_tab_show_requested.emit(tile_set)
+
+
+func notify_terrains_tab_hide_requested() -> void:
+	terrains_tab_hide_requested.emit()
+
+
 
 func is_dialog_popped_up() -> bool:
 	for dialog in dialog_windows:
