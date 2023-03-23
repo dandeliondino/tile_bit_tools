@@ -27,28 +27,33 @@ class TileBits:
 	# bits[TerrainBit] = terrain_id
 	var bits : Dictionary
 	var terrain_id : int
-	var peering_terrains : Array
+	var peering_terrain_ids : Array
 	
-	func _init(p_bits := {}) -> void:
+	func _init(p_terrain_id := NULL_TERRAIN_INDEX, p_bits := {}) -> void:
 		bits = p_bits
-		terrain_id = bits[TerrainBits.CENTER]
+		terrain_id = p_terrain_id
 		_update_peering_terrains()
 	
+	func get_bits_list() -> Array:
+		return bits.keys()
+	
+	func get_bit_terrain_id(bit : TerrainBits) -> int:
+		if bit == TerrainBits.CENTER:
+			return terrain_id
+		return bits[bit]
 	
 	func get_peering_terrains_count() -> int:
-		return peering_terrains.size()
-	
+		return peering_terrain_ids.size()
 	
 	func is_base_tile() -> bool:
 		return get_peering_terrains_count() == 0
 	
-
 	func _update_peering_terrains() -> void:
-		peering_terrains = []
+		peering_terrain_ids = []
 		for bit in bits.keys():
 			if bits[bit] != terrain_id:
-				if !peering_terrains.has(bits[bit]):
-					peering_terrains.append(bits[bit])
+				if !peering_terrain_ids.has(bits[bit]):
+					peering_terrain_ids.append(bits[bit])
 
 
 
@@ -176,6 +181,13 @@ func get_tile_terrain(coords : Vector2i) -> int:
 	return _tiles[coords].get(_TileKeys.TERRAIN, NULL_TERRAIN_INDEX)
 
 
+func get_tile_bits(coords : Vector2i) -> TileBits:
+	return TileBits.new(
+		get_tile_terrain(coords), 
+		_tiles[coords][_TileKeys.PEERING_BITS].duplicate()
+	)
+
+# TODO: deprecated
 # returns list of terrain_ids in peering bits
 # excluding any that match the terrain_id of the tile
 func get_tile_peering_terrains(coords : Vector2i) -> Array:
