@@ -141,6 +141,7 @@ func _update_transitions_panel() -> void:
 		
 	_update_base_tiles_display()
 	_update_transition_tiles_display()
+#	tbt.theme_update_requested.emit(self)
 
 
 func _update_transition_tiles_display() -> void:
@@ -154,11 +155,13 @@ func _update_transition_tiles_display() -> void:
 		
 		var transition_set_tiles_container := HFlowContainer.new()
 		transition_sets_container.add_child(transition_set_tiles_container)
-		section_button.expand_container = transition_set_tiles_container
 		
 		for index in transition_set.get_used_indexes():
 			_add_tile_index_control(index, transition_set.get_tile_locations_at_index(index), transition_set_tiles_container)
-			
+		
+		section_button.expand_container = transition_set_tiles_container
+		section_button.collapse()
+#		tbt.theme_update_requested.emit(section_button)
 
 
 func _add_transition_set_title(transition_set : TransitionSet) -> void:

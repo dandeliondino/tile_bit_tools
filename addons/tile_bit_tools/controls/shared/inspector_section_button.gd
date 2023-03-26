@@ -62,6 +62,12 @@ func _tbt_ready() -> void:
 	# allow setting directly from script, bypass path
 
 
+func expand() -> void:
+	_toggle_expanded(true)
+
+func collapse() -> void:
+	_toggle_expanded(false)
+
 
 func _update_label_text() -> void:
 	label.text = label_text

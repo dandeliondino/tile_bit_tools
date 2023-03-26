@@ -224,13 +224,16 @@ func _update_groups() -> void:
 			
 
 func _update_node(node : Node) -> void:
+#	print("updating %s" % node)
 	for group in overrides_dict.keys():
 		if node.is_in_group(group):
+#			print("updating group %s" % group)
 			for override in overrides_dict[group].keys():
 				var method : String = override_methods[override]
 				var args : Array = overrides_dict[group][override]
 				var property : String = override_properties[override]
 				var value = tbt.base_control.callv(method, args)
+#				print("setting node: %s=%s" % [property, value])
 				node.set(property, value)
 
 
