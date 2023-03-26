@@ -105,6 +105,32 @@ static func get_transition_set_id(p_terrain_id := NULL_TERRAIN_ID, p_peering_ter
 	return "%s_to_%s" % [p_terrain_id, "_".join(p_peering_terrain_ids)]
 
 
+# TODO: set these up at beginning so don't have to repeat
+func get_used_indexes() -> Array:
+	var indexes := []
+	for index in _tiles.keys():
+		if _tiles[index].size() == 0:
+			continue
+		indexes.append(index)
+	return indexes
+
+
+func get_empty_indexes() -> Array:
+	var indexes := []
+	for index in _tiles.keys():
+		if _tiles[index].size() > 0:
+			continue
+		indexes.append(index)
+	return indexes
+
+
+func get_tile_locations_at_index(index : int) -> Array:
+	return _tiles[index]
+
+
+func get_tiles() -> Dictionary:
+	return _tiles
+
 func has_terrain(p_terrain_id : int) -> bool:
 	if terrain_id == p_terrain_id:
 		return true

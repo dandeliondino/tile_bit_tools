@@ -38,10 +38,11 @@ func _ready() -> void:
 
 
 func _tbt_ready() -> void:
-	expand_container = get_node_or_null(expand_container_path)
-	if expand_container == null:
-		tbt.output.error("Expand container null")
-		return
+	if !is_instance_valid(expand_container) && !expand_container_path.is_empty():
+		expand_container = get_node_or_null(expand_container_path)
+		if expand_container == null:
+			tbt.output.error("Invalid path for expand container")
+#			return # continue set up (may set expand container later by script)
 	
 	icon_expanded = tbt.icons.get_icon(tbt.icons.ARROW_EXPANDED)
 	icon_collapsed = tbt.icons.get_icon(tbt.icons.ARROW_COLLAPSED)
@@ -57,6 +58,8 @@ func _tbt_ready() -> void:
 	
 	var label_margin = left_margin + icon_expanded.get_size().x + LABEL_MARGIN_ADJUST
 	label_margin_container.set("theme_override_constants/margin_left", label_margin)
+
+	# allow setting directly from script, bypass path
 
 
 

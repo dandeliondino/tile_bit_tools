@@ -18,6 +18,15 @@ func get_base_tiles(terrain_set : int, terrain_id : int) -> Array:
 	return base_tiles[terrain_id]
 
 
+func get_transition_sets(terrain_set : int, terrain_id : int) -> Array:
+	var transition_set_list := []
+	for transition_set in transition_sets.values():
+		if transition_set.terrain_set == terrain_set:
+			if transition_set.terrain_id == terrain_id:
+				transition_set_list.append(transition_set)
+	return transition_set_list
+			
+
 
 func setup_from_bit_data(bit_data : BitData, source_id := -1) -> void:
 	transition_sets = {}
