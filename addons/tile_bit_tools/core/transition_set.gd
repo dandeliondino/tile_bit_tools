@@ -2,6 +2,7 @@
 extends Object
 ## TransitionSet
 
+const NULL_TERRAIN_SET := -99
 const NULL_TERRAIN_ID := -99
 const NULL_PEERING_TERRAIN_IDS := []
 const NULL_SOURCE_ID := -1
@@ -36,6 +37,7 @@ class TileLocation:
 		coords = p_coords
 
 var mode : TileSet.TerrainMode
+var terrain_set : int
 var terrain_id : int
 var peering_terrain_ids := []
 
@@ -50,8 +52,9 @@ var _base_tiles : Dictionary
 var id : String
 
 
-func _init(p_terrain_id := NULL_TERRAIN_ID, p_peering_terrain_ids := NULL_PEERING_TERRAIN_IDS, p_mode := TileSet.TERRAIN_MODE_MATCH_CORNERS_AND_SIDES) -> void:
+func _init(p_terrain_set := NULL_TERRAIN_SET, p_mode := TileSet.TERRAIN_MODE_MATCH_CORNERS_AND_SIDES, p_terrain_id := NULL_TERRAIN_ID, p_peering_terrain_ids := NULL_PEERING_TERRAIN_IDS) -> void:
 	mode = p_mode
+	terrain_set = p_terrain_set
 	terrain_id = p_terrain_id
 	peering_terrain_ids = p_peering_terrain_ids
 	peering_terrain_ids.sort()

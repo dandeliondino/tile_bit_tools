@@ -130,6 +130,7 @@ func _update_terrain_transitions() -> void:
 
 
 func _update_transitions_display() -> void:
+#	terrain_transitions.get_base_tiles()
 	pass
 
 

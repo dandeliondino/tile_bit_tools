@@ -26,12 +26,14 @@ const BitData := preload("res://addons/tile_bit_tools/core/bit_data.gd")
 class TileBits:
 	# bits[TerrainBit] = terrain_id
 	var bits : Dictionary
+	var terrain_set : int
 	var terrain_id : int
 	var peering_terrain_ids : Array
 	
-	func _init(p_terrain_id := NULL_TERRAIN_INDEX, p_bits := {}) -> void:
-		bits = p_bits
+	func _init(p_terrain_set := NULL_TERRAIN_SET, p_terrain_id := NULL_TERRAIN_INDEX, p_bits := {}) -> void:
+		terrain_set = p_terrain_set
 		terrain_id = p_terrain_id
+		bits = p_bits
 		_update_peering_terrains()
 	
 	func get_bits_list() -> Array:
@@ -190,6 +192,7 @@ func get_tile_terrain(coords : Vector2i) -> int:
 
 func get_tile_bits(coords : Vector2i) -> TileBits:
 	return TileBits.new(
+		terrain_set,
 		get_tile_terrain(coords), 
 		_tiles[coords][_TileKeys.PEERING_BITS].duplicate()
 	)
