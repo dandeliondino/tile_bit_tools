@@ -47,7 +47,8 @@ func _tbt_ready() -> void:
 	icon_collapsed = tbt.icons.get_icon(tbt.icons.ARROW_COLLAPSED)
 	_toggle_expanded(false)
 	
-	normal_color = tbt.base_control.get_theme_color("prop_subsection", "Editor")
+	var base_control := tbt.get_editor_node(tbt.EditorTreeNode.BASE_CONTROL)
+	normal_color = base_control.get_theme_color("prop_subsection", "Editor")
 	normal_color.a = normal_color.a * 0.4
 	hover_color = normal_color.lightened(0.2)
 	_toggle_hover(false)

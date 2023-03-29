@@ -24,9 +24,14 @@ func _enter_tree() -> void:
 	interface = get_editor_interface()
 	
 	_setup_project_settings()
-	_add_tbt_plugin()
 	
-	return
+	var result := await _add_tbt_plugin()
+	if result != OK:
+		output.user("Unable to initialize, disabling plugin")
+		interface.set_plugin_enabled(PLUGIN_NAME, false)
+		return
+	
+	
 #	plugin = preload("inspector_plugin.gd").new()
 #	add_inspector_plugin(plugin)
 #	var result : Globals.Errors = plugin.setup(get_editor_interface())
@@ -47,6 +52,8 @@ func _clear() -> void:
 
 func _exit_tree() -> void:
 	output.debug("plugin.gd : _exit_tree()")
+	_remove_tbt_plugin()
+	
 #	output.info("Cleaning up...")
 #	if plugin:
 #		plugin.clean_up()
@@ -57,12 +64,16 @@ func _exit_tree() -> void:
 func _add_tbt_plugin() -> Globals.Errors:
 	tbt = TBTPluginControl.instantiate()
 	interface.get_base_control().add_child(tbt)
-	tbt.setup(interface)
-	output.debug("TBTPluginControl added to editor tree")
-	return Globals.Errors.OK
+	if !tbt.ready_complete:
+		await tbt.ready
+	output.debug("TBTPluginControl ready in editor tree")
+	var result := tbt.setup(interface)
+	return result
 
 
-
+func _remove_tbt_plugin() -> void:
+	tbt.clean_up()
+	tbt.queue_free()
 
 
 

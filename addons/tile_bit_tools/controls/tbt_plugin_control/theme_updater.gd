@@ -171,10 +171,11 @@ var height_setup_complete := false
 
 
 var tbt : TBTPlugin
-
+var base_control : Control
 
 func _tbt_ready() -> void:
 	tbt.theme_update_requested.connect(_on_theme_update_requested)
+	base_control = tbt.get_editor_node(tbt.EditorTreeNode.BASE_CONTROL)
 	_setup_themes()
 
 
@@ -213,7 +214,7 @@ func _update_groups() -> void:
 			var method : String = override_methods[override]
 			var args : Array = overrides_dict[group][override]
 			var property : String = override_properties[override]
-			var value = tbt.base_control.callv(method, args)
+			var value = base_control.callv(method, args)
 			get_tree().set_group(group, property, value)
 			
 
@@ -224,7 +225,7 @@ func _update_node(node : Node) -> void:
 				var method : String = override_methods[override]
 				var args : Array = overrides_dict[group][override]
 				var property : String = override_properties[override]
-				var value = tbt.base_control.callv(method, args)
+				var value = base_control.callv(method, args)
 				node.set(property, value)
 
 
@@ -257,7 +258,8 @@ func _on_theme_update_requested(node : Node) -> void:
 # finds first control of class that has a height > 0
 # returns height
 func _get_height_by_class(p_class_name : String) -> int:
-	var controls := tbt.atlas_source_editor.find_children("*", p_class_name, true, false)
+	var atlas_source_editor := tbt.get_editor_node(tbt.EditorTreeNode.ATLAS_SOURCE_EDITOR)
+	var controls := atlas_source_editor.find_children("*", p_class_name, true, false)
 	if controls.size() == 0:
 		return 0
 	

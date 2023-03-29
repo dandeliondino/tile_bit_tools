@@ -1,20 +1,22 @@
-[gd_scene load_steps=8 format=3 uid="uid://bx6k2su2g3pj"]
+[gd_scene load_steps=10 format=3 uid="uid://bx6k2su2g3pj"]
 
 [ext_resource type="Script" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd" id="1_6xv2q"]
 [ext_resource type="Script" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/template_manager.gd" id="2_aj7pp"]
 [ext_resource type="PackedScene" uid="uid://job5gqt1xbrh" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/popups/save_template_dialog.tscn" id="3_p4ion"]
 [ext_resource type="PackedScene" uid="uid://cyxr6y64lkue6" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/popups/edit_template_dialog.tscn" id="4_qymya"]
+[ext_resource type="PackedScene" uid="uid://bijiosgd4td" path="res://addons/tile_bit_tools/controls/tiles_inspector/tiles_inspector.tscn" id="5_h4454"]
 [ext_resource type="Script" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/tiles_manager.gd" id="5_v5epd"]
 [ext_resource type="Script" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/theme_updater.gd" id="6_mie0u"]
+[ext_resource type="PackedScene" uid="uid://loch8a1s1gbq" path="res://addons/tile_bit_tools/controls/tiles_preview/tiles_preview.tscn" id="7_i6b6g"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3by6e"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_34mcn"]
 content_margin_left = 24.0
 content_margin_top = 24.0
 content_margin_right = 24.0
 content_margin_bottom = 24.0
-bg_color = Color(0.21, 0.24, 0.29, 1)
+bg_color = Color(0.1155, 0.132, 0.1595, 1)
 border_width_top = 48
-border_color = Color(0.21, 0.24, 0.29, 1)
+border_color = Color(0.1155, 0.132, 0.1595, 1)
 corner_detail = 5
 expand_margin_top = 48.0
 shadow_color = Color(0, 0, 0, 0.3)
@@ -22,29 +24,50 @@ shadow_size = 8
 anti_aliasing = false
 
 [node name="TBTPlugin" type="Control"]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_6xv2q")
 
 [node name="TemplateManager" type="Node" parent="."]
+unique_name_in_owner = true
 script = ExtResource("2_aj7pp")
 
 [node name="TilesManager" type="Node" parent="."]
+unique_name_in_owner = true
 script = ExtResource("5_v5epd")
 
 [node name="ThemeUpdater" type="Control" parent="."]
+unique_name_in_owner = true
 anchors_preset = 0
 script = ExtResource("6_mie0u")
+
+[node name="TilesInspector" parent="." instance=ExtResource("5_h4454")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+anchors_preset = 0
+offset_left = -69.5
+offset_top = -124.0
+offset_right = 69.5
+offset_bottom = 124.0
+
+[node name="TilesPreview" parent="." instance=ExtResource("7_i6b6g")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
 
 [node name="SaveDialogContainer" type="Control" parent="."]
 anchors_preset = 0
 
 [node name="SaveTemplateDialog" parent="SaveDialogContainer" instance=ExtResource("3_p4ion")]
+unique_name_in_owner = true
 visible = false
-theme_override_styles/embedded_border = SubResource("StyleBoxFlat_3by6e")
+theme_override_styles/embedded_border = SubResource("StyleBoxFlat_34mcn")
 
 [node name="EditDialogContainer" type="Control" parent="."]
 anchors_preset = 0
 
 [node name="EditTemplateDialog" parent="EditDialogContainer" instance=ExtResource("4_qymya")]
-theme_override_styles/embedded_border = SubResource("StyleBoxFlat_3by6e")
+unique_name_in_owner = true
+theme_override_styles/embedded_border = SubResource("StyleBoxFlat_34mcn")

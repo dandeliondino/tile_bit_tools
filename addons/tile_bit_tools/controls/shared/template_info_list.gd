@@ -12,15 +12,17 @@ func update(template_bit_data : TBTPlugin.TemplateBitData) -> void:
 	item_list.append({"text": "Tiles: %s" % template_bit_data.get_tile_count()})
 	item_list.append({"text": "Terrains: %s" % template_bit_data.get_terrain_count()})
 
+	var base_control := tbt.get_editor_node(tbt.EditorTreeNode.BASE_CONTROL)
+
 	var template_tag_data := preload("res://addons/tile_bit_tools/core/template_tag_data.gd").new()
 	for tag in template_tag_data.tags.values():		
 		if tag.get_test_result(template_bit_data):
-			item_list.append({"text": tag.text, "icon": tag.get_icon(tbt.base_control)})
+			item_list.append({"text": tag.text, "icon": tag.get_icon(base_control)})
 	
 	if show_custom_tags:
 		for custom_tag_text in template_bit_data.get_custom_tags():
 			var tag := template_tag_data.TemplateTag.new(custom_tag_text)
-			item_list.append({"text": tag.text, "icon": tag.get_icon(tbt.base_control)})
+			item_list.append({"text": tag.text, "icon": tag.get_icon(base_control)})
 
 	clear()
 	for item in item_list:

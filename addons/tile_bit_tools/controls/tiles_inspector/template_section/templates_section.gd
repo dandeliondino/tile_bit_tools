@@ -75,9 +75,11 @@ func _update_tags_popup() -> void:
 	tags_menu_button.disabled = false
 	tags_menu_button.tooltip_text = ""
 	
+	var base_control := tbt.get_editor_node(tbt.EditorTreeNode.BASE_CONTROL)
+	
 	for item in item_list:
 		var item_text : String = item.text + " (Templates: %s)" % item.count
-		var icon = item.tag.get_icon(tbt.base_control)
+		var icon = item.tag.get_icon(base_control)
 		if icon:
 			tags_popup.add_icon_item(icon, item_text, item.id)
 		else:
@@ -87,11 +89,13 @@ func _update_tags_popup() -> void:
 
 
 func _add_tag(tag_id : int) -> void:
+	var base_control := tbt.get_editor_node(tbt.EditorTreeNode.BASE_CONTROL)
+	
 	selected_tags.append(tag_id)
 	var tag_control := SelectedTag.instantiate()
 	var tag := tbt.template_manager.template_loader.get_tag(tag_id)
 	tags_container.add_child(tag_control)
-	tag_control.setup(tag, tbt.base_control)
+	tag_control.setup(tag, base_control)
 	tag_control.tag_removed.connect(_on_tag_removed.bind(tag_id))
 	_update_tags_popup()
 

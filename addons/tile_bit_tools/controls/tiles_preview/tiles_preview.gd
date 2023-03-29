@@ -46,7 +46,7 @@ var expanded := true
 @onready var reset_button: Button = %ResetButton
 @onready var apply_button: Button = %ApplyButton
 
-var ready_complete := false
+var ready_complete := false # TODO: remove this?
 
 
 
@@ -54,7 +54,7 @@ func _ready() -> void:
 	ready_complete = true
 	front_container.resized.connect(_on_front_container_resized)
 	_connect_opacity_slider()
-	_toggle_expanded_state(true)
+#	_toggle_expanded_state(true) # TODO: refactor
 
 
 func _tbt_ready() -> void:

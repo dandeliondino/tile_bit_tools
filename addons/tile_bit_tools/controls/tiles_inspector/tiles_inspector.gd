@@ -14,12 +14,14 @@ func _ready() -> void:
 
 
 func _tbt_ready() -> void:
-	if tbt.context.bit_data.has_terrain_set():
-		save_button.disabled = false
-		save_button.tooltip_text = ""
-	else:
-		save_button.disabled = true
-		save_button.tooltip_text = "No terrain data to save in selected tiles"
+	pass
+		# TODO: refactor
+#	if tbt.context.bit_data.has_terrain_set():
+#		save_button.disabled = false
+#		save_button.tooltip_text = ""
+#	else:
+#		save_button.disabled = true
+#		save_button.tooltip_text = "No terrain data to save in selected tiles"
 
 
 

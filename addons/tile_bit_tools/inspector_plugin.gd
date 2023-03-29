@@ -44,25 +44,6 @@ var tiles_preview : Control
 # --------------------------------------
 
 func setup(p_interface : EditorInterface) -> Globals.Errors:
-	interface = p_interface
-	base_control = interface.get_base_control()
-	
-	tile_set_editor = _get_first_node_by_class(interface.get_base_control(), "TileSetEditor")
-	#output.debug("tile_set_editor=%s" % tile_set_editor)
-	if !tile_set_editor:
-		return Globals.Errors.FAILED
-
-	
-	atlas_source_editor = _get_first_node_by_class(tile_set_editor, "TileSetAtlasSourceEditor")
-	#output.debug("atlas_source_editor=%s" % atlas_source_editor)
-	if !atlas_source_editor:
-		return Globals.Errors.FAILED
-		
-	
-	tile_atlas_view = _get_first_node_by_class(tile_set_editor, "TileAtlasView")
-	#output.debug("tile_atlas_view=%s" % tile_atlas_view)
-	if !tile_atlas_view:
-		return Globals.Errors.FAILED
 	
 	atlas_source_proxy = _get_first_connected_object_by_class(atlas_source_editor, "TileSetAtlasSourceProxyObject")
 	#output.debug("atlas_source_proxy=%s" % atlas_source_proxy)
@@ -75,12 +56,7 @@ func setup(p_interface : EditorInterface) -> Globals.Errors:
 		return Globals.Errors.FAILED
 	
 #	_print_signals_and_connections(tile_atlas_view)
-	
-	_setup_tiles_preview()
-	
-	var shared_node_result := _setup_tbt_plugin_control()
-	if shared_node_result != OK:
-		return shared_node_result
+
 	
 	return Globals.Errors.OK
 

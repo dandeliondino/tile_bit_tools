@@ -1,5 +1,5 @@
 @tool
-extends Node
+extends Control
 
 
 signal tiles_inspector_added
@@ -22,18 +22,24 @@ signal tiles_preview_expand_requested
 signal theme_update_requested(node)
 
 
+enum PluginState {
+	LOADING,
+	RUNNING,
+	EXITING,
+}
+
 # EditorNode is reserved name
 enum EditorTreeNode {
 	BASE_CONTROL,
 	TILE_SET_EDITOR, 
 	ATLAS_SOURCE_EDITOR, 
 	TILE_ATLAS_VIEW,
+	SELECTED_TILES_INSPECTOR_VBOX,
 }
 
 enum TBTNode {
 	TILES_INSPECTOR,
 	TILES_PREVIEW,
-	SELECTION_CONTEXT,
 }
 
 const TBT_PROPERTY_NAME := "tbt"
@@ -59,38 +65,49 @@ var output : Output = Output.new()
 var texts : Texts = Texts.new()
 var icons : Icons
 
-
-var atlas_source_editor : Node
-var base_control : Control
-
-var template_manager : TemplateManager
-var tiles_manager : TilesManager
-var theme_updater : ThemeUpdater
-var dialog_windows := []
-
 var interface : EditorInterface
 var _editor_nodes := {}
-var _tbt_nodes := {}
 
-var context : Context :
+var context : Context
+
+
+var _tbt_node_parents := {
+	TBTNode.TILES_INSPECTOR: EditorTreeNode.SELECTED_TILES_INSPECTOR_VBOX,
+	TBTNode.TILES_PREVIEW: EditorTreeNode.TILE_ATLAS_VIEW,
+}
+
+
+@onready var template_manager: TemplateManager = %TemplateManager
+@onready var tiles_manager: TilesManager = %TilesManager
+@onready var theme_updater: ThemeUpdater = %ThemeUpdater
+
+# iterate to queue_free() when cleaning up
+@onready var _tbt_nodes := {
+	TBTNode.TILES_INSPECTOR: %TilesInspector,
+	TBTNode.TILES_PREVIEW: %TilesPreview,
+}
+
+var tiles_inspector : Control :
 	get:
-		if !_is_reference_valid(context):
-			return null
-		return context
+		return _tbt_nodes[TBTNode.TILES_INSPECTOR]
 
-
-var tiles_inspector : Control : 
+var tiles_preview : Control :
 	get:
-		if !_is_reference_valid(tiles_inspector):
-			return null
-		return tiles_inspector
+		return _tbt_nodes[TBTNode.TILES_PREVIEW]
 
 
-var tiles_preview : Control : 
-	get:
-		if !_is_reference_valid(tiles_preview):
-			return null
-		return tiles_preview
+@onready var save_template_dialog: Window = %SaveTemplateDialog
+@onready var edit_template_dialog: Window = %EditTemplateDialog
+
+# iterate to determine if any are visible
+@onready var _dialog_windows := [
+	save_template_dialog,
+	edit_template_dialog,
+]
+
+var state := PluginState.LOADING
+
+var ready_complete := false
 
 
 # ------------------------------------------------------------------------
@@ -99,61 +116,67 @@ var tiles_preview : Control :
 
 func _ready() -> void:
 	set_process_input(false)
-	child_entered_tree.connect(_assign_child_by_class)
-	_setup_debug_signals()
-	_setup_children()
+	ready_complete = true
 
 
 func setup(p_interface : EditorInterface) -> Globals.Errors:
+	_setup_debug_signals()
+	
 	interface = p_interface
 	var result := _update_editor_nodes()
 	if result != OK:
 		return result
 	
-	return Globals.Errors.OK
-	
-	# TODO: should icons just be a control node, inheriting theme data?
 	icons = Icons.new(get_editor_node(EditorTreeNode.BASE_CONTROL))
 	
-	# here instead of _ready() so base_control is not null
 	_inject_tbt_reference(self)
 	
-#	tiles_preview = p_tiles_preview
-#	_inject_tbt_reference(tiles_preview, true)
+	for node_id in _tbt_node_parents.keys():
+		_reparent_tbt_node(node_id)
+	
+	# for testing only
+	tiles_inspector.show()
+	tiles_preview.show()
+	
+	state = PluginState.RUNNING
+	
+	return Globals.Errors.OK
 
+
+func _on_tbt_node_tree_exiting(node_name : String) -> void:
+	if state == PluginState.EXITING:
+		return
+	output.warning("TBT Node exiting tree: %s" % node_name)
+
+
+func _reparent_tbt_node(tbt_node : TBTNode) -> Globals.Errors:
+	var node := get_tbt_node(tbt_node)
+	var parent := get_editor_node(_tbt_node_parents[tbt_node])
+	if !node or !parent:
+		output.debug("Failed to add TBTNode %s to %s" % [node, parent])
+		return Globals.Errors.FAILED
+	node.reparent(parent, false)
+	output.debug("Reparented TBTNode %s to %s" % [node, parent])
+	
+	node.tree_exiting.connect(_on_tbt_node_tree_exiting.bind(node.name))
+	
 	return Globals.Errors.OK
 
 
 
 
 
+# ------------------------------------------------------------------------
+#		CLEAN UP
+# ------------------------------------------------------------------------
 
-func _update_editor_nodes() -> Globals.Errors:
-	_editor_nodes = {}
-	
-	var base_control := interface.get_base_control()
-	_editor_nodes[EditorTreeNode.BASE_CONTROL] = base_control
-	
-	var tile_set_editor := _get_first_node_by_class(base_control, "TileSetEditor")
-	#output.debug("tile_set_editor=%s" % tile_set_editor)
-	if !tile_set_editor:
-		return Globals.Errors.EDITOR_NODE_NOT_FOUND
-	_editor_nodes[EditorTreeNode.TILE_SET_EDITOR] = tile_set_editor
-
-	var atlas_source_editor := _get_first_node_by_class(tile_set_editor, "TileSetAtlasSourceEditor")
-	#output.debug("atlas_source_editor=%s" % atlas_source_editor)
-	if !atlas_source_editor:
-		return Globals.Errors.EDITOR_NODE_NOT_FOUND
-	_editor_nodes[EditorTreeNode.ATLAS_SOURCE_EDITOR] = atlas_source_editor
-
-	var tile_atlas_view := _get_first_node_by_class(tile_set_editor, "TileAtlasView")
-	#output.debug("tile_atlas_view=%s" % tile_atlas_view)
-	if !tile_atlas_view:
-		return Globals.Errors.EDITOR_NODE_NOT_FOUND
-	_editor_nodes[EditorTreeNode.TILE_ATLAS_VIEW] = tile_atlas_view
-	
-	return Globals.Errors.OK
-
+func clean_up() -> void:
+	output.debug("tbt.clean_up()")
+	state = PluginState.EXITING
+	for node in _tbt_nodes.values():
+		if is_instance_valid(node):
+			output.debug("freeing %s" % node)
+			node.queue_free()
 
 
 # ------------------------------------------------------------------------
@@ -164,6 +187,9 @@ func _update_editor_nodes() -> Globals.Errors:
 func get_editor_node(editor_node : EditorTreeNode) -> Node:
 	return _editor_nodes.get(editor_node, null)
 
+
+func get_tbt_node(tbt_node : TBTNode) -> Node:
+	return _tbt_nodes.get(tbt_node, null)
 
 	
 func notify_tiles_inspector_added(p_tiles_inspector : Control) -> void:
@@ -184,7 +210,7 @@ func notify_tiles_inspector_removed() -> void:
 
 
 func is_dialog_popped_up() -> bool:
-	for dialog in dialog_windows:
+	for dialog in _dialog_windows:
 		if dialog.visible:
 			return true
 	return false
@@ -221,7 +247,7 @@ func _input(event: InputEvent) -> void:
 	if is_dialog_popped_up():
 		return
 	
-	var mouse_position = base_control.get_global_mouse_position()
+	var mouse_position = get_global_mouse_position()
 	
 	if tiles_inspector.get_parent_control().get_global_rect().has_point(mouse_position):
 		if tiles_inspector.get_global_rect().has_point(mouse_position):
@@ -239,25 +265,6 @@ func _input(event: InputEvent) -> void:
 			tiles_preview_collapse_requested.emit()
 
 
-func _setup_children() -> void:
-	for child in _get_children_recursive(self):
-		_assign_child_by_class(child)
-
-
-func _assign_child_by_class(child : Node) -> void:
-	match child.get_script():
-		TemplateManager:
-			template_manager = child
-		TilesManager:
-			tiles_manager = child
-		ThemeUpdater:
-			theme_updater = child
-		Context:
-			context = child
-		_:
-			if child is Window:
-				dialog_windows.append(child)
-
 
 
 
@@ -269,12 +276,57 @@ func _assign_child_by_class(child : Node) -> void:
 
 
 # ------------------------------------------------------------------------
-#		INJECTED REFERENCES AND FUNCTIONS
+#		INJECTIONS
 # ------------------------------------------------------------------------
 
 func _inject_tbt_reference(node : Node, include_parent := false) -> void:
 	_set_subtree(node, TBT_PROPERTY_NAME, self, include_parent)
 	_call_subtree(node, TBT_READY_METHOD, include_parent)
+
+
+# ------------------------------------------------------------------------
+#		NODE MANAGEMENT
+# ------------------------------------------------------------------------
+
+func _update_editor_nodes() -> Globals.Errors:
+	_editor_nodes = {}
+	
+	var base_control := interface.get_base_control()
+	_editor_nodes[EditorTreeNode.BASE_CONTROL] = base_control
+	
+	var tile_set_editor := _get_first_node_by_class(base_control, "TileSetEditor")
+	#output.debug("tile_set_editor=%s" % tile_set_editor)
+	if !tile_set_editor:
+		return Globals.Errors.EDITOR_NODE_NOT_FOUND
+	_editor_nodes[EditorTreeNode.TILE_SET_EDITOR] = tile_set_editor
+
+	var atlas_source_editor := _get_first_node_by_class(tile_set_editor, "TileSetAtlasSourceEditor")
+	#output.debug("atlas_source_editor=%s" % atlas_source_editor)
+	if !atlas_source_editor:
+		return Globals.Errors.EDITOR_NODE_NOT_FOUND
+	_editor_nodes[EditorTreeNode.ATLAS_SOURCE_EDITOR] = atlas_source_editor
+	
+	
+	var atlas_source_editor_vbox := _get_first_node_by_class(atlas_source_editor, "VBoxContainer")
+	if !atlas_source_editor_vbox:
+		return Globals.Errors.EDITOR_NODE_NOT_FOUND
+	var selected_tiles_inspector := _get_first_node_by_class(atlas_source_editor_vbox, "EditorInspector")
+	if !selected_tiles_inspector:
+		return Globals.Errors.EDITOR_NODE_NOT_FOUND
+	var selected_tiles_inspector_vbox := _get_first_node_by_class(selected_tiles_inspector, "VBoxContainer")
+	if !selected_tiles_inspector_vbox:
+		return Globals.Errors.EDITOR_NODE_NOT_FOUND
+	_editor_nodes[EditorTreeNode.SELECTED_TILES_INSPECTOR_VBOX] = selected_tiles_inspector_vbox
+
+	var tile_atlas_view := _get_first_node_by_class(tile_set_editor, "TileAtlasView")
+	#output.debug("tile_atlas_view=%s" % tile_atlas_view)
+	if !tile_atlas_view:
+		return Globals.Errors.EDITOR_NODE_NOT_FOUND
+	_editor_nodes[EditorTreeNode.TILE_ATLAS_VIEW] = tile_atlas_view
+	
+	return Globals.Errors.OK
+
+
 
 
 
