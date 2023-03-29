@@ -21,6 +21,21 @@ signal tiles_preview_expand_requested
 
 signal theme_update_requested(node)
 
+
+# EditorNode is reserved name
+enum EditorTreeNode {
+	BASE_CONTROL,
+	TILE_SET_EDITOR, 
+	ATLAS_SOURCE_EDITOR, 
+	TILE_ATLAS_VIEW,
+}
+
+enum TBTNode {
+	TILES_INSPECTOR,
+	TILES_PREVIEW,
+	SELECTION_CONTEXT,
+}
+
 const TBT_PROPERTY_NAME := "tbt"
 const TBT_READY_METHOD := "_tbt_ready"
 const TILES_INSPECTOR_ADDED_METHOD := "_tiles_inspector_added"
@@ -44,7 +59,7 @@ var output : Output = Output.new()
 var texts : Texts = Texts.new()
 var icons : Icons
 
-var interface : EditorInterface
+
 var atlas_source_editor : Node
 var base_control : Control
 
@@ -52,6 +67,10 @@ var template_manager : TemplateManager
 var tiles_manager : TilesManager
 var theme_updater : ThemeUpdater
 var dialog_windows := []
+
+var interface : EditorInterface
+var _editor_nodes := {}
+var _tbt_nodes := {}
 
 var context : Context :
 	get:
@@ -74,6 +93,10 @@ var tiles_preview : Control :
 		return tiles_preview
 
 
+# ------------------------------------------------------------------------
+#		SETUP
+# ------------------------------------------------------------------------
+
 func _ready() -> void:
 	set_process_input(false)
 	child_entered_tree.connect(_assign_child_by_class)
@@ -81,19 +104,67 @@ func _ready() -> void:
 	_setup_children()
 
 
-func setup(p_interface : EditorInterface, p_atlas_source_editor : Node, p_tiles_preview : Control) -> void:
+func setup(p_interface : EditorInterface) -> Globals.Errors:
 	interface = p_interface
-	base_control = interface.get_base_control()
-	atlas_source_editor = p_atlas_source_editor
+	var result := _update_editor_nodes()
+	if result != OK:
+		return result
 	
-	icons = Icons.new(base_control)
+	return Globals.Errors.OK
+	
+	# TODO: should icons just be a control node, inheriting theme data?
+	icons = Icons.new(get_editor_node(EditorTreeNode.BASE_CONTROL))
 	
 	# here instead of _ready() so base_control is not null
 	_inject_tbt_reference(self)
 	
-	tiles_preview = p_tiles_preview
-	_inject_tbt_reference(tiles_preview, true)
+#	tiles_preview = p_tiles_preview
+#	_inject_tbt_reference(tiles_preview, true)
+
+	return Globals.Errors.OK
+
+
+
+
+
+
+func _update_editor_nodes() -> Globals.Errors:
+	_editor_nodes = {}
 	
+	var base_control := interface.get_base_control()
+	_editor_nodes[EditorTreeNode.BASE_CONTROL] = base_control
+	
+	var tile_set_editor := _get_first_node_by_class(base_control, "TileSetEditor")
+	#output.debug("tile_set_editor=%s" % tile_set_editor)
+	if !tile_set_editor:
+		return Globals.Errors.EDITOR_NODE_NOT_FOUND
+	_editor_nodes[EditorTreeNode.TILE_SET_EDITOR] = tile_set_editor
+
+	var atlas_source_editor := _get_first_node_by_class(tile_set_editor, "TileSetAtlasSourceEditor")
+	#output.debug("atlas_source_editor=%s" % atlas_source_editor)
+	if !atlas_source_editor:
+		return Globals.Errors.EDITOR_NODE_NOT_FOUND
+	_editor_nodes[EditorTreeNode.ATLAS_SOURCE_EDITOR] = atlas_source_editor
+
+	var tile_atlas_view := _get_first_node_by_class(tile_set_editor, "TileAtlasView")
+	#output.debug("tile_atlas_view=%s" % tile_atlas_view)
+	if !tile_atlas_view:
+		return Globals.Errors.EDITOR_NODE_NOT_FOUND
+	_editor_nodes[EditorTreeNode.TILE_ATLAS_VIEW] = tile_atlas_view
+	
+	return Globals.Errors.OK
+
+
+
+# ------------------------------------------------------------------------
+#		PUBLIC FUNCTIONS
+# ------------------------------------------------------------------------
+
+
+func get_editor_node(editor_node : EditorTreeNode) -> Node:
+	return _editor_nodes.get(editor_node, null)
+
+
 	
 func notify_tiles_inspector_added(p_tiles_inspector : Control) -> void:
 	tiles_inspector = p_tiles_inspector
@@ -110,6 +181,7 @@ func notify_tiles_inspector_removed() -> void:
 	set_process_input(false)
 	_call_subtree(self, TILES_INSPECTOR_REMOVED_METHOD)
 	tiles_inspector_removed.emit()
+
 
 func is_dialog_popped_up() -> bool:
 	for dialog in dialog_windows:
@@ -188,18 +260,38 @@ func _assign_child_by_class(child : Node) -> void:
 
 
 
+
+
+
+
+
+
+
+
+# ------------------------------------------------------------------------
+#		INJECTED REFERENCES AND FUNCTIONS
+# ------------------------------------------------------------------------
+
 func _inject_tbt_reference(node : Node, include_parent := false) -> void:
 	_set_subtree(node, TBT_PROPERTY_NAME, self, include_parent)
 	_call_subtree(node, TBT_READY_METHOD, include_parent)
 
 
-func _set_subtree(parent : Node, property_name : String, value : Variant, include_parent := false) -> void:
-	var nodes_to_set := _get_children_recursive(parent)
-	if include_parent:
-		nodes_to_set.append(parent)
-		
-	for node in nodes_to_set:
-		node.set(property_name, value)
+
+
+# ------------------------------------------------------------------------
+#		HELPER FUNCTIONS
+# ------------------------------------------------------------------------
+
+func _get_children_recursive(node : Node) -> Array:
+	return node.find_children("*", "", true, false)
+
+
+func _get_first_node_by_class(parent_node : Node, p_class_name : String) -> Node:
+	var nodes := parent_node.find_children("*", p_class_name, true, false)
+	if !nodes.size():
+		return null
+	return nodes[0]
 
 
 func _call_subtree(parent : Node, method_name : String, include_parent := false) -> void:
@@ -212,8 +304,13 @@ func _call_subtree(parent : Node, method_name : String, include_parent := false)
 			node.call(method_name)
 
 
-func _get_children_recursive(node : Node) -> Array:
-	return node.find_children("*", "", true, false)
+func _set_subtree(parent : Node, property_name : String, value : Variant, include_parent := false) -> void:
+	var nodes_to_set := _get_children_recursive(parent)
+	if include_parent:
+		nodes_to_set.append(parent)
+		
+	for node in nodes_to_set:
+		node.set(property_name, value)
 
 
 func _is_reference_valid(node) -> bool:
@@ -228,6 +325,12 @@ func _is_reference_valid(node) -> bool:
 	return true
 #	return is_instance_valid(node) && node.is_inside_tree() && !node.is_queued_for_deletion()
 
+
+
+
+# ------------------------------------------------------------------------
+#		DEBUG SIGNALS
+# ------------------------------------------------------------------------
 
 func _setup_debug_signals() -> void:
 	for signal_data in get_signal_list():
