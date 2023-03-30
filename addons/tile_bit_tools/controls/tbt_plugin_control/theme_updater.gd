@@ -169,9 +169,9 @@ var section_button_height := UNASSIGNED
 
 var height_setup_complete := false
 
-
 var tbt : TBTPlugin
 var base_control : Control
+
 
 func _tbt_ready() -> void:
 	tbt.theme_update_requested.connect(_on_theme_update_requested)
@@ -186,7 +186,6 @@ func _notification(what: int) -> void:
 		_setup_themes()
 
 
-
 func _tiles_inspector_added() -> void:
 	if !height_setup_complete:
 		# only needs to be done once
@@ -196,7 +195,6 @@ func _tiles_inspector_added() -> void:
 
 
 func _setup_themes() -> void:
-	# remove from here to avoid pause when activating plugin
 	_setup_custom_heights()
 	_update_themes()
 

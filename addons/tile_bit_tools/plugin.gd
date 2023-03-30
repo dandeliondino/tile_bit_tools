@@ -7,14 +7,14 @@ const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_cont
 const PLUGIN_NAME := "tile_bit_tools"
 
 const TBTPluginControl := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.tscn")
+const InspectorPlugin := preload("res://addons/tile_bit_tools/inspector_plugin.gd")
 
 var texts := preload("res://addons/tile_bit_tools/core/texts.gd").new()
 var output := preload("res://addons/tile_bit_tools/core/output.gd").new()
 
-var plugin : EditorInspectorPlugin
-
 var interface : EditorInterface
 var tbt : TBTPlugin
+var inspector_plugin : EditorInspectorPlugin
 
 
 func _enter_tree() -> void:
@@ -30,34 +30,30 @@ func _enter_tree() -> void:
 		output.user("Unable to initialize, disabling plugin")
 		interface.set_plugin_enabled(PLUGIN_NAME, false)
 		return
+
+	inspector_plugin = InspectorPlugin.new()
+	add_inspector_plugin(inspector_plugin)
+	inspector_plugin.setup(tbt)
 	
-	
-#	plugin = preload("inspector_plugin.gd").new()
-#	add_inspector_plugin(plugin)
-#	var result : Globals.Errors = plugin.setup(get_editor_interface())
-#	if result != OK:
-#		output.user("Unable to initialize, disabling plugin")
-#		get_editor_interface().set_plugin_enabled(PLUGIN_NAME, false)
-#		return
-#	output.info("Initialization complete")
-#	output.user(texts.WELCOME_MESSAGE)
-#	output.user(texts.WELCOME_MESSAGE2)
+	output.info("Initialization complete")
+	output.user(texts.WELCOME_MESSAGE)
+	output.user(texts.WELCOME_MESSAGE2)
 
 
 func _clear() -> void:
 	output.debug("plugin.gd : _clear()")
-#	if plugin:
-#		plugin.clean_up()
+	pass
 
 
 func _exit_tree() -> void:
 	output.debug("plugin.gd : _exit_tree()")
-	_remove_tbt_plugin()
 	
-#	output.info("Cleaning up...")
-#	if plugin:
-#		plugin.clean_up()
-#	remove_inspector_plugin(plugin)
+	if is_instance_valid(tbt):
+		tbt.clean_up()
+		tbt.queue_free()
+	
+	if inspector_plugin:
+		remove_inspector_plugin(inspector_plugin)
 
 
 
@@ -71,9 +67,7 @@ func _add_tbt_plugin() -> Globals.Errors:
 	return result
 
 
-func _remove_tbt_plugin() -> void:
-	tbt.clean_up()
-	tbt.queue_free()
+
 
 
 

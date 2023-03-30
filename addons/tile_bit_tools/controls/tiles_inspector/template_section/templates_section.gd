@@ -48,7 +48,8 @@ func _tbt_ready() -> void:
 	terrain_set_option_button.item_selected.connect(_on_terrain_set_selected)
 	
 	tags_popup.id_pressed.connect(_add_tag)
-	_reset_tags()
+	# TODO: update this
+#	_reset_tags()
 
 
 # --------------------------------------

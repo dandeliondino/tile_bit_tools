@@ -23,8 +23,9 @@ var tbt : TBTPlugin
 func _tbt_ready() -> void:
 	tbt.preview_updated.connect(_on_preview_updated)
 	bit_button_popup.submenu_popup_delay = 0.0
-	_setup_fill_button()
-	_update_buttons()
+	# TODO: redo this
+#	_setup_fill_button()
+#	_update_buttons()
 
 
 func _setup_fill_button() -> void:

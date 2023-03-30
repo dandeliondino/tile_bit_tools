@@ -44,17 +44,19 @@ script = ExtResource("6_mie0u")
 
 [node name="TilesInspector" parent="." instance=ExtResource("5_h4454")]
 unique_name_in_owner = true
-visible = false
 layout_mode = 0
 anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
 offset_left = -69.5
 offset_top = -124.0
 offset_right = 69.5
 offset_bottom = 124.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="TilesPreview" parent="." instance=ExtResource("7_i6b6g")]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 
 [node name="SaveDialogContainer" type="Control" parent="."]
