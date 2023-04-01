@@ -9,7 +9,7 @@
 [ext_resource type="Script" path="res://addons/tile_bit_tools/controls/tbt_plugin_control/theme_updater.gd" id="6_mie0u"]
 [ext_resource type="PackedScene" uid="uid://loch8a1s1gbq" path="res://addons/tile_bit_tools/controls/tiles_preview/tiles_preview.tscn" id="7_i6b6g"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_34mcn"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ah7m3"]
 content_margin_left = 24.0
 content_margin_top = 24.0
 content_margin_right = 24.0
@@ -65,11 +65,11 @@ anchors_preset = 0
 [node name="SaveTemplateDialog" parent="SaveDialogContainer" instance=ExtResource("3_p4ion")]
 unique_name_in_owner = true
 visible = false
-theme_override_styles/embedded_border = SubResource("StyleBoxFlat_34mcn")
+theme_override_styles/embedded_border = SubResource("StyleBoxFlat_ah7m3")
 
 [node name="EditDialogContainer" type="Control" parent="."]
 anchors_preset = 0
 
 [node name="EditTemplateDialog" parent="EditDialogContainer" instance=ExtResource("4_qymya")]
 unique_name_in_owner = true
-theme_override_styles/embedded_border = SubResource("StyleBoxFlat_34mcn")
+theme_override_styles/embedded_border = SubResource("StyleBoxFlat_ah7m3")

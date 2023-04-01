@@ -119,7 +119,10 @@ var _tiles_preview : Control :
 	edit_template_dialog,
 ]
 
-var state := PluginState.LOADING
+var state := PluginState.LOADING :
+	set(value):
+		state = value
+		output.debug("plugin state=%s" % value)
 
 var ready_complete := false
 
