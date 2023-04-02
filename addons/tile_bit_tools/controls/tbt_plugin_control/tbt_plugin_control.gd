@@ -1,6 +1,7 @@
 @tool
 extends Control
 
+signal tile_set_changed
 
 signal tiles_inspector_added
 signal tiles_inspector_removed
@@ -51,6 +52,8 @@ const Texts := preload("res://addons/tile_bit_tools/core/texts.gd")
 const Icons := preload("res://addons/tile_bit_tools/core/icons.gd")
 const Output := preload("res://addons/tile_bit_tools/core/output.gd")
 
+const TileSetInterface := preload("res://addons/tile_bit_tools/core/tile_set_interface.gd")
+
 const BitData := preload("res://addons/tile_bit_tools/core/bit_data.gd")
 const EditorBitData := preload("res://addons/tile_bit_tools/core/editor_bit_data.gd")
 const TemplateBitData := preload("res://addons/tile_bit_tools/core/template_bit_data.gd")
@@ -79,7 +82,7 @@ var context : Context
 
 var current_tile_set : TileSet
 var current_source : TileSetSource
-
+var tile_set_interface : TileSetInterface
 
 var _tbt_nodes_to_reparent := {
 	TBTNode.TILES_PREVIEW: EditorTreeNode.TILE_ATLAS_VIEW,
@@ -351,7 +354,17 @@ func _update_editor_references() -> Globals.Errors:
 
 
 func update_tile_set_and_source() -> void:
-	current_tile_set = TreeUtils.get_first_connected_object_by_class(get_editor_node(EditorTreeNode.TILE_SET_EDITOR), "TileSet")
+	var new_tile_set := TreeUtils.get_first_connected_object_by_class(get_editor_node(EditorTreeNode.TILE_SET_EDITOR), "TileSet")
+	if current_tile_set != new_tile_set:
+		current_tile_set = new_tile_set
+		tile_set_interface = TileSetInterface.new(new_tile_set, icons)
+		output.debug("Changed TileSet to %s (TerrainSets=%s, Terrains=%s)" % [
+			new_tile_set, 
+			tile_set_interface.terrain_set_list.size(), 
+			tile_set_interface.terrain_list.size()
+		])
+		tile_set_changed.emit()
+	
 	current_source = TreeUtils.get_first_connected_object_by_class(editor_source_proxy, "TileSetAtlasSource")
 
 

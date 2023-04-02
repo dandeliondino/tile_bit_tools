@@ -85,6 +85,10 @@ func populate_control(control : Control, empty_item_mode : EmptyItemMode = Empty
 		_add_item_to_control(control, text, icon, id)
 
 
+func size() -> int:
+	return _items_by_id.size()
+
+
 func _add_item_to_control(control : Control, text : String, icon : Texture2D, id : int) -> void:
 	if control.get_class() == "OptionButton" or control.get_class() == "PopupMenu":
 		_add_item_to_option_or_popup(control, text, icon, id)
