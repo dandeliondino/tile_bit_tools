@@ -42,7 +42,8 @@ func _parse_end(object: Object) -> void:
 	var selected_tiles := _get_selected_tiles()
 	if selected_tiles.size() == 0:
 		return
-		
+	
+	var selection_context := tbt.SelectionContext.new(tbt.current_tile_set, selected_tiles)
 	_add_tiles_inspector()
 
 

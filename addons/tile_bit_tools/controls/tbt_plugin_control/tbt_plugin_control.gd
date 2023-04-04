@@ -42,6 +42,10 @@ enum TBTNode {
 	TILES_PREVIEW,
 }
 
+
+
+
+
 const TBT_PROPERTY_NAME := "tbt"
 const TBT_READY_METHOD := "_tbt_ready"
 const TILES_INSPECTOR_ADDED_METHOD := "_tiles_inspector_added"
@@ -61,7 +65,10 @@ const TemplateBitData := preload("res://addons/tile_bit_tools/core/template_bit_
 const TemplateManager := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/template_manager.gd")
 const TilesManager := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tiles_manager.gd")
 const ThemeUpdater := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/theme_updater.gd")
+
 const Context := preload("res://addons/tile_bit_tools/core/context.gd")
+const SelectionContext := preload("res://addons/tile_bit_tools/core/selection_context.gd")
+
 
 const TreeUtils := preload("res://addons/tile_bit_tools/core/tree_utils.gd")
 

@@ -7,7 +7,6 @@ var tbt : TBTPlugin
 
 var ready_complete := false
 
-@onready var save_button: Button = %SaveButton
 
 func _ready() -> void:
 	ready_complete = true

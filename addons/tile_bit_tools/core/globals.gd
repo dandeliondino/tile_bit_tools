@@ -1,9 +1,19 @@
+@tool
 extends RefCounted
 
 const VERSION := "1.0.2"
 
+
+
 # ------------------------
-# 	ENUMS
+# 	GROUPS
+# ------------------------
+
+const GROUP_DYNAMIC_CONTAINER := "TBTDynamicContainer"
+
+
+# ------------------------
+# 	ERRORS
 # ------------------------
 
 enum Errors {
@@ -23,20 +33,49 @@ enum Errors {
 }
 
 
+
+# ------------------------
+# 	TILE DATA
+# ------------------------
+
+enum DataLayer {
+	TERRAIN,
+	PROPERTY,
+	ANIMATION,
+	PHYSICS,
+	NAVIGATION,
+	OCCLUSION,
+	CUSTOM_DATA,
+}
+
+
+const tile_properties := [
+#	"flip_h",
+#	"flip_v",
+	"material",
+	"modulate",
+	"probability",
+	"texture_origin",
+#	"transpose",
+	"z_index",
+	"y_sort_origin",
+]
+
+
+
+# ------------------------
+# 	TEMPLATES
+# ------------------------
+
 enum TemplateTypes {BUILT_IN, USER}
-
-
-
-# ------------------------
-# 	PATHS
-# ------------------------
 
 const BUILTIN_TEMPLATES_PATH := "res://addons/tile_bit_tools/templates/"
 const GODOT_TEMPLATES_FOLDER := "/tile_bit_tools_templates/"
 const PROJECT_TEMPLATES_PATH := "user://addons/tile_bit_tools/templates/"
 
+
 # ------------------------
-# 	USER SETTINGS
+# 	PROJECT SETTINGS
 # ------------------------
 
 const PROJECT_SETTINGS_PATH := "addons/tile_bit_tools/"
@@ -88,9 +127,3 @@ const Settings := {
 }
 
 
-# ------------------------
-# 	GROUPS
-# ------------------------
-
-
-const GROUP_DYNAMIC_CONTAINER := "TBTDynamicContainer"
