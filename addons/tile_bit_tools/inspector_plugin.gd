@@ -44,6 +44,7 @@ func _parse_end(object: Object) -> void:
 		return
 	
 	var selection_context := tbt.SelectionContext.new(tbt.current_tile_set, selected_tiles)
+	tbt.tiles_selected.emit(selection_context)
 	_add_tiles_inspector()
 
 

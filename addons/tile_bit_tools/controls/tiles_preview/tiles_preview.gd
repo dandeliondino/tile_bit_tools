@@ -46,6 +46,8 @@ var expanded := true
 @onready var reset_button: Button = %ResetButton
 @onready var apply_button: Button = %ApplyButton
 
+@onready var data_layer_tree: Tree = %DataLayerTree
+
 var ready_complete := false # TODO: remove this?
 
 

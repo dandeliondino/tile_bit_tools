@@ -3,6 +3,8 @@ extends Control
 
 signal tile_set_changed
 
+signal tiles_selected(selection_context)
+
 signal tiles_inspector_added
 signal tiles_inspector_removed
 
@@ -57,6 +59,8 @@ const Icons := preload("res://addons/tile_bit_tools/core/icons.gd")
 const Output := preload("res://addons/tile_bit_tools/core/output.gd")
 
 const TileSetInterface := preload("res://addons/tile_bit_tools/core/tile_set_interface.gd")
+
+const DataLayer := preload("res://addons/tile_bit_tools/core/data_layer.gd")
 
 const BitData := preload("res://addons/tile_bit_tools/core/bit_data.gd")
 const EditorBitData := preload("res://addons/tile_bit_tools/core/editor_bit_data.gd")
