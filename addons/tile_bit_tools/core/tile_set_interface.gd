@@ -1,4 +1,4 @@
-extends Object
+extends RefCounted
 
 const ItemDictList := preload("res://addons/tile_bit_tools/core/item_dict_list.gd")
 const Icons := preload("res://addons/tile_bit_tools/core/icons.gd")

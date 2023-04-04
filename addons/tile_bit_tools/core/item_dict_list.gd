@@ -1,4 +1,4 @@
-extends Object
+extends RefCounted
 
 enum EmptyItemMode {
 	NO_EMPTY_ITEM,

@@ -1,4 +1,4 @@
-extends Object
+extends RefCounted
 
 
 const TERRAIN_MODE_ICONS := {

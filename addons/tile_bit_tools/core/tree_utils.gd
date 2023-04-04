@@ -1,4 +1,4 @@
-extends Object
+extends RefCounted
 
 
 static func get_children_recursive(node : Node) -> Array:
