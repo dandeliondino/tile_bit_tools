@@ -1,16 +1,27 @@
-[gd_scene load_steps=4 format=3 uid="uid://dknch2tbr32yh"]
+[gd_scene load_steps=5 format=3 uid="uid://dknch2tbr32yh"]
 
 [ext_resource type="Script" path="res://addons/tile_bit_tools/controls/tiles_inspector/template_section/templates_section.gd" id="1_i6wsq"]
+[ext_resource type="Script" path="res://addons/tile_bit_tools/controls/shared/icon_button.gd" id="2_27vl1"]
 [ext_resource type="PackedScene" uid="uid://bxhlehm73ligy" path="res://addons/tile_bit_tools/controls/tiles_inspector/template_section/template_info_panel.tscn" id="5_tlsqj"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t8sf7"]
 
-[node name="TemplatesContainer" type="VBoxContainer"]
+[node name="TemplatesSection" type="VBoxContainer"]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 26.0
 grow_horizontal = 2
 script = ExtResource("1_i6wsq")
+
+[node name="SaveButton" type="Button" parent="." groups=["TBTToolButton"]]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+text = "Save as Template"
+alignment = 0
+script = ExtResource("2_27vl1")
+editor_name = "Save"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -105,3 +116,5 @@ theme_override_constants/margin_left = 16
 [node name="TerrainPickersContainer" type="VBoxContainer" parent="TemplateSectionPanel/VBoxContainer/MarginContainer/VBoxContainer/TerrainContainer/MarginContainer/VBoxContainer/MarginContainer" groups=["TBTDynamicContainer"]]
 unique_name_in_owner = true
 layout_mode = 2
+
+[connection signal="pressed" from="SaveButton" to="." method="_on_save_button_pressed"]

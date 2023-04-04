@@ -55,10 +55,10 @@ theme_override_constants/margin_bottom = 8
 [node name="ToolButtons" parent="MarginContainer3" instance=ExtResource("4_vjqmp")]
 layout_mode = 2
 
-[node name="ApplyTemplateSectionButton" parent="." instance=ExtResource("4_2qwfq")]
+[node name="TerrainTemplatesSectionButton" parent="." instance=ExtResource("4_2qwfq")]
 custom_minimum_size = Vector2(0, 43)
 layout_mode = 2
-label_text = "Apply Terrain Template"
+label_text = "Terrain Templates"
 expand_container_path = NodePath("../MarginContainer")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]

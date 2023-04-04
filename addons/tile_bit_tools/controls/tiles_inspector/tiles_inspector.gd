@@ -25,8 +25,7 @@ func _tbt_ready() -> void:
 
 
 
-func _on_save_button_pressed() -> void:
-	tbt.save_template_requested.emit()
+
 
 	
 		

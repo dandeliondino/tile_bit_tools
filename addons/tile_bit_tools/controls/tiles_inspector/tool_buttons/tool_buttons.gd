@@ -171,5 +171,18 @@ func _on_bit_button_terrain_id_pressed(terrain_id : int, terrain_bit : int) -> v
 func _on_erase_button_pressed() -> void:
 	tbt.tiles_manager.erase_terrains()
 
+
 func _on_preview_updated(_arg) -> void:
 	_update_buttons()
+
+
+func _on_copy_button_pressed() -> void:
+	pass # Replace with function body.
+
+
+func _on_paste_button_pressed() -> void:
+	pass # Replace with function body.
+
+
+
+

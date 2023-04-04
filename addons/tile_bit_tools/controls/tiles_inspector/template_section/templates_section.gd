@@ -279,3 +279,6 @@ func _on_templates_updated() -> void:
 func _on_reset_requested() -> void:
 	_reset_tags()
 
+
+func _on_save_button_pressed() -> void:
+	tbt.save_template_requested.emit()
