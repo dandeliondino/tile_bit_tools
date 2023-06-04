@@ -26,7 +26,7 @@ const TBT_READY_METHOD := "_tbt_ready"
 const TILES_INSPECTOR_ADDED_METHOD := "_tiles_inspector_added"
 const TILES_INSPECTOR_REMOVED_METHOD := "_tiles_inspector_removed"
 
-const G := preload("res://addons/tile_bit_tools/core/G.gd")
+const G := preload("res://addons/tile_bit_tools/core/globals.gd")
 const Texts := preload("res://addons/tile_bit_tools/core/texts.gd")
 const Icons := preload("res://addons/tile_bit_tools/core/icons.gd")
 const Output := preload("res://addons/tile_bit_tools/core/output.gd")

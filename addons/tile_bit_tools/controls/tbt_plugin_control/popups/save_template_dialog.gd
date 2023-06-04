@@ -1,5 +1,5 @@
 @tool
-extends "res://addons/tile_bit_tools/controls/tbt_plugin_control/popups/template_dialog.gd"
+extends "res://addons/tile_bit_tools/controls/tbt_plugin_control/popups/template_dialoglobals.gd"
 
 
 

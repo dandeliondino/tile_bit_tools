@@ -1,7 +1,7 @@
 @tool
 extends "res://addons/tile_bit_tools/core/bit_data.gd"
 
-const G := preload("res://addons/tile_bit_tools/core/G.gd")
+const G := preload("res://addons/tile_bit_tools/core/globals.gd")
 const TemplateBitData := preload("res://addons/tile_bit_tools/core/template_bit_data.gd")
 const EditorBitData := preload("res://addons/tile_bit_tools/core/editor_bit_data.gd")
 

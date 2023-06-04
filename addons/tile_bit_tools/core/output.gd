@@ -18,7 +18,7 @@ const ERROR_COLOR := "salmon"
 const WARNING_COLOR := "yellow"
 const OK_COLOR := "palegreen"
 
-const G := preload("res://addons/tile_bit_tools/core/G.gd")
+const G := preload("res://addons/tile_bit_tools/core/globals.gd")
 
 var texts := preload("res://addons/tile_bit_tools/core/texts.gd").new()
 
