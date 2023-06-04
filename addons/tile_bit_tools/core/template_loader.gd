@@ -4,7 +4,7 @@ extends Object
 
 const TAG_NOT_FOUND := null
 
-const G := preload("res://addons/tile_bit_tools/core/globals.gd")
+const G := preload("res://addons/tile_bit_tools/core/G.gd")
 
 const TemplateBitData := preload("res://addons/tile_bit_tools/core/template_bit_data.gd")
 const TemplateTagData := preload("res://addons/tile_bit_tools/core/template_tag_data.gd")

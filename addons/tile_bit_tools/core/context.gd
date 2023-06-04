@@ -2,7 +2,7 @@
 extends Node
 
 
-const G := preload("res://addons/tile_bit_tools/core/globals.gd")
+const G := preload("res://addons/tile_bit_tools/core/G.gd")
 const EditorBitData := preload("res://addons/tile_bit_tools/core/editor_bit_data.gd")
 
 const Icons := preload("res://addons/tile_bit_tools/core/icons.gd")

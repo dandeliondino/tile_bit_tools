@@ -1,7 +1,7 @@
 @tool
 extends EditorPlugin
 
-const G := preload("res://addons/tile_bit_tools/core/globals.gd")
+const G := preload("res://addons/tile_bit_tools/core/G.gd")
 
 const PLUGIN_NAME := "tile_bit_tools"
 

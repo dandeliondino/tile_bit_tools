@@ -3,7 +3,7 @@ extends "res://addons/tile_bit_tools/core/bit_data.gd"
 
 const additional_colors := [Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN, Color.REBECCA_PURPLE, Color.WHEAT, Color.AQUA, Color.SALMON, Color.CHOCOLATE, Color.VIOLET, Color.CADET_BLUE, Color.NAVY_BLUE, Color.MAGENTA, Color.LAWN_GREEN, Color.KHAKI, Color.HOT_PINK, Color.FIREBRICK, Color.DARK_OLIVE_GREEN, Color.SADDLE_BROWN]
 
-const G := preload("res://addons/tile_bit_tools/core/globals.gd")
+const G := preload("res://addons/tile_bit_tools/core/G.gd")
 const EditorBitData := preload("res://addons/tile_bit_tools/core/editor_bit_data.gd")
 const TemplateBitData := preload("res://addons/tile_bit_tools/core/template_bit_data.gd")
 

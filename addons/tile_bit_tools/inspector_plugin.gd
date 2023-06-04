@@ -4,7 +4,7 @@ extends EditorInspectorPlugin
 # Do not use Vector2i(-INF/-INF) - will evaluate as equal to Vector2i(0,0)
 const INVALID_COORDINATES := Vector2i(-1, -1)
 
-const G := preload("res://addons/tile_bit_tools/core/globals.gd")
+const G := preload("res://addons/tile_bit_tools/core/G.gd")
 const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd")
 
 var TBTPluginControl := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.tscn")
