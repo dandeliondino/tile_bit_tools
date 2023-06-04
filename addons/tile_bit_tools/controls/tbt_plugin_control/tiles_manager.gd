@@ -25,8 +25,8 @@ var tbt : TBTPlugin
 
 
 func _tbt_ready() -> void:
-	tbt.reset_requested.connect(_on_reset_requested)
-	tbt.apply_changes_requested.connect(_on_apply_changes_requested)
+	var _err := tbt.reset_requested.connect(_on_reset_requested)
+	_err = tbt.apply_changes_requested.connect(_on_apply_changes_requested)
 
 
 func get_preview_terrain_set() -> int:
@@ -79,7 +79,7 @@ func apply_template_terrains(template : TBTPlugin.TemplateBitData, terrain_set :
 		preview_bit_data = null
 		_emit_preview_updated()
 		return
-		
+
 	preview_bit_data = _get_new_preview_data()
 	var result := preview_bit_data.apply_template_bit_data(template, terrain_set, terrain_mapping)
 	if result != OK:
@@ -88,10 +88,10 @@ func apply_template_terrains(template : TBTPlugin.TemplateBitData, terrain_set :
 		tbt.output.error("Unable to apply template data", result)
 		_emit_preview_updated()
 		return
-	
+
 	current_terrain_change = TerrainChanges.TEMPLATE
 	_emit_preview_updated()
-	
+
 
 ## Applies the changes to TileData object
 ## including terrain_set, terrain and terrain peering bits
@@ -99,12 +99,12 @@ func apply_template_terrains(template : TBTPlugin.TemplateBitData, terrain_set :
 func apply_bit_data() -> void:
 	if !preview_bit_data:
 		return
-	
+
 	tbt.output.info(terrain_changes_texts[current_terrain_change])
-	
+
 	if current_terrain_change == TerrainChanges.ERASE:
 		tbt.output.user("Erasing terrain set assignments may cause error spam of Condition 'terrain_set < 0' is true. Data should save without corruption. Please ignore.")
-		
+
 	for coords in tbt.context.tiles.keys():
 		var tile_data : TileData = tbt.context.tiles[coords]
 		tile_data.terrain_set = preview_bit_data.terrain_set

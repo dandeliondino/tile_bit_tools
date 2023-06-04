@@ -9,14 +9,14 @@ var save_path : String
 
 
 func _setup_connections() -> void:
-	tbt.edit_template_requested.connect(_on_edit_template_requested)
+	var _err := tbt.edit_template_requested.connect(_on_edit_template_requested)
 
 
 
 func _setup_edit_dialog(p_template_bit_data : TBTPlugin.TemplateBitData) -> void:
 	template_bit_data = p_template_bit_data
 	save_path = template_bit_data.resource_path
-	
+
 	show_dialog()
 
 

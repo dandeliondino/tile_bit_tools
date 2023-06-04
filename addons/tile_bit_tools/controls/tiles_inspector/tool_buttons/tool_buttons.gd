@@ -21,14 +21,14 @@ var tbt : TBTPlugin
 
 
 func _tbt_ready() -> void:
-	tbt.preview_updated.connect(_on_preview_updated)
+	var _err := tbt.preview_updated.connect(_on_preview_updated)
 	bit_button_popup.submenu_popup_delay = 0.0
 	_setup_fill_button()
 	_update_buttons()
 
 
 func _setup_fill_button() -> void:
-	fill_button.get_popup().id_pressed.connect(_on_fill_button_popup_id_pressed)
+	var _err := fill_button.get_popup().id_pressed.connect(_on_fill_button_popup_id_pressed)
 	fill_button.custom_minimum_size.x = fill_button.size.x + 22
 	_populate_fill_menu()
 
@@ -67,10 +67,10 @@ func _update_bit_button() -> void:
 	bit_button_popup.clear()
 	for child in bit_button_popup.get_children():
 		child.queue_free()
-	
+
 	var terrain_bits_list : Array
 	var terrain_set := tbt.BitData.NULL_TERRAIN_SET
-	
+
 	if tbt.tiles_manager.has_preview_terrain_set():
 		terrain_set = tbt.tiles_manager.get_preview_terrain_set()
 		terrain_bits_list = tbt.tiles_manager.preview_bit_data.get_terrain_bits_list(true)
@@ -80,18 +80,18 @@ func _update_bit_button() -> void:
 	else:
 		_disable_bit_button()
 		return
-	
+
 	_enable_bit_button()
 
 	var terrains_item_list := tbt.context.get_terrains_item_list(terrain_set)
-	
+
 	for terrain_bit in terrain_bits_list:
 		var terrain_bit_name : String = tbt.texts.TERRAIN_BIT_TEXTS[terrain_bit]
 		bit_button_popup.add_item(terrain_bit_name, terrain_bit)
 		var idx := bit_button_popup.get_item_index(terrain_bit)
-		
+
 		var terrain_popup_name := _create_terrain_popup(terrain_bit, terrains_item_list)
-		
+
 		bit_button_popup.set_item_submenu(idx, terrain_popup_name)
 
 
@@ -109,12 +109,12 @@ func _create_terrain_popup(terrain_bit : int, item_list : Array) -> String:
 	var terrain_popup := PopupMenu.new()
 	terrain_popup.name = TERRAIN_POPUP + str(terrain_bit)
 	bit_button_popup.add_child(terrain_popup)
-	terrain_popup.id_pressed.connect(_on_bit_button_terrain_id_pressed.bind(terrain_bit))
+	var _err := terrain_popup.id_pressed.connect(_on_bit_button_terrain_id_pressed.bind(terrain_bit))
 
 	for item in item_list:
 		terrain_popup.add_icon_item(item.icon, item.text, item.id)
 #		terrain_popup.add_item(item.text, item.id)
-	
+
 	return terrain_popup.name
 
 
@@ -124,7 +124,7 @@ func _create_terrain_popup(terrain_bit : int, item_list : Array) -> String:
 
 func _populate_fill_menu() -> void:
 	fill_button.get_popup().clear()
-	
+
 	var terrain_sets_count := tbt.context.tile_set.get_terrain_sets_count()
 	if terrain_sets_count == 1:
 		_populate_fill_menu_terrains(0)
@@ -145,7 +145,7 @@ func _populate_fill_menu_terrains(terrain_set : int) -> void:
 		var id := fill_menu_items.size()
 		fill_button.get_popup().add_icon_item(icon, terrain_name, id)
 		fill_menu_items[id] = {"terrain_set": terrain_set, "terrain": i}
-	
+
 
 func _get_icon(p_color : Color) -> ImageTexture:
 	var image := Image.create(16, 16, false, Image.FORMAT_RGB8)

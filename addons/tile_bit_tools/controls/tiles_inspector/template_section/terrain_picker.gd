@@ -35,14 +35,14 @@ func setup(p_tbt : TBTPlugin, p_index : int, p_color : Color, p_mode : TileSet.T
 
 
 func _ready() -> void:
-	terrain_option_button.item_selected.connect(_emit_item_selected)
+	var _err := terrain_option_button.item_selected.connect(_emit_item_selected)
 
 
 func get_selected_item_id() -> int:
 	var id := terrain_option_button.get_selected_id()
 	# id cannot be -1 in optionlist, so must be converted
 	if id == EMPTY_ITEM_ID:
-		return -1 
+		return -1
 	return id
 
 
@@ -53,7 +53,7 @@ func disable_picker(value : bool) -> void:
 		terrain_option_button.disabled = false
 
 
-func _update_label() -> void:	
+func _update_label() -> void:
 	terrain_label.text = terrain_label_text % index
 	terrain_color_rect.color = color
 
@@ -61,20 +61,20 @@ func _update_label() -> void:
 func _update_picker() -> void:
 	terrain_option_button.clear()
 	terrain_option_button.add_item(tbt.texts.EMPTY_ITEM, EMPTY_ITEM_ID)
-	
+
 	if terrain_set == -1:
 		disable_picker(true)
 		return
-	
+
 	var terrain_set_mode := tbt.context.tile_set.get_terrain_set_mode(terrain_set)
 	if terrain_set_mode != template_mode:
 		disable_picker(true)
 		return
-	
+
 	disable_picker(false)
-	
+
 	var terrains_count := tbt.context.tile_set.get_terrains_count(terrain_set)
-	
+
 	for i in range(terrains_count):
 		var terrain_name := tbt.context.tile_set.get_terrain_name(terrain_set, i)
 		var terrain_color := tbt.context.tile_set.get_terrain_color(terrain_set, i)
@@ -88,4 +88,4 @@ func _emit_item_selected(_index := -1) -> void:
 
 func _on_terrain_set_changed(id : int) -> void:
 	terrain_set = id
-	
+

@@ -18,15 +18,15 @@ const ERROR_COLOR := "salmon"
 const WARNING_COLOR := "yellow"
 const OK_COLOR := "palegreen"
 
-const Globals := preload("res://addons/tile_bit_tools/core/globals.gd")
+const G := preload("res://addons/tile_bit_tools/core/globals.gd")
 
 var texts := preload("res://addons/tile_bit_tools/core/texts.gd").new()
 
 
 var message_type_settings := {
-	MessageTypes.USER: Globals.Settings.output_show_user.path,
-	MessageTypes.INFO: Globals.Settings.output_show_info.path,
-	MessageTypes.DEBUG: Globals.Settings.output_show_debug.path,
+	MessageTypes.USER: G.Settings.output_show_user.path,
+	MessageTypes.INFO: G.Settings.output_show_info.path,
+	MessageTypes.DEBUG: G.Settings.output_show_debug.path,
 }
 
 var message_type_text_color := {
@@ -35,20 +35,20 @@ var message_type_text_color := {
 }
 
 
-func user(msg, error := Globals.Errors.NULL_ERROR) -> void:
-	_print_msg(msg, error, MessageTypes.USER)
+func user(msg, p_error := G.Errors.NULL_ERROR) -> void:
+	_print_msg(msg, p_error, MessageTypes.USER)
 
 
-func info(msg : String, error := Globals.Errors.NULL_ERROR) -> void:
-	_print_msg(msg, error, MessageTypes.INFO)
+func info(msg : String, p_error := G.Errors.NULL_ERROR) -> void:
+	_print_msg(msg, p_error, MessageTypes.INFO)
 
 
-func debug(msg : String, error := Globals.Errors.NULL_ERROR) -> void:
-	_print_msg(msg, error, MessageTypes.DEBUG)
+func debug(msg : String, p_error := G.Errors.NULL_ERROR) -> void:
+	_print_msg(msg, p_error, MessageTypes.DEBUG)
 
 
-func error(msg : String, error : int = Globals.Errors.NULL_ERROR) -> void:
-	if error != Globals.Errors.NULL_ERROR:
+func error(msg : String, p_error : int = G.Errors.NULL_ERROR) -> void:
+	if p_error != G.Errors.NULL_ERROR:
 		msg = ERROR_TEXT_TEMPLATE.format({
 			"error_text": msg,
 			"error": error,
@@ -57,12 +57,12 @@ func error(msg : String, error : int = Globals.Errors.NULL_ERROR) -> void:
 		"color": ERROR_COLOR,
 		"msg": msg,
 	})
-	
-	_print_msg(msg, Globals.Errors.NULL_ERROR, MessageTypes.DEBUG)
+
+	_print_msg(msg, G.Errors.NULL_ERROR, MessageTypes.DEBUG)
 
 
-func warning(msg : String, error : int = Globals.Errors.NULL_ERROR) -> void:
-	if error != Globals.Errors.NULL_ERROR:
+func warning(msg : String, p_error : int = G.Errors.NULL_ERROR) -> void:
+	if p_error != G.Errors.NULL_ERROR:
 		msg = ERROR_TEXT_TEMPLATE.format({
 			"error_text": msg,
 			"error": error,
@@ -71,33 +71,33 @@ func warning(msg : String, error : int = Globals.Errors.NULL_ERROR) -> void:
 		"color": WARNING_COLOR,
 		"msg": msg,
 	})
-	
-	_print_msg(msg, Globals.Errors.NULL_ERROR, MessageTypes.DEBUG)
+
+	_print_msg(msg, G.Errors.NULL_ERROR, MessageTypes.DEBUG)
 
 
 
 
 
-func _print_msg(msg, error : Globals.Errors, msg_type : MessageTypes) -> void:
+func _print_msg(msg, p_error : G.Errors, msg_type : MessageTypes) -> void:
 	if !_is_message_type_enabled(msg_type):
 		return
-	
-	if msg is Globals.Errors:
+
+	if msg is G.Errors:
 		_print_error(msg, msg_type)
 		return
-	
-	if error != Globals.Errors.NULL_ERROR:
+
+	if p_error != G.Errors.NULL_ERROR:
 		msg = MESSAGE_ERROR_TEMPLATE.format({
 			"msg": msg,
-			"error_string": _get_error_string(error, true),
+			"error_string": _get_error_string(p_error, true),
 		})
-	
+
 	_format_and_print(msg, msg_type)
 
 
 
-func _print_error(error : Globals.Errors, msg_type : MessageTypes) -> void:
-	var msg := _get_error_string(error)
+func _print_error(p_error : G.Errors, msg_type : MessageTypes) -> void:
+	var msg := _get_error_string(p_error)
 	_format_and_print(msg, msg_type)
 
 
@@ -112,13 +112,13 @@ func _format_color(msg : String, msg_type : MessageTypes) -> String:
 			"color": message_type_text_color[msg_type],
 			"msg": msg,
 		})
-	
+
 	return msg
 
 
-func _format_error(msg : String, error : Globals.Errors) -> String:
+func _format_error(msg : String, p_error : G.Errors) -> String:
 	msg = "TileBitTools: %s" % msg
-	msg = msg + "(ERR %s)" % error if error != -1 else msg
+	msg = msg + "(ERR %s)" % p_error if p_error != -1 else msg
 	return msg
 
 
@@ -129,31 +129,31 @@ func _is_message_type_enabled(msg_type : MessageTypes) -> bool:
 	return value
 
 
-func _get_error_string(error : Globals.Errors, skip_text_if_null := false) -> String:
+func _get_error_string(p_error : G.Errors, skip_text_if_null := false) -> String:
 	var error_text : String
 	if skip_text_if_null:
 		error_text = texts.ERROR_TEXTS.get(error, "")
 	else:
 		error_text = texts.ERROR_TEXTS.get(error, DEFAULT_ERROR_TEXT)
-	
+
 	var error_template : String
 	if error_text == "":
 		error_template = ERROR_CODE_TEMPLATE
 	else:
 		error_template = ERROR_TEXT_TEMPLATE
-	
-	var error_string := error_template.format({
+
+	var s := error_template.format({
 		"error_text": error_text,
 		"error": error,
 	})
-	
+
 	var error_color : String
-	if error == Globals.Errors.OK:
+	if p_error == G.Errors.OK:
 		error_color = OK_COLOR
 	else:
 		error_color = ERROR_COLOR
-	
+
 	return COLOR_TEMPLATE.format({
 		"color": error_color,
-		"msg": error_string,
+		"msg": s,
 	})

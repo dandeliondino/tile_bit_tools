@@ -4,7 +4,7 @@ extends EditorInspectorPlugin
 # Do not use Vector2i(-INF/-INF) - will evaluate as equal to Vector2i(0,0)
 const INVALID_COORDINATES := Vector2i(-1, -1)
 
-const Globals := preload("res://addons/tile_bit_tools/core/globals.gd")
+const G := preload("res://addons/tile_bit_tools/core/globals.gd")
 const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd")
 
 var TBTPluginControl := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.tscn")
@@ -43,46 +43,46 @@ var tiles_preview : Control
 # 			SETUP
 # --------------------------------------
 
-func setup(p_interface : EditorInterface) -> Globals.Errors:
+func setup(p_interface : EditorInterface) -> G.Errors:
 	interface = p_interface
 	base_control = interface.get_base_control()
-	
+
 	tile_set_editor = _get_first_node_by_class(interface.get_base_control(), "TileSetEditor")
 	#output.debug("tile_set_editor=%s" % tile_set_editor)
 	if !tile_set_editor:
-		return Globals.Errors.FAILED
+		return G.Errors.FAILED
 
-	
+
 	atlas_source_editor = _get_first_node_by_class(tile_set_editor, "TileSetAtlasSourceEditor")
 	#output.debug("atlas_source_editor=%s" % atlas_source_editor)
 	if !atlas_source_editor:
-		return Globals.Errors.FAILED
-		
-	
+		return G.Errors.FAILED
+
+
 	tile_atlas_view = _get_first_node_by_class(tile_set_editor, "TileAtlasView")
 	#output.debug("tile_atlas_view=%s" % tile_atlas_view)
 	if !tile_atlas_view:
-		return Globals.Errors.FAILED
-	
+		return G.Errors.FAILED
+
 	atlas_source_proxy = _get_first_connected_object_by_class(atlas_source_editor, "TileSetAtlasSourceProxyObject")
 	#output.debug("atlas_source_proxy=%s" % atlas_source_proxy)
 	if !atlas_source_proxy:
-		return Globals.Errors.FAILED
-	
+		return G.Errors.FAILED
+
 	atlas_tile_proxy = _get_first_connected_object_by_class(atlas_source_editor, "AtlasTileProxyObject")
 	#output.debug("atlas_tile_proxy=%s" % atlas_tile_proxy)
 	if !atlas_tile_proxy:
-		return Globals.Errors.FAILED
-	
+		return G.Errors.FAILED
+
 #	_print_signals_and_connections(tile_atlas_view)
-	
+
 	_setup_tiles_preview()
-	
+
 	var shared_node_result := _setup_tbt_plugin_control()
 	if shared_node_result != OK:
 		return shared_node_result
-	
-	return Globals.Errors.OK
+
+	return G.Errors.OK
 
 
 func _reset() -> void:
@@ -92,23 +92,23 @@ func _reset() -> void:
 
 
 # Finds "Setup", "Select", "Paint" buttons and
-# connects pressed to resetting inspector controls 
-func _setup_source_editor_button_connections() -> Globals.Errors:
+# connects pressed to resetting inspector controls
+func _setup_source_editor_button_connections() -> G.Errors:
 	var vbox := atlas_source_editor.get_child(0)
 	if !vbox.is_class("VBoxContainer"):
-		return Globals.Errors.FAILED
-		
+		return G.Errors.FAILED
+
 	var hbox := vbox.get_child(0)
 	if !hbox.is_class("HBoxContainer"):
-		return Globals.Errors.FAILED
-		
+		return G.Errors.FAILED
+
 	var buttons := hbox.get_children()
 	for button in buttons:
 		if !button.is_class("Button"):
-			return Globals.Errors.FAILED
+			return G.Errors.FAILED
 		button.pressed.connect(_clear_tiles_inspector)
 
-	return Globals.Errors.OK
+	return G.Errors.OK
 
 
 func _setup_tiles_preview() -> void:
@@ -117,12 +117,12 @@ func _setup_tiles_preview() -> void:
 	tiles_preview.hide()
 
 
-func _setup_tbt_plugin_control() -> Globals.Errors:
+func _setup_tbt_plugin_control() -> G.Errors:
 	tbt_plugin_control = TBTPluginControl.instantiate()
 	base_control.add_child(tbt_plugin_control)
 	tbt_plugin_control.setup(interface, atlas_source_editor, tiles_preview)
 	output.debug("TBTPluginControl added")
-	return Globals.Errors.OK
+	return G.Errors.OK
 
 
 
@@ -133,12 +133,12 @@ func _setup_tbt_plugin_control() -> Globals.Errors:
 # --------------------------------------
 
 func _can_handle(object: Object) -> bool:
-	_clear_tiles_inspector()
-	
+	var _err := _clear_tiles_inspector()
+
 	if object.is_class("AtlasTileProxyObject"):
 		output.debug("_can_handle() => AtlasTileProxyObject")
 		return true
-	
+
 	return false
 
 
@@ -146,11 +146,11 @@ func _parse_end(object: Object) -> void:
 	if !object.is_class("AtlasTileProxyObject"):
 		output.warning("_parse_end(): object is not AtlasTileProxyObject, instead it is %s" % object)
 		return
-	
+
 	var result := await _add_inspector()
 	if result != OK:
 		output.user("TilesInspector not added", result)
-		_clear_tiles_inspector()
+		var _err := _clear_tiles_inspector()
 		return
 	output.debug("TilesInspector added", result)
 
@@ -162,63 +162,63 @@ func _parse_end(object: Object) -> void:
 # --------------------------------------
 
 
-func _add_inspector() -> Globals.Errors:
+func _add_inspector() -> G.Errors:
 	output.debug("_add_inspector()")
-	
+
 	# partial fix for issue #34
 	if !is_instance_valid(tbt_plugin_control):
 		output.error("tbt_plugin_control invalid")
 		_reset()
-		return Globals.Errors.INVALID_TBT_PLUGIN_CONTROL
-	
+		return G.Errors.INVALID_TBT_PLUGIN_CONTROL
+
 	# tiles preview has sometimes been invalid too
 	if !is_instance_valid(tiles_preview):
 		output.error("tiles_preview invalid")
 		_reset()
-		return Globals.Errors.INVALID_TILES_PREVIEW
-	
+		return G.Errors.INVALID_TILES_PREVIEW
+
 	var result := await _add_context()
 	if result != OK:
 		return result
-	
+
 	_add_tiles_inspector()
 	_notify_tiles_inspector_added()
-	
-	return Globals.Errors.OK
+
+	return G.Errors.OK
 
 
 
-	
 
-func _add_context() -> Globals.Errors:
+
+func _add_context() -> G.Errors:
 	context = Context.new()
-	
+
 	context.base_control = base_control
-	
+
 	# Refresh to ensure not using stale references
 	context.tile_set = _get_current_tile_set()
 	if !context.tile_set:
-		return Globals.Errors.MISSING_TILE_SET
-		
+		return G.Errors.MISSING_TILE_SET
+
 	context.source = _get_current_source()
 	if !context.source:
-		return Globals.Errors.MISSING_SOURCE
-	
+		return G.Errors.MISSING_SOURCE
+
 	context.tiles = _get_current_tiles(context.source)
 	if context.tiles.is_empty():
-		return Globals.Errors.MISSING_TILES
-	
+		return G.Errors.MISSING_TILES
+
 	tbt_plugin_control.add_child(context)
 	if !context.ready_complete:
 		await context.ready
-	
+
 	return context.finish_setup()
 
 
 func _add_tiles_inspector() -> void:
 	tiles_inspector = TilesInspector.instantiate()
 	add_custom_control(tiles_inspector)
-	
+
 
 
 func _wait_for_tree_exit(node) -> void:
@@ -228,7 +228,7 @@ func _wait_for_tree_exit(node) -> void:
 			await node.tree_exited
 		else:
 			output.warning("%s not queued for deletion" % node)
-			_clear_tiles_inspector()
+			var _err := _clear_tiles_inspector()
 			await node.tree_exited
 
 
@@ -239,13 +239,13 @@ func _wait_for_tree_exit(node) -> void:
 # Called from parent plugin when addon unloaded
 func clean_up() -> void:
 	_remove_shared_editor_nodes()
-	_clear_tiles_inspector()
+	var _err := _clear_tiles_inspector()
 
 
 
 
 # Called when inspector data changed or focus moved away
-func _clear_tiles_inspector() -> Globals.Errors:
+func _clear_tiles_inspector() -> G.Errors:
 	output.debug("_clear_tiles_inspector()")
 	if is_instance_valid(context):
 		context.queue_free()
@@ -253,7 +253,7 @@ func _clear_tiles_inspector() -> Globals.Errors:
 	if is_instance_valid(tiles_inspector):
 		tiles_inspector.queue_free()
 
-	return Globals.Errors.OK
+	return G.Errors.OK
 
 
 func _remove_shared_editor_nodes() -> void:
@@ -282,7 +282,7 @@ func _get_current_source() -> TileSetAtlasSource:
 
 func _get_current_tiles(source : TileSetAtlasSource) -> Dictionary:
 	var tiles := {}
-	
+
 	var tile_data_objects := _get_connected_objects_by_class(atlas_tile_proxy, "TileData")
 	for tile_data in tile_data_objects:
 		var coords := _find_coordinates_in_source(tile_data, source)
@@ -332,7 +332,7 @@ func _notify_tiles_inspector_added() -> void:
 	if !tiles_preview.ready_complete:
 		output.debug("awaiting tiles_preview.ready")
 		await tiles_preview.ready
-	
+
 	if is_instance_valid(tbt_plugin_control):
 		tbt_plugin_control.notify_tiles_inspector_added(tiles_inspector)
 

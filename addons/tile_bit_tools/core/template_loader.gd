@@ -4,7 +4,7 @@ extends Object
 
 const TAG_NOT_FOUND := null
 
-const Globals := preload("res://addons/tile_bit_tools/core/globals.gd")
+const G := preload("res://addons/tile_bit_tools/core/globals.gd")
 
 const TemplateBitData := preload("res://addons/tile_bit_tools/core/template_bit_data.gd")
 const TemplateTagData := preload("res://addons/tile_bit_tools/core/template_tag_data.gd")
@@ -39,16 +39,16 @@ func _init(template_folder_paths : Array) -> void:
 
 func _load_templates(template_folder_paths : Array) -> void:
 	var paths_parsed := []
-	
+
 	for folder_path in template_folder_paths:
 		# don't load from duplicate folders
 		if folder_path in paths_parsed:
 			continue
 		paths_parsed.append(folder_path)
-		
+
 		_load_templates_in_directory(
-			folder_path.path, 
-			folder_path.type == Globals.TemplateTypes.BUILT_IN
+			folder_path.path,
+			folder_path.type == G.TemplateTypes.BUILT_IN
 		)
 
 
@@ -72,13 +72,13 @@ func _setup_sorted_tag_ids() -> void:
 			output.error("Unable to find auto tag %s" % tag_enum_id)
 			continue
 		_display_tag_ids.append(tag_id)
-	
+
 	var sorted_custom_tag_texts := _custom_tags.keys().duplicate()
 	sorted_custom_tag_texts.sort_custom(func(a,b): return a.to_lower() < b.to_lower())
-	
+
 	for tag_text in sorted_custom_tag_texts:
 		_display_tag_ids.append(_custom_tags[tag_text])
-	
+
 
 func get_tag(tag_id : int) -> TemplateTag:
 	return _tags[tag_id]
@@ -88,7 +88,7 @@ func get_tag_id(tag : TemplateTag) -> int:
 	return _tags.find(tag)
 
 
-func get_tags_item_list(use_display_list := false, exclude_unused := false, filtered_tags := []) -> Array:	
+func get_tags_item_list(use_display_list := false, exclude_unused := false, filtered_tags := []) -> Array:
 	if use_display_list:
 		return _get_tags_item_list(_display_tag_ids, exclude_unused, false, filtered_tags)
 	else:
@@ -108,15 +108,15 @@ func _get_tags_item_list(tag_ids : Array, exclude_unused := false, sort_alphabet
 	for tag_id in tag_ids:
 		if tag_id in filtered_tags:
 			continue
-		
+
 		var item := _get_tag_as_item(tag_id, exclude_unused, filtered_tags)
 		if item.is_empty():
 			continue
 		item_list.append(item)
-	
+
 	if sort_alphabetically:
 		item_list.sort_custom(func(a,b): return a["text"].to_lower() < b["text"].to_lower())
-	
+
 	return item_list
 
 
@@ -126,9 +126,9 @@ func _get_tag_as_item(tag_id : int, skip_if_unused := false, filtered_tags := []
 	var count : int = _get_filtered_templates_list(tags).size()
 	if skip_if_unused && count == 0:
 		return {}
-	
+
 	var tag : TemplateTag = _tags[tag_id]
-	
+
 	return({
 		"id": tag_id,
 		"text": tag.text,
@@ -136,7 +136,7 @@ func _get_tag_as_item(tag_id : int, skip_if_unused := false, filtered_tags := []
 		"tag": tag,
 #		"color": tag.color, # TODO: implement in future?
 	})
-	
+
 
 func _get_all_template_ids() -> Array:
 	return range(_templates.size())
@@ -144,35 +144,35 @@ func _get_all_template_ids() -> Array:
 
 func _get_filtered_templates_list(filter_by_tags := []) -> Array:
 	var filtered_templates := _get_all_template_ids()
-	
+
 	for tag_id in filter_by_tags:
 		var templates_by_tag : Array = _tags_to_templates[tag_id].duplicate()
 		filtered_templates = filtered_templates.filter(func(id): return templates_by_tag.has(id))
 		if filtered_templates.is_empty():
 			return []
-	
+
 	return filtered_templates
 
 
 
 func get_templates_item_list(filter_by_tags := []) -> Array:
 	var item_list := []
-	
+
 	for template_id in _get_filtered_templates_list(filter_by_tags):
 		var template : TemplateBitData = _templates[template_id]
 		var text := template.template_name
 		item_list.append({"id": template_id, "text": text})
-	
+
 	# sort alphabetically
 	item_list.sort_custom(func(a, b): return a["text"].to_lower() < b["text"].to_lower())
-	
+
 	return item_list
 
 
 
 func _load_auto_tags() -> void:
 	for tag in _template_tag_data.tags.values():
-		_add_tag(tag)
+		var _id := _add_tag(tag)
 
 
 func _load_templates_in_directory(path : String, mark_as_built_in := false) -> void:
@@ -183,30 +183,30 @@ func _load_templates_in_directory(path : String, mark_as_built_in := false) -> v
 	for file in dir.get_files():
 		if !file.ends_with("tres"):
 			continue
-		
+
 		# use get_current_dir() instead of path + file to normalize slashes
 		var file_path := dir.get_current_dir() + "/" + file
-		
+
 		var template := load(file_path)
 		if !template or template.get_script() != TemplateBitData:
 			output.user("Error loading template at %s" % file_path)
 			continue
-		
-		
+
+
 		if mark_as_built_in:
 			template.built_in = true
-		
-		_add_template(template)
+
+		var _id := _add_template(template)
 
 
 func _get_or_add_custom_tag(tag_text : String) -> int:
 #	output.debug("_get_or_add_custom_tag(): %s" % tag_text)
-	
+
 	var custom_tag_id = _custom_tags.get(tag_text, null)
 #	output.debug("custom_tag_id=%s" % custom_tag_id)
 	if custom_tag_id != TAG_NOT_FOUND:
 		return custom_tag_id
-	
+
 	var tag := TemplateTag.new(tag_text)
 	tag.custom_tag = true
 	var tag_id := _add_tag(tag)

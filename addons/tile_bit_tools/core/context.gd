@@ -2,7 +2,7 @@
 extends Node
 
 
-const Globals := preload("res://addons/tile_bit_tools/core/globals.gd")
+const G := preload("res://addons/tile_bit_tools/core/globals.gd")
 const EditorBitData := preload("res://addons/tile_bit_tools/core/editor_bit_data.gd")
 
 const Icons := preload("res://addons/tile_bit_tools/core/icons.gd")
@@ -36,26 +36,26 @@ func _ready() -> void:
 	ready_complete = true
 
 
-func finish_setup() -> Globals.Errors:
+func finish_setup() -> G.Errors:
 	var validate_result := validate()
 	if validate_result != OK:
 		return validate_result
-	
+
 	bit_data = EditorBitData.new()
 	var bit_data_result := bit_data.load_from_tile_data(tiles, tile_set)
 	if bit_data_result != OK:
 		return bit_data_result
-	
+
 	_populate_terrain_sets()
 	_populate_terrains()
-	
-	return Globals.Errors.OK
+
+	return G.Errors.OK
 
 
-func validate() -> Globals.Errors:
+func validate() -> G.Errors:
 	if tile_set.tile_shape != TileSet.TILE_SHAPE_SQUARE:
-		return Globals.Errors.UNSUPPORTED_SHAPE
-	return Globals.Errors.OK
+		return G.Errors.UNSUPPORTED_SHAPE
+	return G.Errors.OK
 
 
 func _populate_terrain_sets() -> void:
@@ -95,7 +95,7 @@ func get_terrain_sets_by_mode(terrain_mode : TileSet.TerrainMode) -> Array:
 
 func get_terrain_sets_item_list(terrain_mode : TileSet.TerrainMode) -> Array:
 	var icons := Icons.new(base_control)
-	
+
 	var terrain_set_list := []
 	for index in terrain_sets.keys():
 		if terrain_sets[index] == terrain_mode:

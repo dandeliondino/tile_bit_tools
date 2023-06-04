@@ -15,35 +15,35 @@ enum RectPoint {
 
 var bit_shapes := {
 	TileSet.TERRAIN_MODE_MATCH_SIDES: {
-		BitData.TerrainBits.TOP_SIDE: 
+		BitData.TerrainBits.TOP_SIDE:
 			func(rect : Rect2): return [
 				_get_rect_point(rect, RectPoint.TOP_LEFT),
 				_get_rect_point(rect, RectPoint.TOP_RIGHT),
 				_get_center_rect_point(rect, RectPoint.TOP_RIGHT),
 				_get_center_rect_point(rect, RectPoint.TOP_LEFT),
 			],
-		BitData.TerrainBits.RIGHT_SIDE: 
+		BitData.TerrainBits.RIGHT_SIDE:
 			func(rect : Rect2): return [
 				_get_rect_point(rect, RectPoint.TOP_RIGHT),
 				_get_rect_point(rect, RectPoint.BOTTOM_RIGHT),
 				_get_center_rect_point(rect, RectPoint.BOTTOM_RIGHT),
 				_get_center_rect_point(rect, RectPoint.TOP_RIGHT),
 			],
-		BitData.TerrainBits.BOTTOM_SIDE: 
-			func(rect : Rect2): return [ 
+		BitData.TerrainBits.BOTTOM_SIDE:
+			func(rect : Rect2): return [
 				_get_rect_point(rect, RectPoint.BOTTOM_RIGHT),
 				_get_rect_point(rect, RectPoint.BOTTOM_LEFT),
 				_get_center_rect_point(rect, RectPoint.BOTTOM_LEFT),
 				_get_center_rect_point(rect, RectPoint.BOTTOM_RIGHT),
 			],
-		BitData.TerrainBits.LEFT_SIDE: 
+		BitData.TerrainBits.LEFT_SIDE:
 			func(rect : Rect2): return [
 				_get_rect_point(rect, RectPoint.BOTTOM_LEFT),
 				_get_rect_point(rect, RectPoint.TOP_LEFT),
 				_get_center_rect_point(rect, RectPoint.TOP_LEFT),
 				_get_center_rect_point(rect, RectPoint.BOTTOM_LEFT),
 			],
-		BitData.TerrainBits.CENTER: 
+		BitData.TerrainBits.CENTER:
 			func(rect : Rect2): return _get_center_rect(rect), #.grow(-3),
 	},
 	TileSet.TERRAIN_MODE_MATCH_CORNERS: {
@@ -67,7 +67,7 @@ var bit_shapes := {
 			],
 		BitData.TerrainBits.CENTER:
 			func(rect : Rect2): return _get_center_rect(rect), #.grow(-3),
-#			func(rect : Rect2): 
+#			func(rect : Rect2):
 #				var center_rect := _get_center_rect(rect).grow(-1)
 #				var radius := center_rect.size.x/2
 #				return {"position": center_rect.get_center(), "radius": radius},
@@ -91,17 +91,17 @@ var bit_shapes := {
 			],
 	},
 	TileSet.TERRAIN_MODE_MATCH_CORNERS_AND_SIDES: {
-		BitData.TerrainBits.TOP_LEFT_CORNER: 
+		BitData.TerrainBits.TOP_LEFT_CORNER:
 			func(rect : Rect2): return Rect2(
 				rect.position,
 				_get_bit_size(rect)
 			),
-		BitData.TerrainBits.TOP_SIDE: 
+		BitData.TerrainBits.TOP_SIDE:
 			func(rect : Rect2): return Rect2(
 				Vector2(rect.position.x + rect.size.x/3, rect.position.y),
 				_get_bit_size(rect)
 			),
-		BitData.TerrainBits.TOP_RIGHT_CORNER: 
+		BitData.TerrainBits.TOP_RIGHT_CORNER:
 			func(rect : Rect2): return Rect2(
 				Vector2(rect.position.x + 2*rect.size.x/3, rect.position.y),
 				_get_bit_size(rect)
@@ -169,7 +169,7 @@ var terrain_colors := {}
 func _update_properties() -> void:
 	if !bit_data or draw_size == Vector2i.ZERO:
 		return
-		
+
 	atlas_rect = bit_data.get_atlas_rect()
 
 	# changing to floats avoids rounding errors/gaps
@@ -182,10 +182,10 @@ func _update_properties() -> void:
 
 
 
-func _draw() -> void:	
+func _draw() -> void:
 	if !bit_data or draw_size == Vector2i.ZERO:
 		return
-	
+
 	for coords in bit_data.get_coordinates_list():
 		var adj_coords : Vector2 = coords - atlas_offset
 		var tile_pos := adj_coords * tile_size
