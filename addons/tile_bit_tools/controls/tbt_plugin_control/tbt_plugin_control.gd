@@ -60,14 +60,14 @@ var context : Context :
 		return context
 
 
-var tiles_inspector : Control : 
+var tiles_inspector : Control :
 	get:
 		if !_is_reference_valid(tiles_inspector):
 			return null
 		return tiles_inspector
 
 
-var tiles_preview : Control : 
+var tiles_preview : Control :
 	get:
 		if !_is_reference_valid(tiles_preview):
 			return null
@@ -76,7 +76,7 @@ var tiles_preview : Control :
 
 func _ready() -> void:
 	set_process_input(false)
-	child_entered_tree.connect(_assign_child_by_class)
+	var _err := child_entered_tree.connect(_assign_child_by_class)
 	_setup_debug_signals()
 	_setup_children()
 
@@ -85,22 +85,22 @@ func setup(p_interface : EditorInterface, p_atlas_source_editor : Node, p_tiles_
 	interface = p_interface
 	base_control = interface.get_base_control()
 	atlas_source_editor = p_atlas_source_editor
-	
+
 	icons = Icons.new(base_control)
-	
+
 	# here instead of _ready() so base_control is not null
 	_inject_tbt_reference(self)
-	
+
 	tiles_preview = p_tiles_preview
 	_inject_tbt_reference(tiles_preview, true)
-	
-	
+
+
 func notify_tiles_inspector_added(p_tiles_inspector : Control) -> void:
 	tiles_inspector = p_tiles_inspector
 	_inject_tbt_reference(tiles_inspector, true)
 	_call_subtree(self, TILES_INSPECTOR_ADDED_METHOD)
 	tiles_inspector_added.emit()
-	tiles_inspector.visibility_changed.connect(_on_tiles_inspector_visibility_changed)
+	var _err := tiles_inspector.visibility_changed.connect(_on_tiles_inspector_visibility_changed)
 	_setup_dynamic_containers()
 	set_process_input(true)
 	tiles_preview_expand_requested.emit()
@@ -121,7 +121,7 @@ func is_dialog_popped_up() -> bool:
 func _setup_dynamic_containers() -> void:
 	for node in get_tree().get_nodes_in_group(G.GROUP_DYNAMIC_CONTAINER):
 		if !node.child_entered_tree.is_connected(_on_dynamic_container_child_added):
-			node.child_entered_tree.connect(_on_dynamic_container_child_added)
+			var _err := node.child_entered_tree.connect(_on_dynamic_container_child_added)
 
 
 func _on_dynamic_container_child_added(node : Node) -> void:
@@ -138,19 +138,19 @@ func _on_tiles_inspector_visibility_changed() -> void:
 		set_process_input(true)
 
 
-# while tiles inspector is visible, watch for mouse clicks and 
+# while tiles inspector is visible, watch for mouse clicks and
 # collapse preview panel for clicks outside of this plugin
 func _input(event: InputEvent) -> void:
 	if not event is InputEventMouseButton:
 		return
 	if not event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_MIDDLE]:
 		return
-	
+
 	if is_dialog_popped_up():
 		return
-	
+
 	var mouse_position = base_control.get_global_mouse_position()
-	
+
 	if tiles_inspector.get_parent_control().get_global_rect().has_point(mouse_position):
 		if tiles_inspector.get_global_rect().has_point(mouse_position):
 			if !tiles_preview.expanded:
@@ -158,10 +158,10 @@ func _input(event: InputEvent) -> void:
 		else:
 			tiles_preview_collapse_requested.emit()
 		return
-	
+
 	if !tiles_preview.expanded:
 		return
-	
+
 	if tiles_preview.get_parent_control().get_global_rect().has_point(mouse_position):
 		if !tiles_preview.get_mouse_input_rect().has_point(mouse_position):
 			tiles_preview_collapse_requested.emit()
@@ -197,7 +197,7 @@ func _set_subtree(parent : Node, property_name : String, value : Variant, includ
 	var nodes_to_set := _get_children_recursive(parent)
 	if include_parent:
 		nodes_to_set.append(parent)
-		
+
 	for node in nodes_to_set:
 		node.set(property_name, value)
 
@@ -206,7 +206,7 @@ func _call_subtree(parent : Node, method_name : String, include_parent := false)
 	var nodes_to_call := _get_children_recursive(parent)
 	if include_parent:
 		nodes_to_call.append(parent)
-		
+
 	for node in nodes_to_call:
 		if node.has_method(method_name):
 			node.call(method_name)
@@ -232,9 +232,9 @@ func _is_reference_valid(node) -> bool:
 func _setup_debug_signals() -> void:
 	for signal_data in get_signal_list():
 		if signal_data.args.size() == 0:
-			connect(signal_data.name, _on_signal_emitted.bind(signal_data.name))
+			var _err := connect(signal_data.name, _on_signal_emitted.bind(signal_data.name))
 		else:
-			connect(signal_data.name, _on_signal_emitted_with_arg.bind(signal_data.name))
+			var _err := connect(signal_data.name, _on_signal_emitted_with_arg.bind(signal_data.name))
 
 
 func _on_signal_emitted(signal_name := "") -> void:

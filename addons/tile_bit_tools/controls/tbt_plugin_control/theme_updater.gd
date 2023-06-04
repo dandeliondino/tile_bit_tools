@@ -30,7 +30,7 @@ var override_properties := {
 	Overrides.FONT_COLOR: "theme_override_colors/font_color",
 	Overrides.NORMAL_FONT: "theme_override_fonts/normal_font",
 	Overrides.NORMAL_FONT_SIZE: "theme_override_font_sizes/normal_font_size",
-	Overrides.DEFAULT_COLOR: "theme_override_colors/default_color", 
+	Overrides.DEFAULT_COLOR: "theme_override_colors/default_color",
 	Overrides.PANEL: "theme_override_styles/panel",
 	Overrides.WINDOW_PANEL: "theme_override_styles/embedded_border",
 	Overrides.BUTTON_NORMAL: "theme_override_styles/normal",
@@ -46,7 +46,7 @@ var override_methods := {
 	Overrides.FONT_COLOR: "get_theme_color",
 	Overrides.NORMAL_FONT: "get_theme_font",
 	Overrides.NORMAL_FONT_SIZE: "get_theme_font_size",
-	Overrides.DEFAULT_COLOR: "get_theme_color", 
+	Overrides.DEFAULT_COLOR: "get_theme_color",
 	Overrides.PANEL: "get_theme_stylebox",
 	Overrides.WINDOW_PANEL: "get_theme_stylebox",
 	Overrides.BUTTON_NORMAL: "get_theme_stylebox",
@@ -80,8 +80,8 @@ var overrides_dict := {
 		Overrides.FONT_SIZE: ["main_size", "EditorFonts"],
 		Overrides.FONT_COLOR: ["sub_inspector_property_color", "Editor"],
 	},
-	
-	
+
+
 	# ----------------------------------------------------
 	#			PANELS
 	# ----------------------------------------------------
@@ -101,8 +101,8 @@ var overrides_dict := {
 	"TBTInspectorMessagePanel": {
 		Overrides.PANEL: ["bg_group_note", "EditorProperty"],
 	},
-	
-	
+
+
 	# TILES PREVIEW
 	"TBTPreviewPanelBackground": {
 		Overrides.PANEL: ["panel", "TabContainer"],
@@ -119,7 +119,7 @@ var overrides_dict := {
 		Overrides.DEFAULT_COLOR: ["property_color", "Editor"],
 	},
 
-	
+
 	# SAVE/EDIT DIALOGS
 	"TBTDialogWindow": {
 		Overrides.WINDOW_PANEL: ["panel", "ProjectSettingsEditor"],
@@ -133,8 +133,8 @@ var overrides_dict := {
 	"TBTDialogPanelSection": {
 		Overrides.PANEL: ["panel", "Tree"],
 	},
-	
-	
+
+
 	# BUTTONS
 	"TBTTextButton": {
 		Overrides.FONT_COLOR: ["font_color", "Editor"],
@@ -142,7 +142,7 @@ var overrides_dict := {
 		Overrides.FONT_SIZE: ["main_button_font_size", "EditorFonts"],
 #		Overrides.FONT: ["bold", "EditorFonts"],
 #		Overrides.FONT_SIZE: ["bold_size", "EditorFonts"],
-		
+
 		Overrides.BUTTON_NORMAL: ["normal", "OptionButton"],
 		Overrides.BUTTON_HOVER: ["hover", "OptionButton"],
 		Overrides.BUTTON_PRESSED: ["pressed", "OptionButton"],
@@ -153,14 +153,14 @@ var overrides_dict := {
 		Overrides.FONT_COLOR: ["font_color", "Editor"],
 		Overrides.FONT: ["main", "EditorFonts"],
 		Overrides.FONT_SIZE: ["main_size", "EditorFonts"],
-		
+
 		Overrides.BUTTON_NORMAL: ["normal", "OptionButton"],
 		Overrides.BUTTON_HOVER: ["hover", "OptionButton"],
 		Overrides.BUTTON_PRESSED: ["pressed", "OptionButton"],
 		Overrides.BUTTON_DISABLED: ["disabled", "OptionButton"],
 		Overrides.BUTTON_FOCUS: ["focus", "OptionButton"],
 	},
-	
+
 }
 
 
@@ -174,7 +174,7 @@ var tbt : TBTPlugin
 
 
 func _tbt_ready() -> void:
-	tbt.theme_update_requested.connect(_on_theme_update_requested)
+	var _err := tbt.theme_update_requested.connect(_on_theme_update_requested)
 	_setup_themes()
 
 
@@ -215,7 +215,7 @@ func _update_groups() -> void:
 			var property : String = override_properties[override]
 			var value = tbt.base_control.callv(method, args)
 			get_tree().set_group(group, property, value)
-			
+
 
 func _update_node(node : Node) -> void:
 	for group in overrides_dict.keys():
@@ -260,9 +260,9 @@ func _get_height_by_class(p_class_name : String) -> int:
 	var controls := tbt.atlas_source_editor.find_children("*", p_class_name, true, false)
 	if controls.size() == 0:
 		return 0
-	
+
 	return controls[0].size.y
 
-	
-	
+
+
 

@@ -21,9 +21,9 @@ class TemplateTag:
 	var color : Color
 	var icon := ""
 	var custom_tag := false
-	
+
 	var id : int
-	
+
 	var custom_tag_icons := {
 		"Godot 3": "Godot",
 		"Incomplete Autotile": "NodeWarning",
@@ -37,7 +37,7 @@ class TemplateTag:
 			icon = p_icon
 		if p_color:
 			color = p_color
-			
+
 		if icon == "":
 			icon = custom_tag_icons.get(text, "")
 
@@ -47,10 +47,10 @@ class TemplateTag:
 			return test_func.call(bit_data)
 		else:
 			return text in bit_data._custom_tags
-	
+
 	func get_test_result(bit_data : TemplateBitData) -> bool:
 		return test_func.call(bit_data)
-	
+
 	func get_icon(base_control : Control) -> Texture2D:
 		if icon == "":
 			return null
@@ -68,28 +68,28 @@ class TemplateTag:
 var tags := {
 	Tags.BUILT_IN: TemplateTag.new(
 		"Type: Built-In",
-		func(bit_data: TemplateBitData): 
+		func(bit_data: TemplateBitData):
 			return bit_data.built_in,
 		"Tools",
 		null,
 	),
 	Tags.USER: TemplateTag.new(
 		"Type: User",
-		func(bit_data: TemplateBitData): 
+		func(bit_data: TemplateBitData):
 			return !bit_data.built_in,
 		"File",
 		Color.YELLOW,
 	),
 #	Tags.ONE_OR_TWO_TERRAINS: TemplateTag.new(
 #		"Terrains: 1-2",
-#		func(bit_data: TemplateBitData): 
+#		func(bit_data: TemplateBitData):
 #			return bit_data.template_terrain_count <= 2,
 #		null,
 #		null,
 #	),
 #	Tags.THREE_PLUS_TERRAINS: TemplateTag.new(
 #		"Terrains: 3+",
-#		func(bit_data: TemplateBitData): 
+#		func(bit_data: TemplateBitData):
 #			return bit_data.template_terrain_count >= 3,
 #		null,
 #		null,

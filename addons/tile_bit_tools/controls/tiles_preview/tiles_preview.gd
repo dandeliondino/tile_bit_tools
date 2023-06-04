@@ -52,17 +52,17 @@ var ready_complete := false
 
 func _ready() -> void:
 	ready_complete = true
-	front_container.resized.connect(_on_front_container_resized)
+	var _err := front_container.resized.connect(_on_front_container_resized)
 	_connect_opacity_slider()
 	_toggle_expanded_state(true)
 
 
 func _tbt_ready() -> void:
-	tbt.tiles_inspector_added.connect(_on_tiles_inspector_added)
-	tbt.tiles_inspector_removed.connect(_on_tiles_inspector_removed)
-	tbt.preview_updated.connect(_on_preview_updated)
-	tbt.tiles_preview_expand_requested.connect(_on_tiles_preview_expand_requested)
-	tbt.tiles_preview_collapse_requested.connect(_on_tiles_preview_collapse_requested)
+	var _err := tbt.tiles_inspector_added.connect(_on_tiles_inspector_added)
+	_err = tbt.tiles_inspector_removed.connect(_on_tiles_inspector_removed)
+	_err = tbt.preview_updated.connect(_on_preview_updated)
+	_err = tbt.tiles_preview_expand_requested.connect(_on_tiles_preview_expand_requested)
+	_err = tbt.tiles_preview_collapse_requested.connect(_on_tiles_preview_collapse_requested)
 
 
 
@@ -73,7 +73,7 @@ func get_mouse_input_rect() -> Rect2:
 	rect.position = rect.position - Vector2(0, 6)
 	rect.size = rect.size + Vector2(0, 6)
 	return rect
-	
+
 
 func _setup_textures() -> void:
 	_update_base_texture()
@@ -98,15 +98,15 @@ func _update_base_texture() -> void:
 
 
 func _connect_opacity_slider() -> void:
-	terrain_opacity_slider.value_changed.connect(current_tiles_view.set_terrain_overlay_opacity)
-	terrain_opacity_slider.value_changed.connect(preview_tiles_view.set_terrain_overlay_opacity)
+	var _err := terrain_opacity_slider.value_changed.connect(current_tiles_view.set_terrain_overlay_opacity)
+	_err = terrain_opacity_slider.value_changed.connect(preview_tiles_view.set_terrain_overlay_opacity)
 	terrain_opacity_slider.value = DEFAULT_TERRAIN_OPACITY
 	terrain_opacity_slider.value_changed.emit(DEFAULT_TERRAIN_OPACITY)
 
 
 func _update_current_terrain() -> void:
 	current_tiles_view.set_bit_data(tbt.context.bit_data)
-	
+
 
 
 func _update_preview_terrain() -> void:
@@ -117,7 +117,7 @@ func _update_preview_terrain() -> void:
 		preview_tiles_view.set_bit_data(preview_bit_data)
 		reset_button.disabled = false
 		apply_button.disabled = false
-		
+
 	else:
 		placeholder_label.show()
 		reset_button.hide()
@@ -125,8 +125,8 @@ func _update_preview_terrain() -> void:
 		preview_tiles_view.set_bit_data(null)
 		reset_button.disabled = true
 		apply_button.disabled = true
-	
-	
+
+
 
 
 func _create_base_image() -> void:
@@ -136,7 +136,7 @@ func _create_base_image() -> void:
 
 func _update_image_crop_rect() -> void:
 	image_crop_rect = EMPTY_RECT
-	
+
 	for coords in tbt.context.tiles.keys():
 		var rect := tbt.context.source.get_tile_texture_region(coords, FRAME_0)
 		if image_crop_rect == EMPTY_RECT:
@@ -173,7 +173,7 @@ func _on_apply_button_pressed() -> void:
 
 func _on_expand_button_pressed() -> void:
 	_toggle_expanded_state(true)
-	
+
 
 func _on_collapse_button_pressed() -> void:
 	_toggle_expanded_state(false)
@@ -182,7 +182,7 @@ func _on_collapse_button_pressed() -> void:
 func _on_tiles_inspector_added() -> void:
 	show()
 	_setup_textures()
-	
+
 
 func _on_tiles_inspector_removed() -> void:
 	hide()
@@ -203,4 +203,4 @@ func _on_front_panel_collapsed_gui_input(event: InputEvent) -> void:
 	if event.button_index != MOUSE_BUTTON_LEFT:
 		return
 	_toggle_expanded_state(true)
-	
+

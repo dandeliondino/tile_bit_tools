@@ -94,7 +94,7 @@ func has_terrain_set() -> bool:
 func has_tile(coords : Vector2i) -> bool:
 	return _tiles.has(coords)
 
-	
+
 func get_tile_count() -> int:
 	return _tiles.size()
 
@@ -176,7 +176,7 @@ func get_terrain_colors_dict() -> Dictionary:
 
 func _add_tile(coords : Vector2i, terrain_index := NULL_TERRAIN_INDEX) -> void:
 	assert(!_tiles.has(coords))
-	
+
 	_tiles[coords] = {
 		_TileKeys.TERRAIN: terrain_index,
 		_TileKeys.PEERING_BITS: {},
@@ -189,7 +189,7 @@ func _add_tile(coords : Vector2i, terrain_index := NULL_TERRAIN_INDEX) -> void:
 func fill_all_tile_terrains(p_terrain_set : int, p_terrain_mode : TileSet.TerrainMode, terrain_index : int) -> void:
 	terrain_set = p_terrain_set
 	terrain_mode = p_terrain_mode
-	
+
 	for coords in get_coordinates_list():
 		fill_tile_terrains(coords, terrain_index)
 
@@ -198,10 +198,10 @@ func fill_all_tile_terrains(p_terrain_set : int, p_terrain_mode : TileSet.Terrai
 func fill_tile_terrains(coords : Vector2i, terrain_index : int) -> void:
 	_clear_tile_peering_bits(coords)
 	set_tile_terrain(coords, terrain_index)
-	
+
 	if terrain_index == NULL_TERRAIN_INDEX:
 		return
-	
+
 	for bit in get_terrain_bits_list():
 		set_bit_terrain(coords, bit, terrain_index)
 
@@ -209,7 +209,7 @@ func fill_tile_terrains(coords : Vector2i, terrain_index : int) -> void:
 func clear_all_tile_terrains() -> void:
 	terrain_set = NULL_TERRAIN_SET
 	# do not need to clear terrain_mode as it is only used internally
-	
+
 	for coords in get_coordinates_list():
 		clear_tile_terrains(coords)
 
@@ -226,7 +226,7 @@ func replace_all_tile_terrains(old_terrain_index : int, new_terrain_index : int)
 
 func replace_tile_terrains(coords : Vector2i, old_terrain_index : int, new_terrain_index : int) -> void:
 	# includes tile.terrain
-	for bit in get_terrain_bits_list(true): 
+	for bit in get_terrain_bits_list(true):
 		if get_bit_terrain(coords, bit) == old_terrain_index:
 			set_bit_terrain(coords, bit, new_terrain_index)
 

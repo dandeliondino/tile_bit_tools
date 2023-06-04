@@ -14,9 +14,9 @@ var plugin : EditorInspectorPlugin
 func _enter_tree() -> void:
 	output.debug("plugin.gd : _enter_tree()")
 	output.info("Initializing TileBitTools v%s..." % G.VERSION)
-	
+
 	_setup_project_settings()
-	
+
 	plugin = preload("inspector_plugin.gd").new()
 	add_inspector_plugin(plugin)
 	var result : G.Errors = plugin.setup(get_editor_interface())

@@ -42,19 +42,19 @@ func _tbt_ready() -> void:
 	if expand_container == null:
 		tbt.output.error("Expand container null")
 		return
-	
+
 	icon_expanded = tbt.icons.get_icon(tbt.icons.ARROW_EXPANDED)
 	icon_collapsed = tbt.icons.get_icon(tbt.icons.ARROW_COLLAPSED)
 	_toggle_expanded(false)
-	
+
 	normal_color = tbt.base_control.get_theme_color("prop_subsection", "Editor")
 	normal_color.a = normal_color.a * 0.4
 	hover_color = normal_color.lightened(0.2)
 	_toggle_hover(false)
-	
+
 	var left_margin = round(2 * tbt.interface.get_editor_scale())
 	arrow_margin_container.set("theme_override_constants/margin_left", left_margin)
-	
+
 	var label_margin = left_margin + icon_expanded.get_size().x + LABEL_MARGIN_ADJUST
 	label_margin_container.set("theme_override_constants/margin_left", label_margin)
 

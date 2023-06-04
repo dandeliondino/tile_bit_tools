@@ -42,12 +42,12 @@ func load_editor_bit_data(bit_data : EditorBitData) -> G.Errors:
 	var result := _validate_editor_source(bit_data)
 	if result != OK:
 		return result
-	
+
 	# terrain_set will remain NULL_TERRAIN_SET (-1)
 	terrain_mode = bit_data.terrain_mode
 	var terrain_mapping := _get_terrain_mapping(bit_data)
 	_load_tiles(bit_data, terrain_mapping)
-	
+
 	return G.Errors.OK
 
 
@@ -77,23 +77,23 @@ func _get_terrain_mapping(bit_data : EditorBitData) -> Dictionary:
 	for i in range(terrains.size()):
 		terrain_mapping[terrains[i]] = i
 	return terrain_mapping
-	
+
 
 func _load_tiles(bit_data : EditorBitData, terrain_mapping : Dictionary) -> void:
 	var offset := bit_data.get_atlas_offset()
 	var next_template_terrain := terrain_mapping.size()
-	
+
 	for coords in bit_data.get_coordinates_list():
 		var template_coords : Vector2i = coords - offset
 		_add_tile(template_coords)
-		
+
 		for bit in bit_data.get_terrain_bits_list(true):
 			var editor_terrain := bit_data.get_bit_terrain(coords, bit)
 			if !terrain_mapping.has(editor_terrain):
 				var template_terrain := next_template_terrain
 				terrain_mapping[editor_terrain] = template_terrain
 				next_template_terrain += 1
-				
+
 			set_bit_terrain(template_coords, bit, terrain_mapping[editor_terrain])
 
 	template_terrain_count = terrain_mapping.keys().size()

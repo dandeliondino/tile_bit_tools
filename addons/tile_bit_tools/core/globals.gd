@@ -18,7 +18,7 @@ enum Errors {
 	INVALID_TILES_PREVIEW=905,
 	MULTIPLE_TERRAIN_SETS = 910,
 	UNSUPPORTED_SHAPE = 911,
-	
+
 }
 
 
@@ -77,7 +77,7 @@ const Settings := {
 	"colors_terrain_03": {
 		"path": PROJECT_SETTINGS_PATH + "colors/template_terrain_3",
 		"default": Color("228833"), # green
-		"type": TYPE_COLOR,   
+		"type": TYPE_COLOR,
 	},
 	"colors_terrain_04": {
 		"path": PROJECT_SETTINGS_PATH + "colors/template_terrain_4",

@@ -36,7 +36,7 @@ var tbt : TBTPlugin
 
 func _ready() -> void:
 	hide()
-	close_requested.connect(close_dialog)
+	var _err := close_requested.connect(close_dialog)
 	template_info_list.show_custom_tags = false
 
 
@@ -55,7 +55,7 @@ func show_dialog() -> void:
 	popup_centered()
 
 
-# connected to buttons/closing dialog, 
+# connected to buttons/closing dialog,
 # do not need to call
 func close_dialog() -> void:
 	template_bit_data = null
@@ -87,7 +87,7 @@ func _setup_texture() -> void:
 
 func _setup_folders_button() -> void:
 	folder_option_button.clear()
-	
+
 	for i in range(tbt.template_manager.template_folder_paths.size()):
 		var folder_path : Dictionary = tbt.template_manager.template_folder_paths[i]
 		if folder_path.type != tbt.G.TemplateTypes.USER:
@@ -95,13 +95,13 @@ func _setup_folders_button() -> void:
 		if !folder_path.has("name"):
 			continue
 		folder_option_button.add_item(folder_path.name, i)
-		
+
 		var tooltip : String = folder_path.tooltip + "\n" + folder_path.path
 		var idx := folder_option_button.get_item_index(i)
 		folder_option_button.set_item_tooltip(idx, tooltip)
-	
+
 	folder_option_button.get_popup().add_to_group("TBTPopupMenu")
-	
+
 
 
 
@@ -120,16 +120,16 @@ func _setup_initial_values() -> void:
 
 func _save() -> void:
 	_update_template_bit_data()
-	
+
 	var path := _get_save_path()
 	var result := ResourceSaver.save(template_bit_data, path)
-	
+
 	if result != OK:
 		tbt.output.user("Error saving template", tbt.G.Errors.FAILED)
 		tbt.output.debug("ResourceSaver error: %s" % result)
 		close_dialog()
 		return
-	
+
 	tbt.output.user("Saved user template '%s' to %s " % [template_bit_data.template_name, path])
 	tbt.templates_update_requested.emit()
 	close_dialog()

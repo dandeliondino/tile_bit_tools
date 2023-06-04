@@ -38,30 +38,30 @@ func _tbt_ready() -> void:
 
 func update(p_template_bit_data : TBTPlugin.TemplateBitData) -> void:
 	template_bit_data = p_template_bit_data
-	
+
 	if !template_bit_data:
 		hide()
 		return
-		
+
 	show()
-	
+
 	if template_bit_data.template_description == "":
 		description_container.hide()
 	else:
 		description_container.show()
-	
+
 	description_label.text = template_bit_data.template_description
-	
+
 	template_info_list.update(template_bit_data)
-	
-	
+
+
 	if template_bit_data.built_in:
 		edit_button.hide()
 		remove_button.hide()
 	else:
 		edit_button.show()
 		remove_button.show()
-	
+
 	if template_bit_data.example_folder_path != "" && DirAccess.dir_exists_absolute(template_bit_data.example_folder_path):
 		example_folder_path = template_bit_data.example_folder_path
 		example_button.show()
@@ -89,7 +89,7 @@ func _toggle_description_expand_button(value : bool) -> void:
 
 func _open_example_folder() -> void:
 	var path := ProjectSettings.globalize_path(example_folder_path)
-	OS.shell_open(path)
+	var _err := OS.shell_open(path)
 
 
 # TODO: move to template_manager? make more generalized?
@@ -98,21 +98,21 @@ func _remove_template() -> void:
 	confirm_dialog.title = "Confirm Delete Template"
 	confirm_dialog.dialog_text = "Really delete template '%s'?" % template_bit_data.template_name
 	confirm_dialog.ok_button_text = "Delete (no undo)"
-	confirm_dialog.confirmed.connect(_on_delete_confirmed)
+	var _err := confirm_dialog.confirmed.connect(_on_delete_confirmed)
 	add_child(confirm_dialog)
 	confirm_dialog.popup_centered()
 
 
 func _on_delete_confirmed() -> void:
 	var path := template_bit_data.resource_path
-	DirAccess.remove_absolute(path)
+	var _err := DirAccess.remove_absolute(path)
 	tbt.output.user("Deleted user template '%s'" % template_bit_data.template_name)
 	tbt.templates_update_requested.emit()
 
 
 func _on_remove_button_pressed() -> void:
 	_remove_template()
-	
+
 
 func _on_edit_button_pressed() -> void:
 	tbt.edit_template_requested.emit(template_bit_data)

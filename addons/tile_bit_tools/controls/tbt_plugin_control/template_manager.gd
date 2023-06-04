@@ -22,12 +22,12 @@ var editor_paths := EditorPaths.new()
 
 
 func _tbt_ready() -> void:
-	tbt.templates_update_requested.connect(update_templates)
-	
+	var _err := tbt.templates_update_requested.connect(update_templates)
+
 	_setup_bit_data_draw()
-	
+
 	# call deferred so editor will not pause on activating plugin
-	_load_templates.call_deferred() 
+	_load_templates.call_deferred()
 
 
 func _setup_bit_data_draw() -> void:
@@ -35,17 +35,17 @@ func _setup_bit_data_draw() -> void:
 	add_child(bit_data_draw_node)
 	bit_data_draw_node.tile_size = TEMPLATE_PREVIEW_TILE_WIDTH
 	bit_data_draw_node.tile_spacing = TEMPLATE_PREVIEW_TILE_SPACING
-	
+
 
 func _load_templates() -> void:
 	_update_template_folder_paths()
-	
+
 	for folder_path in template_folder_paths:
 		tbt.output.debug("Loading templates in %s: %s" % [folder_path.name, folder_path.path])
 		if !DirAccess.dir_exists_absolute(folder_path.path):
 			tbt.output.debug("making path to template folder: %s" % folder_path.path)
-			DirAccess.make_dir_recursive_absolute(folder_path.path)
-			
+			var _err := DirAccess.make_dir_recursive_absolute(folder_path.path)
+
 	template_loader = TemplateLoader.new(template_folder_paths)
 	_create_template_textures.call_deferred()
 	tbt.output.info("%s templates loaded" % template_loader.get_templates().size())
@@ -101,11 +101,11 @@ func _update_template_folder_paths() -> void:
 			"path": get_user_templates_path(),
 		},
 	]
-	
+
 	for i in range(template_folder_paths.size()-1, -1, -1):
 		if template_folder_paths[i].path == "":
 			template_folder_paths.remove_at(i)
-		
-	
+
+
 
 
