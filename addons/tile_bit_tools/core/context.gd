@@ -2,7 +2,7 @@
 extends Node
 
 
-const G := preload("res://addons/tile_bit_tools/core/G.gd")
+const Globals := preload("res://addons/tile_bit_tools/core/globals.gd")
 const EditorBitData := preload("res://addons/tile_bit_tools/core/editor_bit_data.gd")
 
 const Icons := preload("res://addons/tile_bit_tools/core/icons.gd")
@@ -36,7 +36,7 @@ func _ready() -> void:
 	ready_complete = true
 
 
-func finish_setup() -> G.Errors:
+func finish_setup() -> Globals.Errors:
 	var validate_result := validate()
 	if validate_result != OK:
 		return validate_result
@@ -49,13 +49,13 @@ func finish_setup() -> G.Errors:
 	_populate_terrain_sets()
 	_populate_terrains()
 	
-	return G.Errors.OK
+	return Globals.Errors.OK
 
 
-func validate() -> G.Errors:
+func validate() -> Globals.Errors:
 	if tile_set.tile_shape != TileSet.TILE_SHAPE_SQUARE:
-		return G.Errors.UNSUPPORTED_SHAPE
-	return G.Errors.OK
+		return Globals.Errors.UNSUPPORTED_SHAPE
+	return Globals.Errors.OK
 
 
 func _populate_terrain_sets() -> void:
