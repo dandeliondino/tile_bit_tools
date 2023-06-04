@@ -1,7 +1,7 @@
 @tool
 extends EditorPlugin
 
-const Globals := preload("res://addons/tile_bit_tools/core/globals.gd")
+const G := preload("res://addons/tile_bit_tools/core/globals.gd")
 
 const PLUGIN_NAME := "tile_bit_tools"
 
@@ -13,13 +13,13 @@ var plugin : EditorInspectorPlugin
 
 func _enter_tree() -> void:
 	output.debug("plugin.gd : _enter_tree()")
-	output.info("Initializing TileBitTools v%s..." % Globals.VERSION)
+	output.info("Initializing TileBitTools v%s..." % G.VERSION)
 	
 	_setup_project_settings()
 	
 	plugin = preload("inspector_plugin.gd").new()
 	add_inspector_plugin(plugin)
-	var result : Globals.Errors = plugin.setup(get_editor_interface())
+	var result : G.Errors = plugin.setup(get_editor_interface())
 	if result != OK:
 		output.user("Unable to initialize, disabling plugin")
 		get_editor_interface().set_plugin_enabled(PLUGIN_NAME, false)
@@ -46,8 +46,8 @@ func _exit_tree() -> void:
 
 
 func _setup_project_settings() -> void:
-	for key in Globals.Settings.keys():
-		var setting : Dictionary = Globals.Settings[key]
+	for key in G.Settings.keys():
+		var setting : Dictionary = G.Settings[key]
 		if !ProjectSettings.has_setting(setting.path):
 			ProjectSettings.set(setting.path, setting.default)
 

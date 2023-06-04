@@ -67,7 +67,7 @@ func get_bit_data_draw() -> SubViewport:
 
 
 func get_user_templates_path() -> String:
-	var path : String = ProjectSettings.get_setting(TBTPlugin.Globals.Settings.user_templates_path.path)
+	var path : String = ProjectSettings.get_setting(TBTPlugin.G.Settings.user_templates_path.path)
 	var dir := DirAccess.open(path)
 	if dir:
 		return dir.get_current_dir()
@@ -77,25 +77,25 @@ func get_user_templates_path() -> String:
 func _update_template_folder_paths() -> void:
 	template_folder_paths = [
 		{
-			"type": TBTPlugin.Globals.TemplateTypes.BUILT_IN,
+			"type": TBTPlugin.G.TemplateTypes.BUILT_IN,
 			"name": "Built-in Templates Folder",
-			"path": TBTPlugin.Globals.BUILTIN_TEMPLATES_PATH,
+			"path": TBTPlugin.G.BUILTIN_TEMPLATES_PATH,
 		},
 		{
-			"type": TBTPlugin.Globals.TemplateTypes.USER,
+			"type": TBTPlugin.G.TemplateTypes.USER,
 			"name": "Project Templates Folder",
 			"tooltip": "Templates saved here will only be available to this project",
-			"path": TBTPlugin.Globals.PROJECT_TEMPLATES_PATH,
+			"path": TBTPlugin.G.PROJECT_TEMPLATES_PATH,
 		},
 		{
-			"type": TBTPlugin.Globals.TemplateTypes.USER,
+			"type": TBTPlugin.G.TemplateTypes.USER,
 			"name": "Shared Templates Folder",
 			"tooltip": "Templates saved here will be available to all projects on this computer",
-			"path": editor_paths.get_data_dir() + TBTPlugin.Globals.GODOT_TEMPLATES_FOLDER,
+			"path": editor_paths.get_data_dir() + TBTPlugin.G.GODOT_TEMPLATES_FOLDER,
 		},
 		# default is the same as project templates folder
 		{
-			"type": TBTPlugin.Globals.TemplateTypes.USER,
+			"type": TBTPlugin.G.TemplateTypes.USER,
 			"name": "User Templates Folder",
 			"tooltip": "Template will be saved to the folder set in Project Settings -> Tile Bit Tools",
 			"path": get_user_templates_path(),

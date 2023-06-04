@@ -1,7 +1,7 @@
 @tool
 extends "res://addons/tile_bit_tools/core/bit_data.gd"
 
-const Globals := preload("res://addons/tile_bit_tools/core/globals.gd")
+const G := preload("res://addons/tile_bit_tools/core/globals.gd")
 const TemplateBitData := preload("res://addons/tile_bit_tools/core/template_bit_data.gd")
 const EditorBitData := preload("res://addons/tile_bit_tools/core/editor_bit_data.gd")
 
@@ -30,13 +30,13 @@ func get_terrain_color(terrain_index : int) -> Color:
 
 
 ## terrain_mapping: {template terrain_index : tile_set terrain_index}
-func apply_template_bit_data(template_bit_data : TemplateBitData, p_terrain_set : int, terrain_mapping : Dictionary) -> Globals.Errors:
+func apply_template_bit_data(template_bit_data : TemplateBitData, p_terrain_set : int, terrain_mapping : Dictionary) -> G.Errors:
 	clear_all_tile_terrains()
 	
 	terrain_set = p_terrain_set
 	terrain_mode = template_bit_data.terrain_mode
 	if tile_set.get_terrain_set_mode(terrain_set) != terrain_mode:
-		return Globals.Errors.FAILED
+		return G.Errors.FAILED
 	
 	var offset := get_atlas_offset()
 	
@@ -49,18 +49,18 @@ func apply_template_bit_data(template_bit_data : TemplateBitData, p_terrain_set 
 			var terrain_index = terrain_mapping[template_terrain_index]
 			set_bit_terrain(coords, bit, terrain_index)
 	
-	return Globals.Errors.OK
+	return G.Errors.OK
 
 
 
 ## Loads TileData into BitData resource; 
 ## p_tiles = Dict{coords : TileData}
-func load_from_tile_data(p_tiles : Dictionary, p_tile_set : TileSet) -> Globals.Errors:
+func load_from_tile_data(p_tiles : Dictionary, p_tile_set : TileSet) -> G.Errors:
 	# only allow loading into empty resource
 	if has_data():
-		return Globals.Errors.FAILED
+		return G.Errors.FAILED
 	if p_tiles.size() == 0:
-		return Globals.Errors.MISSING_TILES
+		return G.Errors.MISSING_TILES
 	
 	tile_set = p_tile_set
 	
@@ -68,7 +68,7 @@ func load_from_tile_data(p_tiles : Dictionary, p_tile_set : TileSet) -> Globals.
 	return result
 	
 	
-func _load_tiles(p_tiles : Dictionary) -> Globals.Errors:
+func _load_tiles(p_tiles : Dictionary) -> G.Errors:
 #	output.user("Fetching current terrain bits now. Unassigned terrain bits will result in [i]Condition '!is_valid_terrain_peering_bit(p_peering_bit)' is true.[/i] Please ignore.")
 	
 	for coords in p_tiles.keys():
@@ -86,23 +86,23 @@ func _load_tiles(p_tiles : Dictionary) -> Globals.Errors:
 		
 		_load_terrain(coords, tile_data)
 	
-	return Globals.Errors.OK
+	return G.Errors.OK
 	
 
-func _load_terrain_set(tile_data : TileData) -> Globals.Errors:
+func _load_terrain_set(tile_data : TileData) -> G.Errors:
 #	output.debug("terrain_set=%s, TileData terrain_set=%s" % [terrain_set, tile_data.terrain_set])
 	
 	if terrain_set == NULL_TERRAIN_SET:
 		terrain_set = tile_data.terrain_set
 #		output.debug("Assigning terrain_set => %s" % tile_data.terrain_set)
 		terrain_mode = tile_set.get_terrain_set_mode(terrain_set)
-		return Globals.Errors.OK
+		return G.Errors.OK
 		
 	if terrain_set != tile_data.terrain_set:
 #		output.debug("Multiple terrain sets")
-		return Globals.Errors.MULTIPLE_TERRAIN_SETS
+		return G.Errors.MULTIPLE_TERRAIN_SETS
 
-	return Globals.Errors.OK
+	return G.Errors.OK
 
 
 # if a peering bit is unset, get_terrain_peering_bit() sometimes causes error spam 

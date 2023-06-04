@@ -90,7 +90,7 @@ func _setup_folders_button() -> void:
 	
 	for i in range(tbt.template_manager.template_folder_paths.size()):
 		var folder_path : Dictionary = tbt.template_manager.template_folder_paths[i]
-		if folder_path.type != tbt.Globals.TemplateTypes.USER:
+		if folder_path.type != tbt.G.TemplateTypes.USER:
 			continue
 		if !folder_path.has("name"):
 			continue
@@ -125,7 +125,7 @@ func _save() -> void:
 	var result := ResourceSaver.save(template_bit_data, path)
 	
 	if result != OK:
-		tbt.output.user("Error saving template", tbt.Globals.Errors.FAILED)
+		tbt.output.user("Error saving template", tbt.G.Errors.FAILED)
 		tbt.output.debug("ResourceSaver error: %s" % result)
 		close_dialog()
 		return
@@ -142,7 +142,7 @@ func _update_template_bit_data() -> void:
 		template_bit_data.template_name = name_edit.text
 	template_bit_data.template_description = description_edit.text
 	template_bit_data._custom_tags = _get_custom_tags()
-	template_bit_data.version = tbt.Globals.VERSION
+	template_bit_data.version = tbt.G.VERSION
 
 
 func _get_custom_tags() -> Array:
