@@ -26,7 +26,7 @@ const TBT_READY_METHOD := "_tbt_ready"
 const TILES_INSPECTOR_ADDED_METHOD := "_tiles_inspector_added"
 const TILES_INSPECTOR_REMOVED_METHOD := "_tiles_inspector_removed"
 
-const Globals := preload("res://addons/tile_bit_tools/core/globals.gd")
+const G := preload("res://addons/tile_bit_tools/core/G.gd")
 const Texts := preload("res://addons/tile_bit_tools/core/texts.gd")
 const Icons := preload("res://addons/tile_bit_tools/core/icons.gd")
 const Output := preload("res://addons/tile_bit_tools/core/output.gd")
@@ -119,7 +119,7 @@ func is_dialog_popped_up() -> bool:
 
 
 func _setup_dynamic_containers() -> void:
-	for node in get_tree().get_nodes_in_group(Globals.GROUP_DYNAMIC_CONTAINER):
+	for node in get_tree().get_nodes_in_group(G.GROUP_DYNAMIC_CONTAINER):
 		if !node.child_entered_tree.is_connected(_on_dynamic_container_child_added):
 			node.child_entered_tree.connect(_on_dynamic_container_child_added)
 

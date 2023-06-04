@@ -3,7 +3,7 @@ extends "res://addons/tile_bit_tools/core/bit_data.gd"
 
 const additional_colors := [Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN, Color.REBECCA_PURPLE, Color.WHEAT, Color.AQUA, Color.SALMON, Color.CHOCOLATE, Color.VIOLET, Color.CADET_BLUE, Color.NAVY_BLUE, Color.MAGENTA, Color.LAWN_GREEN, Color.KHAKI, Color.HOT_PINK, Color.FIREBRICK, Color.DARK_OLIVE_GREEN, Color.SADDLE_BROWN]
 
-const Globals := preload("res://addons/tile_bit_tools/core/globals.gd")
+const G := preload("res://addons/tile_bit_tools/core/G.gd")
 const EditorBitData := preload("res://addons/tile_bit_tools/core/editor_bit_data.gd")
 const TemplateBitData := preload("res://addons/tile_bit_tools/core/template_bit_data.gd")
 
@@ -21,10 +21,10 @@ var preview_texture : Texture2D
 
 var terrain_colors := {
 	-1: Color.TRANSPARENT,
-	0: ProjectSettings.get_setting(Globals.Settings.colors_terrain_01.path) if ProjectSettings.get_setting(Globals.Settings.colors_terrain_01.path) != null else additional_colors[0],
-	1: ProjectSettings.get_setting(Globals.Settings.colors_terrain_02.path) if ProjectSettings.get_setting(Globals.Settings.colors_terrain_02.path) != null else additional_colors[1],
-	2: ProjectSettings.get_setting(Globals.Settings.colors_terrain_03.path) if ProjectSettings.get_setting(Globals.Settings.colors_terrain_03.path) != null else additional_colors[2],
-	3: ProjectSettings.get_setting(Globals.Settings.colors_terrain_04.path) if ProjectSettings.get_setting(Globals.Settings.colors_terrain_04.path) != null else additional_colors[3],
+	0: ProjectSettings.get_setting(G.Settings.colors_terrain_01.path) if ProjectSettings.get_setting(G.Settings.colors_terrain_01.path) != null else additional_colors[0],
+	1: ProjectSettings.get_setting(G.Settings.colors_terrain_02.path) if ProjectSettings.get_setting(G.Settings.colors_terrain_02.path) != null else additional_colors[1],
+	2: ProjectSettings.get_setting(G.Settings.colors_terrain_03.path) if ProjectSettings.get_setting(G.Settings.colors_terrain_03.path) != null else additional_colors[2],
+	3: ProjectSettings.get_setting(G.Settings.colors_terrain_04.path) if ProjectSettings.get_setting(G.Settings.colors_terrain_04.path) != null else additional_colors[3],
 }
 
 
@@ -38,7 +38,7 @@ func get_custom_tags() -> Array:
 	return _custom_tags
 
 
-func load_editor_bit_data(bit_data : EditorBitData) -> Globals.Errors:
+func load_editor_bit_data(bit_data : EditorBitData) -> G.Errors:
 	var result := _validate_editor_source(bit_data)
 	if result != OK:
 		return result
@@ -48,17 +48,17 @@ func load_editor_bit_data(bit_data : EditorBitData) -> Globals.Errors:
 	var terrain_mapping := _get_terrain_mapping(bit_data)
 	_load_tiles(bit_data, terrain_mapping)
 	
-	return Globals.Errors.OK
+	return G.Errors.OK
 
 
-func _validate_editor_source(bit_data : EditorBitData) -> Globals.Errors:
+func _validate_editor_source(bit_data : EditorBitData) -> G.Errors:
 	if has_data():
-		return Globals.Errors.FAILED
+		return G.Errors.FAILED
 	if bit_data.get_tile_count() == 0:
-		return Globals.Errors.FAILED
+		return G.Errors.FAILED
 	if bit_data.get_terrain_count() == 0:
-		return Globals.Errors.FAILED
-	return Globals.Errors.OK
+		return G.Errors.FAILED
+	return G.Errors.OK
 
 
 ## Sort terrains by frequency and return mapping
