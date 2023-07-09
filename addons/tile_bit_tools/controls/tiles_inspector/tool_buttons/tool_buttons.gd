@@ -5,6 +5,7 @@ const TERRAIN_POPUP := "TerrainPopup"
 
 const TBTPlugin := preload("res://addons/tile_bit_tools/controls/tbt_plugin_control/tbt_plugin_control.gd")
 
+var EMPTY_TERRAIN_ID := 99
 
 var fill_menu_items := {}
 
@@ -113,7 +114,7 @@ func _create_terrain_popup(terrain_bit : int, item_list : Array) -> String:
 
 	for item in item_list:
 		terrain_popup.add_icon_item(item.icon, item.text, item.id)
-#		terrain_popup.add_item(item.text, item.id)
+	terrain_popup.add_item("<empty>", EMPTY_TERRAIN_ID)
 
 	return terrain_popup.name
 
@@ -164,6 +165,8 @@ func _on_fill_button_popup_id_pressed(id : int) -> void:
 
 func _on_bit_button_terrain_id_pressed(terrain_id : int, terrain_bit : int) -> void:
 #	print("terrain_bit=%s, terrain_id=%s" % [terrain_bit, terrain_id])
+	if terrain_id == EMPTY_TERRAIN_ID:
+		terrain_id = -1
 	tbt.tiles_manager.set_terrain_bits(terrain_bit, terrain_id)
 
 

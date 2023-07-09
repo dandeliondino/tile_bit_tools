@@ -1,6 +1,6 @@
-extends Object
+extends RefCounted
 
-const VERSION := "1.0.3"
+const VERSION := "1.1.0"
 
 # ------------------------
 # 	ENUMS
@@ -31,7 +31,7 @@ enum TemplateTypes {BUILT_IN, USER}
 # ------------------------
 
 const BUILTIN_TEMPLATES_PATH := "res://addons/tile_bit_tools/templates/"
-const GODOT_TEMPLATES_FOLDER := "/tile_bit_tools_templates/"
+const GODOT_TEMPLATES_FOLDER := "/Godot/tile_bit_tools_templates/"
 const PROJECT_TEMPLATES_PATH := "user://addons/tile_bit_tools/templates/"
 
 # ------------------------

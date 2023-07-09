@@ -65,6 +65,14 @@ func load_from_tile_data(p_tiles : Dictionary, p_tile_set : TileSet) -> G.Errors
 	tile_set = p_tile_set
 
 	var result := _load_tiles(p_tiles)
+	if terrain_set == NULL_TERRAIN_SET:
+		# if there is only one terrain set, assign it to the bit data
+		# this allows using the set bits button on tiles that don't have
+		# any terrain data yet
+		var terrain_sets_count := tile_set.get_terrain_sets_count()
+		if terrain_sets_count == 1:
+			terrain_set = 0
+
 	return result
 
 

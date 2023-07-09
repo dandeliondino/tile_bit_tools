@@ -14,8 +14,6 @@ var bit_data_draw_node
 
 var tbt : TBTPlugin
 
-var editor_paths := EditorPaths.new()
-
 
 @onready var template_folder_paths : Array
 
@@ -91,7 +89,7 @@ func _update_template_folder_paths() -> void:
 			"type": TBTPlugin.G.TemplateTypes.USER,
 			"name": "Shared Templates Folder",
 			"tooltip": "Templates saved here will be available to all projects on this computer",
-			"path": editor_paths.get_data_dir() + TBTPlugin.G.GODOT_TEMPLATES_FOLDER,
+			"path": OS.get_data_dir() + TBTPlugin.G.GODOT_TEMPLATES_FOLDER,
 		},
 		# default is the same as project templates folder
 		{
