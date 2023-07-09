@@ -28,6 +28,9 @@ class TemplateTag:
 		"Godot 3": "Godot",
 		"Incomplete Autotile": "NodeWarning",
 		"Plugin Required": "NodeWarning",
+		"TilePipe2": "TileSet",
+		"Tilesetter": "TileSet",
+
 	}
 
 	func _init(p_text : String, p_test_func = null, p_icon = null, p_color = null):
