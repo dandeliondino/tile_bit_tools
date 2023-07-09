@@ -32,7 +32,7 @@ const TERRAIN_BIT_TEXTS := {
 	BitData.TerrainBits.BOTTOM_SIDE: "Bottom Side",
 	BitData.TerrainBits.BOTTOM_LEFT_CORNER: "Bottom Left Corner",
 	BitData.TerrainBits.LEFT_SIDE: "Left Side",
-	BitData.TerrainBits.CENTER: "Terrain ID (Center Bit)",
+	BitData.TerrainBits.CENTER: "Tile Terrain (Center)",
 }
 
 
