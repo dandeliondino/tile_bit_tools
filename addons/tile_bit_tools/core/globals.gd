@@ -1,4 +1,4 @@
-extends Object
+extends RefCounted
 
 const VERSION := "1.1.0"
 

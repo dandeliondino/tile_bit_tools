@@ -1,4 +1,4 @@
-extends Object
+extends RefCounted
 
 const SEPARATOR := 0
 

@@ -1,4 +1,5 @@
-extends Object
+extends RefCounted
+
 
 
 enum MessageTypes {USER, INFO, DEBUG}

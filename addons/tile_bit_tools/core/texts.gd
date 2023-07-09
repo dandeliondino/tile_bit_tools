@@ -1,4 +1,4 @@
-extends Object
+extends RefCounted
 
 const G := preload("res://addons/tile_bit_tools/core/globals.gd")
 const BitData := preload("res://addons/tile_bit_tools/core/bit_data.gd")
